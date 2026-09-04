@@ -8,17 +8,12 @@ import { FOOTER_GROUPS } from "../constants/landing-content";
 export function Footer() {
   return (
     <footer className="border-t border-border bg-card">
-      <div className="mx-auto max-w-7xl px-4 pt-16 pb-12 sm:px-6 lg:px-8">
+      <div className="w-full px-4 pt-16 pb-12 sm:px-6 lg:px-10">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-5">
           {/* Brand & Newsletter Column */}
           <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-tr from-primary to-secondary shadow-sm shadow-primary/20">
-                <Sparkles className="h-4 w-4 text-white" />
-              </div>
-              <span className="text-xl font-bold tracking-tight text-text-primary">
-                Win<span className="text-primary">flare</span>
-              </span>
+            <Link href="/" className="flex items-center transition-opacity hover:opacity-90">
+              <img src="/logo.svg" alt="Winflare" className="h-8 w-auto object-contain" />
             </Link>
             <p className="mt-4 max-w-sm text-sm text-text-secondary leading-relaxed">
               The AI-powered opportunity discovery and proposal acceleration platform for high-ticket

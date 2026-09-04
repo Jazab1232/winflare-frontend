@@ -1,8 +1,9 @@
-import React from "react";
 import type { Metadata } from "next";
 import {
   HeroSection,
   ClientAcquisitionOsSection,
+  ProductPreviewSection,
+  ChaosToSystemSection,
   FeaturesSection,
   TestimonialsSection,
   PricingSection,
@@ -19,6 +20,8 @@ export default function LandingPage() {
     <>
       <HeroSection />
       <ClientAcquisitionOsSection />
+      <ProductPreviewSection />
+      <ChaosToSystemSection />
       <FeaturesSection />
       <TestimonialsSection />
       <PricingSection />

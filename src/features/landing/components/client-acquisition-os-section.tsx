@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Sparkles,
   FileText,
@@ -9,13 +9,13 @@ import {
   LayoutGrid,
   Layers,
   Target,
-} from "lucide-react";
-import { WinflareLogo } from "./navbar";
+} from 'lucide-react';
+import { WinflareLogo } from './navbar';
 
 export function ClientAcquisitionOsSection() {
   return (
     <section className="relative overflow-hidden py-20 bg-[#FAFBFF]">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-6 lg:px-10">
         {/* Section Header */}
         <div className="mx-auto max-w-3xl text-center">
           {/* Pill Badge */}
@@ -26,15 +26,17 @@ export function ClientAcquisitionOsSection() {
 
           {/* Main Headline */}
           <h2 className="mt-5 text-4xl font-extrabold tracking-tight text-[#0F172A] sm:text-5xl lg:text-[48px] lg:leading-[1.15]">
-            Your next client is<br />
-            hidden across <span className="text-[#5B5AF7]">dozens of tools.</span>
+            Your next client is
+            <br />
+            hidden across{' '}
+            <span className="text-[#5B5AF7]">dozens of tools.</span>
           </h2>
 
           {/* Subtitle */}
           <p className="mt-4 text-base leading-relaxed text-[#64748B] sm:text-lg max-w-2xl mx-auto">
-            Opportunities, proposals, notes, follow-ups, and client research
-            are scattered everywhere. Winflare brings the entire
-            acquisition process into one workspace.
+            Opportunities, proposals, notes, follow-ups, and client research are
+            scattered everywhere. Winflare brings the entire acquisition process
+            into one workspace.
           </p>
         </div>
 
@@ -63,7 +65,13 @@ export function ClientAcquisitionOsSection() {
               </marker>
 
               {/* Refined Glowing Filter for High-Precision Data Packets */}
-              <filter id="dot-glow" x="-50%" y="-50%" width="200%" height="200%">
+              <filter
+                id="dot-glow"
+                x="-50%"
+                y="-50%"
+                width="200%"
+                height="200%"
+              >
                 <feGaussianBlur stdDeviation="1.5" result="blur" />
                 <feMerge>
                   <feMergeNode in="blur" />
@@ -73,7 +81,15 @@ export function ClientAcquisitionOsSection() {
             </defs>
 
             {/* Subtle Central Winflare Processing Aura */}
-            <circle cx="540" cy="275" r="75" fill="none" stroke="#5B5AF7" strokeWidth="1.2" opacity="0">
+            <circle
+              cx="540"
+              cy="275"
+              r="75"
+              fill="none"
+              stroke="#5B5AF7"
+              strokeWidth="1.2"
+              opacity="0"
+            >
               <animate
                 attributeName="r"
                 values="75;95;75"
@@ -100,7 +116,12 @@ export function ClientAcquisitionOsSection() {
               markerEnd="url(#arrow-head)"
             />
             <g>
-              <circle r="2.8" fill="#5B5AF7" opacity="0.75" filter="url(#dot-glow)">
+              <circle
+                r="2.8"
+                fill="#5B5AF7"
+                opacity="0.75"
+                filter="url(#dot-glow)"
+              >
                 <animateMotion
                   path="M 285 63 C 365 63, 380 215, 435 215"
                   dur="3.2s"
@@ -143,7 +164,12 @@ export function ClientAcquisitionOsSection() {
               markerEnd="url(#arrow-head)"
             />
             <g>
-              <circle r="2.8" fill="#5B5AF7" opacity="0.75" filter="url(#dot-glow)">
+              <circle
+                r="2.8"
+                fill="#5B5AF7"
+                opacity="0.75"
+                filter="url(#dot-glow)"
+              >
                 <animateMotion
                   path="M 230 148 C 340 148, 370 240, 435 240"
                   dur="3.2s"
@@ -186,7 +212,12 @@ export function ClientAcquisitionOsSection() {
               markerEnd="url(#arrow-head)"
             />
             <g>
-              <circle r="2.8" fill="#5B5AF7" opacity="0.75" filter="url(#dot-glow)">
+              <circle
+                r="2.8"
+                fill="#5B5AF7"
+                opacity="0.75"
+                filter="url(#dot-glow)"
+              >
                 <animateMotion
                   path="M 250 233 C 335 233, 370 265, 435 265"
                   dur="3.2s"
@@ -229,7 +260,12 @@ export function ClientAcquisitionOsSection() {
               markerEnd="url(#arrow-head)"
             />
             <g>
-              <circle r="2.8" fill="#5B5AF7" opacity="0.75" filter="url(#dot-glow)">
+              <circle
+                r="2.8"
+                fill="#5B5AF7"
+                opacity="0.75"
+                filter="url(#dot-glow)"
+              >
                 <animateMotion
                   path="M 230 318 C 335 318, 370 290, 435 290"
                   dur="3.2s"
@@ -272,7 +308,12 @@ export function ClientAcquisitionOsSection() {
               markerEnd="url(#arrow-head)"
             />
             <g>
-              <circle r="2.8" fill="#5B5AF7" opacity="0.75" filter="url(#dot-glow)">
+              <circle
+                r="2.8"
+                fill="#5B5AF7"
+                opacity="0.75"
+                filter="url(#dot-glow)"
+              >
                 <animateMotion
                   path="M 270 403 C 350 403, 375 315, 435 315"
                   dur="3.2s"
@@ -315,7 +356,12 @@ export function ClientAcquisitionOsSection() {
               markerEnd="url(#arrow-head)"
             />
             <g>
-              <circle r="2.8" fill="#5B5AF7" opacity="0.75" filter="url(#dot-glow)">
+              <circle
+                r="2.8"
+                fill="#5B5AF7"
+                opacity="0.75"
+                filter="url(#dot-glow)"
+              >
                 <animateMotion
                   path="M 315 488 C 380 488, 395 340, 435 340"
                   dur="3.2s"
@@ -359,7 +405,12 @@ export function ClientAcquisitionOsSection() {
               markerEnd="url(#arrow-head)"
             />
             <g>
-              <circle r="2.8" fill="#5B5AF7" opacity="0.75" filter="url(#dot-glow)">
+              <circle
+                r="2.8"
+                fill="#5B5AF7"
+                opacity="0.75"
+                filter="url(#dot-glow)"
+              >
                 <animateMotion
                   path="M 640 225 C 705 225, 715 73, 765 73"
                   dur="3.2s"
@@ -402,7 +453,12 @@ export function ClientAcquisitionOsSection() {
               markerEnd="url(#arrow-head)"
             />
             <g>
-              <circle r="2.8" fill="#5B5AF7" opacity="0.75" filter="url(#dot-glow)">
+              <circle
+                r="2.8"
+                fill="#5B5AF7"
+                opacity="0.75"
+                filter="url(#dot-glow)"
+              >
                 <animateMotion
                   path="M 640 250 C 705 250, 725 168, 780 168"
                   dur="3.2s"
@@ -445,7 +501,12 @@ export function ClientAcquisitionOsSection() {
               markerEnd="url(#arrow-head)"
             />
             <g>
-              <circle r="2.8" fill="#5B5AF7" opacity="0.75" filter="url(#dot-glow)">
+              <circle
+                r="2.8"
+                fill="#5B5AF7"
+                opacity="0.75"
+                filter="url(#dot-glow)"
+              >
                 <animateMotion
                   path="M 640 275 C 705 275, 735 263, 790 263"
                   dur="3.2s"
@@ -488,7 +549,12 @@ export function ClientAcquisitionOsSection() {
               markerEnd="url(#arrow-head)"
             />
             <g>
-              <circle r="2.8" fill="#5B5AF7" opacity="0.75" filter="url(#dot-glow)">
+              <circle
+                r="2.8"
+                fill="#5B5AF7"
+                opacity="0.75"
+                filter="url(#dot-glow)"
+              >
                 <animateMotion
                   path="M 640 305 C 705 305, 725 358, 780 358"
                   dur="3.2s"
@@ -531,7 +597,12 @@ export function ClientAcquisitionOsSection() {
               markerEnd="url(#arrow-head)"
             />
             <g>
-              <circle r="2.8" fill="#5B5AF7" opacity="0.75" filter="url(#dot-glow)">
+              <circle
+                r="2.8"
+                fill="#5B5AF7"
+                opacity="0.75"
+                filter="url(#dot-glow)"
+              >
                 <animateMotion
                   path="M 640 330 C 705 330, 715 453, 765 453"
                   dur="3.2s"
@@ -570,54 +641,74 @@ export function ClientAcquisitionOsSection() {
           {/* 1. LinkedIn */}
           <div
             className="absolute z-10 flex items-center gap-3 rounded-[8px] border border-[#E2E8F0] bg-white px-3.5 py-2.5 shadow-[0_2px_8px_rgba(15,23,42,0.06)] transition-all hover:shadow-md hover:border-slate-300"
-            style={{ left: "110px", top: "35px", width: "175px" }}
+            style={{ left: '110px', top: '35px', width: '175px' }}
           >
             <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[6px] bg-[#0A66C2] text-white shadow-xs">
               <span className="font-bold text-xs tracking-tighter">in</span>
             </div>
             <div className="min-w-0">
-              <div className="text-xs font-bold text-[#0F172A] leading-tight">LinkedIn</div>
-              <div className="text-[10px] text-[#64748B] truncate">Find opportunities</div>
+              <div className="text-xs font-bold text-[#0F172A] leading-tight">
+                LinkedIn
+              </div>
+              <div className="text-[10px] text-[#64748B] truncate">
+                Find opportunities
+              </div>
             </div>
           </div>
 
           {/* 2. Indeed */}
           <div
             className="absolute z-10 flex items-center gap-3 rounded-[8px] border border-[#E2E8F0] bg-white px-3.5 py-2.5 shadow-[0_2px_8px_rgba(15,23,42,0.06)] transition-all hover:shadow-md hover:border-slate-300"
-            style={{ left: "65px", top: "120px", width: "165px" }}
+            style={{ left: '65px', top: '120px', width: '165px' }}
           >
             <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#EA6A21] text-white shadow-xs">
-              <span className="font-serif font-black text-sm italic leading-none">i</span>
+              <span className="font-serif font-black text-sm italic leading-none">
+                i
+              </span>
             </div>
             <div className="min-w-0">
-              <div className="text-xs font-bold text-[#0F172A] leading-tight">Indeed</div>
-              <div className="text-[10px] text-[#64748B] truncate">Job discoveries</div>
+              <div className="text-xs font-bold text-[#0F172A] leading-tight">
+                Indeed
+              </div>
+              <div className="text-[10px] text-[#64748B] truncate">
+                Job discoveries
+              </div>
             </div>
           </div>
 
           {/* 3. Email */}
           <div
             className="absolute z-10 flex items-center gap-3 rounded-[8px] border border-[#E2E8F0] bg-white px-3.5 py-2.5 shadow-[0_2px_8px_rgba(15,23,42,0.06)] transition-all hover:shadow-md hover:border-slate-300"
-            style={{ left: "80px", top: "205px", width: "170px" }}
+            style={{ left: '80px', top: '205px', width: '170px' }}
           >
             <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[6px] bg-slate-50 border border-slate-100 shadow-xs">
               <svg className="h-4.5 w-5" viewBox="0 0 24 24">
-                <path fill="#4285F4" d="M1.5 5.5v13a1 1 0 0 0 1 1h3.5v-9.5L1.5 5.5z" />
-                <path fill="#34A853" d="M18 19.5h3.5a1 1 0 0 0 1-1v-13l-4.5 4.5v9.5z" />
+                <path
+                  fill="#4285F4"
+                  d="M1.5 5.5v13a1 1 0 0 0 1 1h3.5v-9.5L1.5 5.5z"
+                />
+                <path
+                  fill="#34A853"
+                  d="M18 19.5h3.5a1 1 0 0 0 1-1v-13l-4.5 4.5v9.5z"
+                />
                 <path fill="#EA4335" d="M18 5.5l-6 4.5-6-4.5 6-4.5 6 4.5z" />
                 <path fill="#FBBC04" d="M6 10v9.5h12V10l-6 4.5-6-4.5z" />
               </svg>
             </div>
             <div className="min-w-0">
-              <div className="text-xs font-bold text-[#0F172A] leading-tight">Email</div>
-              <div className="text-[10px] text-[#64748B] truncate">Conversations</div>
+              <div className="text-xs font-bold text-[#0F172A] leading-tight">
+                Email
+              </div>
+              <div className="text-[10px] text-[#64748B] truncate">
+                Conversations
+              </div>
             </div>
           </div>
 
           {/* 4. Sheets */}
           <div
             className="absolute z-10 flex items-center gap-3 rounded-[8px] border border-[#E2E8F0] bg-white px-3.5 py-2.5 shadow-[0_2px_8px_rgba(15,23,42,0.06)] transition-all hover:shadow-md hover:border-slate-300"
-            style={{ left: "65px", top: "290px", width: "165px" }}
+            style={{ left: '65px', top: '290px', width: '165px' }}
           >
             <div className="flex h-7 w-6 shrink-0 items-center justify-center rounded-[6px] bg-[#0F9D58] p-1 shadow-xs">
               <div className="grid grid-cols-2 gap-0.5 w-full h-full">
@@ -628,15 +719,19 @@ export function ClientAcquisitionOsSection() {
               </div>
             </div>
             <div className="min-w-0">
-              <div className="text-xs font-bold text-[#0F172A] leading-tight">Sheets</div>
-              <div className="text-[10px] text-[#64748B] truncate">Tracking & data</div>
+              <div className="text-xs font-bold text-[#0F172A] leading-tight">
+                Sheets
+              </div>
+              <div className="text-[10px] text-[#64748B] truncate">
+                Tracking & data
+              </div>
             </div>
           </div>
 
           {/* 5. Notion */}
           <div
             className="absolute z-10 flex items-center gap-3 rounded-[8px] border border-[#E2E8F0] bg-white px-3.5 py-2.5 shadow-[0_2px_8px_rgba(15,23,42,0.06)] transition-all hover:shadow-md hover:border-slate-300"
-            style={{ left: "95px", top: "375px", width: "175px" }}
+            style={{ left: '95px', top: '375px', width: '175px' }}
           >
             <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[6px] border border-slate-200 bg-white text-black shadow-xs">
               <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
@@ -644,15 +739,19 @@ export function ClientAcquisitionOsSection() {
               </svg>
             </div>
             <div className="min-w-0">
-              <div className="text-xs font-bold text-[#0F172A] leading-tight">Notion</div>
-              <div className="text-[10px] text-[#64748B] truncate">Notes & research</div>
+              <div className="text-xs font-bold text-[#0F172A] leading-tight">
+                Notion
+              </div>
+              <div className="text-[10px] text-[#64748B] truncate">
+                Notes & research
+              </div>
             </div>
           </div>
 
           {/* 6. ChatGPT (Properly aligned in flow on the left with breathing room) */}
           <div
             className="absolute z-10 flex items-center gap-3 rounded-[8px] border border-[#E2E8F0] bg-white px-3.5 py-2.5 shadow-[0_2px_8px_rgba(15,23,42,0.06)] transition-all hover:shadow-md hover:border-slate-300"
-            style={{ left: "140px", top: "460px", width: "175px" }}
+            style={{ left: '140px', top: '460px', width: '175px' }}
           >
             <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#10A37F] text-white shadow-xs">
               <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
@@ -660,18 +759,29 @@ export function ClientAcquisitionOsSection() {
               </svg>
             </div>
             <div className="min-w-0">
-              <div className="text-xs font-bold text-[#0F172A] leading-tight">ChatGPT</div>
-              <div className="text-[10px] text-[#64748B] truncate">Content & drafts</div>
+              <div className="text-xs font-bold text-[#0F172A] leading-tight">
+                ChatGPT
+              </div>
+              <div className="text-[10px] text-[#64748B] truncate">
+                Content & drafts
+              </div>
             </div>
           </div>
 
           {/* ================= CENTER WINFLARE CARD (Large Card: 12px) ================= */}
           <div
             className="absolute z-20 flex flex-col items-center justify-center rounded-[12px] border border-[#E2E8F0] bg-white p-4 shadow-[0_10px_25px_-5px_rgba(15,23,42,0.08),0_8px_10px_-6px_rgba(15,23,42,0.04)]"
-            style={{ left: "440px", top: "185px", width: "200px", height: "180px" }}
+            style={{
+              left: '440px',
+              top: '185px',
+              width: '200px',
+              height: '180px',
+            }}
           >
             <WinflareLogo className="h-14 w-14 mb-2" />
-            <span className="text-2xl font-bold tracking-tight text-[#0F172A]">winflare</span>
+            <span className="text-2xl font-bold tracking-tight text-[#0F172A]">
+              winflare
+            </span>
             <div className="mt-3 rounded-[6px] bg-[#EFEBFF] px-2 py-1 text-[10px] font-semibold text-[#5B5AF7]">
               One Workspace. All You Need.
             </div>
@@ -681,70 +791,90 @@ export function ClientAcquisitionOsSection() {
           {/* 1. Proposals */}
           <div
             className="absolute z-10 flex items-center gap-3 rounded-[8px] border border-[#E2E8F0] bg-white px-3.5 py-2.5 shadow-[0_2px_8px_rgba(15,23,42,0.06)] transition-all hover:shadow-md hover:border-slate-300"
-            style={{ left: "770px", top: "45px", width: "200px" }}
+            style={{ left: '770px', top: '45px', width: '200px' }}
           >
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[6px] bg-[#EFEBFF] text-[#5B5AF7] shadow-xs">
               <FileText className="h-4 w-4" />
             </div>
             <div className="min-w-0">
-              <div className="text-xs font-bold text-[#0F172A] leading-tight">Proposals</div>
-              <div className="text-[10px] text-[#64748B] truncate">Create winning proposals</div>
+              <div className="text-xs font-bold text-[#0F172A] leading-tight">
+                Proposals
+              </div>
+              <div className="text-[10px] text-[#64748B] truncate">
+                Create winning proposals
+              </div>
             </div>
           </div>
 
           {/* 2. Pipeline */}
           <div
             className="absolute z-10 flex items-center gap-3 rounded-[8px] border border-[#E2E8F0] bg-white px-3.5 py-2.5 shadow-[0_2px_8px_rgba(15,23,42,0.06)] transition-all hover:shadow-md hover:border-slate-300"
-            style={{ left: "785px", top: "140px", width: "205px" }}
+            style={{ left: '785px', top: '140px', width: '205px' }}
           >
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[6px] bg-[#EFEBFF] text-[#5B5AF7] shadow-xs">
               <GitPullRequest className="h-4 w-4" />
             </div>
             <div className="min-w-0">
-              <div className="text-xs font-bold text-[#0F172A] leading-tight">Pipeline</div>
-              <div className="text-[10px] text-[#64748B] truncate">Track every opportunity</div>
+              <div className="text-xs font-bold text-[#0F172A] leading-tight">
+                Pipeline
+              </div>
+              <div className="text-[10px] text-[#64748B] truncate">
+                Track every opportunity
+              </div>
             </div>
           </div>
 
           {/* 3. CRM */}
           <div
             className="absolute z-10 flex items-center gap-3 rounded-[8px] border border-[#E2E8F0] bg-white px-3.5 py-2.5 shadow-[0_2px_8px_rgba(15,23,42,0.06)] transition-all hover:shadow-md hover:border-slate-300"
-            style={{ left: "795px", top: "235px", width: "195px" }}
+            style={{ left: '795px', top: '235px', width: '195px' }}
           >
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[6px] bg-[#EFEBFF] text-[#5B5AF7] shadow-xs">
               <Users className="h-4 w-4" />
             </div>
             <div className="min-w-0">
-              <div className="text-xs font-bold text-[#0F172A] leading-tight">CRM</div>
-              <div className="text-[10px] text-[#64748B] truncate">Manage relationships</div>
+              <div className="text-xs font-bold text-[#0F172A] leading-tight">
+                CRM
+              </div>
+              <div className="text-[10px] text-[#64748B] truncate">
+                Manage relationships
+              </div>
             </div>
           </div>
 
           {/* 4. Follow-ups */}
           <div
             className="absolute z-10 flex items-center gap-3 rounded-[8px] border border-[#E2E8F0] bg-white px-3.5 py-2.5 shadow-[0_2px_8px_rgba(15,23,42,0.06)] transition-all hover:shadow-md hover:border-slate-300"
-            style={{ left: "785px", top: "330px", width: "200px" }}
+            style={{ left: '785px', top: '330px', width: '200px' }}
           >
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[6px] bg-[#EFEBFF] text-[#5B5AF7] shadow-xs">
               <CalendarDays className="h-4 w-4" />
             </div>
             <div className="min-w-0">
-              <div className="text-xs font-bold text-[#0F172A] leading-tight">Follow-ups</div>
-              <div className="text-[10px] text-[#64748B] truncate">Never miss a follow-up</div>
+              <div className="text-xs font-bold text-[#0F172A] leading-tight">
+                Follow-ups
+              </div>
+              <div className="text-[10px] text-[#64748B] truncate">
+                Never miss a follow-up
+              </div>
             </div>
           </div>
 
           {/* 5. Analytics */}
           <div
             className="absolute z-10 flex items-center gap-3 rounded-[8px] border border-[#E2E8F0] bg-white px-3.5 py-2.5 shadow-[0_2px_8px_rgba(15,23,42,0.06)] transition-all hover:shadow-md hover:border-slate-300"
-            style={{ left: "770px", top: "425px", width: "195px" }}
+            style={{ left: '770px', top: '425px', width: '195px' }}
           >
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[6px] bg-[#EFEBFF] text-[#5B5AF7] shadow-xs">
               <BarChart2 className="h-4 w-4" />
             </div>
             <div className="min-w-0">
-              <div className="text-xs font-bold text-[#0F172A] leading-tight">Analytics</div>
-              <div className="text-[10px] text-[#64748B] truncate">Measure & improve</div>
+              <div className="text-xs font-bold text-[#0F172A] leading-tight">
+                Analytics
+              </div>
+              <div className="text-[10px] text-[#64748B] truncate">
+                Measure & improve
+              </div>
             </div>
           </div>
         </div>
@@ -809,8 +939,12 @@ export function ClientAcquisitionOsSection() {
                   <FileText className="h-4 w-4" />
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-[#0F172A]">Proposals</div>
-                  <div className="text-[10px] text-[#64748B]">Create winning proposals</div>
+                  <div className="text-xs font-bold text-[#0F172A]">
+                    Proposals
+                  </div>
+                  <div className="text-[10px] text-[#64748B]">
+                    Create winning proposals
+                  </div>
                 </div>
               </div>
               <div className="flex items-center gap-3 rounded-[8px] border border-[#E2E8F0] bg-white p-3 shadow-xs">
@@ -818,8 +952,12 @@ export function ClientAcquisitionOsSection() {
                   <GitPullRequest className="h-4 w-4" />
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-[#0F172A]">Pipeline</div>
-                  <div className="text-[10px] text-[#64748B]">Track every opportunity</div>
+                  <div className="text-xs font-bold text-[#0F172A]">
+                    Pipeline
+                  </div>
+                  <div className="text-[10px] text-[#64748B]">
+                    Track every opportunity
+                  </div>
                 </div>
               </div>
               <div className="flex items-center gap-3 rounded-[8px] border border-[#E2E8F0] bg-white p-3 shadow-xs">
@@ -828,7 +966,9 @@ export function ClientAcquisitionOsSection() {
                 </div>
                 <div>
                   <div className="text-xs font-bold text-[#0F172A]">CRM</div>
-                  <div className="text-[10px] text-[#64748B]">Manage relationships</div>
+                  <div className="text-[10px] text-[#64748B]">
+                    Manage relationships
+                  </div>
                 </div>
               </div>
               <div className="flex items-center gap-3 rounded-[8px] border border-[#E2E8F0] bg-white p-3 shadow-xs">
@@ -836,8 +976,12 @@ export function ClientAcquisitionOsSection() {
                   <CalendarDays className="h-4 w-4" />
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-[#0F172A]">Follow-ups</div>
-                  <div className="text-[10px] text-[#64748B]">Never miss a follow-up</div>
+                  <div className="text-xs font-bold text-[#0F172A]">
+                    Follow-ups
+                  </div>
+                  <div className="text-[10px] text-[#64748B]">
+                    Never miss a follow-up
+                  </div>
                 </div>
               </div>
               <div className="flex items-center gap-3 rounded-[8px] border border-[#E2E8F0] bg-white p-3 shadow-xs">
@@ -845,8 +989,12 @@ export function ClientAcquisitionOsSection() {
                   <BarChart2 className="h-4 w-4" />
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-[#0F172A]">Analytics</div>
-                  <div className="text-[10px] text-[#64748B]">Measure & improve</div>
+                  <div className="text-xs font-bold text-[#0F172A]">
+                    Analytics
+                  </div>
+                  <div className="text-[10px] text-[#64748B]">
+                    Measure & improve
+                  </div>
                 </div>
               </div>
             </div>
@@ -862,8 +1010,12 @@ export function ClientAcquisitionOsSection() {
                 <LayoutGrid className="h-6 w-6" />
               </div>
               <div>
-                <h4 className="text-base font-bold text-[#0F172A]">1 Workspace</h4>
-                <p className="text-xs text-[#64748B]">Everything in one place</p>
+                <h4 className="text-base font-bold text-[#0F172A]">
+                  1 Workspace
+                </h4>
+                <p className="text-xs text-[#64748B]">
+                  Everything in one place
+                </p>
               </div>
             </div>
 
@@ -873,7 +1025,9 @@ export function ClientAcquisitionOsSection() {
                 <Layers className="h-6 w-6" />
               </div>
               <div>
-                <h4 className="text-base font-bold text-[#0F172A]">5+ Tools Replaced</h4>
+                <h4 className="text-base font-bold text-[#0F172A]">
+                  5+ Tools Replaced
+                </h4>
                 <p className="text-xs text-[#64748B]">Simplify your workflow</p>
               </div>
             </div>
@@ -884,8 +1038,12 @@ export function ClientAcquisitionOsSection() {
                 <Target className="h-6 w-6" />
               </div>
               <div>
-                <h4 className="text-base font-bold text-[#0F172A]">0 Lost Opportunities</h4>
-                <p className="text-xs text-[#64748B]">Capture, track & win more</p>
+                <h4 className="text-base font-bold text-[#0F172A]">
+                  0 Lost Opportunities
+                </h4>
+                <p className="text-xs text-[#64748B]">
+                  Capture, track & win more
+                </p>
               </div>
             </div>
           </div>

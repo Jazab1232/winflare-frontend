@@ -6,27 +6,11 @@ import { ChevronDown, ArrowRight, Menu, X } from "lucide-react";
 
 export function WinflareLogo({ className = "h-7 w-7" }: { className?: string }) {
   return (
-    <svg
-      className={className}
-      viewBox="0 0 32 32"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M4 6C13 6 21 8.5 28 3C21 11.5 14.5 13.5 6 12.5L4 6Z"
-        fill="#5B5AF7"
-      />
-      <path
-        d="M4 13C12.5 13 18.5 15.5 25.5 10.5C18.5 17.5 13.5 19.5 6 18.5L4 13Z"
-        fill="#5B5AF7"
-        fillOpacity="0.85"
-      />
-      <path
-        d="M4 20C11 20 16 22 22 17.5C16 23.5 11.5 25 5.5 24.5L4 20Z"
-        fill="#5B5AF7"
-        fillOpacity="0.7"
-      />
-    </svg>
+    <img
+      src="/fav-icon.svg"
+      alt="Winflare"
+      className={`${className} object-contain`}
+    />
   );
 }
 
@@ -110,13 +94,10 @@ export function Navbar() {
           : "border-b border-[#E2E8F0] bg-[#FAFBFF]/90 backdrop-blur-md shadow-xs"
       }`}
     >
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div className="w-full flex h-20 items-center justify-between px-4 sm:px-6 lg:px-10">
         {/* Brand Logo */}
-        <Link href="/" className="flex items-center gap-2.5 transition-opacity hover:opacity-90">
-          <WinflareLogo className="h-7 w-7" />
-          <span className="text-2xl font-bold tracking-tight text-text-primary">
-            winflare
-          </span>
+        <Link href="/" className="flex items-center transition-opacity hover:opacity-90">
+          <img src="/logo.svg" alt="Winflare" className="h-9 w-auto object-contain" />
         </Link>
 
         {/* Desktop Navigation */}
