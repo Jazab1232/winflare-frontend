@@ -4,9 +4,8 @@ import {
   ClientAcquisitionOsSection,
   ProductPreviewSection,
   ChaosToSystemSection,
-  FeaturesSection,
-  TestimonialsSection,
-  PricingSection,
+  OutcomesSection,
+  ContactSection,
 } from "@/features/landing/components";
 
 export const metadata: Metadata = {
@@ -22,9 +21,8 @@ export default function LandingPage() {
       <ClientAcquisitionOsSection />
       <ProductPreviewSection />
       <ChaosToSystemSection />
-      <FeaturesSection />
-      <TestimonialsSection />
-      <PricingSection />
+      <OutcomesSection />
+      <ContactSection />
     </>
   );
 }

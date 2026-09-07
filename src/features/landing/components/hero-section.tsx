@@ -38,7 +38,7 @@ export function HeroSection() {
         </svg>
       </div>
 
-      <div className="w-full px-4 sm:px-6 lg:px-10">
+      <div className="w-full px-4 sm:px-6 lg:px-20">
         {/* Main 2-Column Hero Grid */}
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-8">
           {/* Left Column: Headline, CTAs, Trust Points */}

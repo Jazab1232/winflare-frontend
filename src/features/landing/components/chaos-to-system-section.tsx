@@ -246,7 +246,7 @@ function GoogleCalendarIcon({ className = 'h-5 w-5' }: { className?: string }) {
 export function ChaosToSystemSection() {
   return (
     <section className="relative overflow-hidden py-20 lg:py-24 bg-[#FAFBFF]">
-      <div className="w-full px-4 sm:px-6 lg:px-10">
+      <div className="w-full px-4 sm:px-6 lg:px-20">
         {/* ========================================== */}
         {/* Section Header */}
         {/* ========================================== */}
@@ -257,7 +257,7 @@ export function ChaosToSystemSection() {
           </div>
 
           {/* Headline */}
-          <h2 className="mt-5 text-3xl sm:text-4xl lg:text-[46px] font-extrabold tracking-tight text-[#0F172A] leading-[1.18]">
+          <h2 className="mt-5 text-3xl sm:text-4xl lg:text-[46px] font-bold tracking-tight text-[#0F172A] leading-[1.18]">
             Your client acquisition process <br />
             is <span className="text-[#5B5AF7]">fragmented.</span>
           </h2>

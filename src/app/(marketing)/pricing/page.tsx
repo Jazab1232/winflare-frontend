@@ -2,7 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { HelpCircle, ArrowRight, ShieldCheck } from "lucide-react";
-import { PricingSection } from "@/features/landing/components";
+import { PricingCards } from "./pricing-cards";
 import { FAQS_CONTENT } from "@/features/landing/constants/landing-content";
 
 export const metadata: Metadata = {
@@ -54,7 +54,7 @@ export default function PricingPage() {
   return (
     <div className="pb-20 bg-background">
       {/* Hero Pricing Cards */}
-      <PricingSection />
+      <PricingCards />
 
       {/* Feature Comparison Matrix */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-12">

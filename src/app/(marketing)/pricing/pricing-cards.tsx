@@ -3,14 +3,14 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Check, Sparkles } from "lucide-react";
-import { PRICING_TIERS } from "../constants/landing-content";
+import { PRICING_TIERS } from "@/features/landing/constants/landing-content";
 
-export function PricingSection() {
+export function PricingCards() {
   const [isAnnual, setIsAnnual] = useState(true);
 
   return (
     <section id="pricing" className="scroll-mt-16 py-20 bg-section">
-      <div className="w-full px-4 sm:px-6 lg:px-10">
+      <div className="w-full px-4 sm:px-6 lg:px-20">
         {/* Section Header */}
         <div className="mx-auto max-w-3xl text-center">
           <span className="inline-flex items-center gap-1 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-semibold text-primary">
@@ -136,3 +136,4 @@ export function PricingSection() {
     </section>
   );
 }
+

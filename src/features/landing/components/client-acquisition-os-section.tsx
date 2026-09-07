@@ -15,7 +15,7 @@ import { WinflareLogo } from './navbar';
 export function ClientAcquisitionOsSection() {
   return (
     <section className="relative overflow-hidden py-20 bg-[#FAFBFF]">
-      <div className="w-full px-4 sm:px-6 lg:px-10">
+      <div className="w-full px-4 sm:px-6 lg:px-20">
         {/* Section Header */}
         <div className="mx-auto max-w-3xl text-center">
           {/* Pill Badge */}

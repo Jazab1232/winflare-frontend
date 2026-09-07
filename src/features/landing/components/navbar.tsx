@@ -94,7 +94,7 @@ export function Navbar() {
           : "border-b border-[#E2E8F0] bg-[#FAFBFF]/90 backdrop-blur-md shadow-xs"
       }`}
     >
-      <div className="w-full flex h-20 items-center justify-between px-4 sm:px-6 lg:px-10">
+      <div className="w-full flex h-20 items-center justify-between px-4 sm:px-6 lg:px-20">
         {/* Brand Logo */}
         <Link href="/" className="flex items-center transition-opacity hover:opacity-90">
           <img src="/logo.svg" alt="Winflare" className="h-9 w-auto object-contain" />
