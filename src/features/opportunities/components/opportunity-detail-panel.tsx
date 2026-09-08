@@ -106,7 +106,7 @@ export function OpportunityDetailPanel({
           {item.skills.map((skill) => (
             <span
               key={skill}
-              className="rounded-full border border-slate-200/90 bg-slate-50/80 px-3 py-1 text-xs font-medium text-slate-700"
+              className="rounded-lg border border-slate-200/80 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-600"
             >
               {skill}
             </span>
@@ -119,7 +119,7 @@ export function OpportunityDetailPanel({
             variant="default"
             size="sm"
             onClick={onGenerateProposal}
-            className="flex-1 rounded-xl bg-[#5B5AF7] hover:bg-[#4847E5] text-xs font-bold text-white shadow-xs gap-1.5 h-9"
+            className="flex-1 rounded-xl bg-[#5B5AF7] hover:bg-[#4847E5] text-xs font-bold text-white shadow-xs gap-1.5 h-9 cursor-pointer"
           >
             <Sparkles className="h-3.5 w-3.5" />
             <span>Generate Proposal</span>
@@ -129,7 +129,7 @@ export function OpportunityDetailPanel({
             variant="outline"
             size="sm"
             onClick={onSave}
-            className="rounded-xl border-slate-200/90 text-xs font-semibold text-slate-700 hover:bg-slate-50 gap-1.5 h-9 px-3"
+            className="rounded-xl border-slate-200/90 text-xs font-semibold text-slate-700 hover:bg-slate-50 gap-1.5 h-9 px-3 cursor-pointer shadow-2xs"
           >
             <Bookmark className="h-3.5 w-3.5 text-slate-500" />
             <span>Save</span>
@@ -139,18 +139,11 @@ export function OpportunityDetailPanel({
             variant="outline"
             size="sm"
             onClick={onMoveToPipeline}
-            className="rounded-xl border-slate-200/90 text-xs font-semibold text-slate-700 hover:bg-slate-50 gap-1.5 h-9 px-3"
+            className="rounded-xl border-slate-200/90 text-xs font-semibold text-slate-700 hover:bg-slate-50 gap-1.5 h-9 px-3 cursor-pointer shadow-2xs"
           >
             <GitBranch className="h-3.5 w-3.5 text-slate-500" />
             <span>Move to Pipeline</span>
           </Button>
-
-          <button
-            type="button"
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200/90 text-slate-500 hover:bg-slate-50"
-          >
-            <MoreHorizontal className="h-4 w-4" />
-          </button>
         </div>
 
         {/* Navigation Tabs */}

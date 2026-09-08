@@ -4,21 +4,17 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  LayoutGrid,
-  CheckCircle2,
+  Home,
+  Target,
+  Workflow,
   FileText,
-  Network,
-  Building2,
-  Contact2,
-  BarChart2,
+  Users,
   Sparkles,
-  LayoutTemplate,
+  BarChart2,
   Settings,
   ChevronDown,
-  MoreVertical,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Avatar } from "@/components/ui/avatar";
 
 interface NavItemProps {
   label: string;
@@ -89,42 +85,40 @@ export function DashboardSidebar({ className }: { className?: string }) {
         {/* Main Navigation */}
         <nav className="flex flex-col gap-1">
           <NavItem
-            label="Dashboard"
-            icon={LayoutGrid}
+            label="Home"
+            icon={Home}
             href="/dashboard"
             isActive={isActive("/dashboard")}
           />
           <NavItem
             label="Opportunities"
-            icon={CheckCircle2}
+            icon={Target}
             href="/opportunities"
             isActive={isActive("/opportunities")}
-            badge={24}
+          />
+          <NavItem
+            label="Pipeline"
+            icon={Workflow}
+            href="/pipeline"
+            isActive={isActive("/pipeline")}
           />
           <NavItem
             label="Proposals"
             icon={FileText}
             href="/proposals"
             isActive={isActive("/proposals")}
-            badge={8}
           />
           <NavItem
-            label="Pipeline"
-            icon={Network}
-            href="/pipeline"
-            isActive={isActive("/pipeline")}
+            label="Clients"
+            icon={Users}
+            href="/clients"
+            isActive={isActive("/clients")}
           />
           <NavItem
-            label="Companies"
-            icon={Building2}
-            href="/companies"
-            isActive={isActive("/companies")}
-          />
-          <NavItem
-            label="Contacts"
-            icon={Contact2}
-            href="/contacts"
-            isActive={isActive("/contacts")}
+            label="Automation"
+            icon={Sparkles}
+            href="/automation"
+            isActive={isActive("/automation")}
           />
           <NavItem
             label="Analytics"
@@ -133,29 +127,10 @@ export function DashboardSidebar({ className }: { className?: string }) {
             isActive={isActive("/analytics")}
           />
         </nav>
-
-        {/* Tools Section */}
-        <div className="flex flex-col gap-1 pt-1">
-          <div className="px-3 text-[11px] font-medium text-slate-400">
-            Tools
-          </div>
-          <NavItem
-            label="AI Assistant"
-            icon={Sparkles}
-            href="/ai-assistant"
-            isActive={isActive("/ai-assistant")}
-          />
-          <NavItem
-            label="Templates"
-            icon={LayoutTemplate}
-            href="/templates"
-            isActive={isActive("/templates")}
-          />
-        </div>
       </div>
 
       {/* Bottom Part */}
-      <div className="flex flex-col gap-3 pt-6">
+      <div className="flex flex-col gap-2 pt-6">
         {/* Settings */}
         <NavItem
           label="Settings"
@@ -164,50 +139,22 @@ export function DashboardSidebar({ className }: { className?: string }) {
           isActive={isActive("/settings")}
         />
 
-        {/* Workspace Switcher */}
-        <button
-          type="button"
-          className="flex w-full items-center justify-between rounded-xl border border-slate-200/70 bg-slate-50/60 p-2.5 text-left transition-colors hover:bg-slate-100/60 cursor-pointer"
-        >
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#7769FA] to-[#5B5AF7] text-white shadow-xs">
-              <span className="text-[11px] font-bold">W</span>
-            </div>
-            <div className="flex flex-col leading-tight">
-              <span className="text-xs font-semibold text-slate-800">
-                My Workspace
-              </span>
-              <span className="text-[11px] text-slate-400">Personal</span>
-            </div>
-          </div>
-          <ChevronDown className="h-4 w-4 text-slate-400" />
-        </button>
-
         {/* User Profile Bar */}
-        <div className="flex items-center justify-between rounded-xl p-1.5 pt-2">
+        <div className="flex items-center justify-between rounded-xl p-2 transition-colors hover:bg-slate-50 cursor-pointer">
           <div className="flex items-center gap-2.5 overflow-hidden">
-            <Avatar className="h-8 w-8 rounded-full border border-slate-200 ring-2 ring-slate-100">
-              <img
-                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120"
-                alt="Jazab Ahmed"
-                className="h-full w-full object-cover"
-              />
-            </Avatar>
-            <div className="flex flex-col min-w-0">
-              <span className="text-xs font-semibold text-slate-900 truncate">
-                Jazab Ahmed
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-900 text-white font-bold text-xs">
+              NT
+            </div>
+            <div className="flex flex-col min-w-0 leading-tight">
+              <span className="text-xs font-bold text-slate-900 truncate">
+                Naveed Tahir
               </span>
               <span className="text-[11px] text-slate-400 truncate">
-                jazab@winflare.com
+                Free Plan
               </span>
             </div>
           </div>
-          <button
-            type="button"
-            className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
-          >
-            <MoreVertical className="h-4 w-4" />
-          </button>
+          <ChevronDown className="h-4 w-4 text-slate-400 shrink-0" />
         </div>
       </div>
     </aside>

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ChevronDown, ChevronUp, Search, Plus } from "lucide-react";
+import { ChevronDown, ChevronUp, Search, Plus, Filter, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -16,6 +16,7 @@ interface FilterSidebarProps {
   selectedLocations: string[];
   onToggleLocation: (loc: string) => void;
   onClearAll: () => void;
+  onClose?: () => void;
 }
 
 export function FilterSidebar({
@@ -29,6 +30,7 @@ export function FilterSidebar({
   selectedLocations,
   onToggleLocation,
   onClearAll,
+  onClose,
 }: FilterSidebarProps) {
   const [techQuery, setTechQuery] = React.useState("");
   const [openSections, setOpenSections] = React.useState({
@@ -57,16 +59,32 @@ export function FilterSidebar({
     >
       {/* Header */}
       <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-        <h3 className="text-sm font-bold tracking-tight text-slate-900">
-          Filters
-        </h3>
-        <button
-          type="button"
-          onClick={onClearAll}
-          className="text-xs font-semibold text-[#5B5AF7] hover:underline cursor-pointer"
-        >
-          Clear all
-        </button>
+        <div className="flex items-center gap-2">
+          <Filter className="h-4 w-4 text-[#5B5AF7]" />
+          <h3 className="text-sm font-bold tracking-tight text-slate-900">
+            Filters
+          </h3>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <button
+            type="button"
+            onClick={onClearAll}
+            className="text-xs font-semibold text-[#5B5AF7] hover:underline cursor-pointer"
+          >
+            Clear all
+          </button>
+          {onClose && (
+            <button
+              type="button"
+              onClick={onClose}
+              title="Close filters"
+              aria-label="Close filters"
+              className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors cursor-pointer"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="flex flex-col divide-y divide-slate-100 overflow-y-auto custom-scrollbar">
