@@ -15,6 +15,8 @@ import {
   PipelineStageConfig,
   PipelineStageId,
 } from "@/features/pipeline/types";
+import { useRouter } from "next/navigation";
+import { useProposalsStore } from "@/features/proposals/store/proposals-store";
 import { PipelineHeader } from "@/features/pipeline/components/pipeline-header";
 import { PipelineTitleBar } from "@/features/pipeline/components/pipeline-title-bar";
 import { PipelineMetricCards } from "@/features/pipeline/components/pipeline-metric-cards";
@@ -58,17 +60,25 @@ export default function PipelinePage() {
     "won",
   ];
 
+  const router = useRouter();
+  const { openGenerator } = useProposalsStore();
+
   const handleOpenDetails = (item: PipelineItem) => {
     setSelectedItem(item);
     setIsDetailOpen(true);
   };
 
   const handleGenerateProposal = (item: PipelineItem) => {
-    toast.success(`Generating tailored proposal for ${item.role} at ${item.company}...`);
+    openGenerator({
+      company: item.company,
+      role: item.role,
+      budget: item.salary,
+    });
+    router.push("/proposals");
   };
 
   const handleViewProposal = (item: PipelineItem) => {
-    toast.info(`Opening proposal drafted for ${item.company}.`);
+    router.push("/proposals");
   };
 
   const handleMoveStage = (item: PipelineItem, targetStage?: PipelineStageId) => {

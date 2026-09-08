@@ -13,6 +13,7 @@ const ICONS_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   total_proposals: FileText,
   sent: Send,
   won: Trophy,
+  conversion_rate: Target,
   win_rate: Target,
 };
 

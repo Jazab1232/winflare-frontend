@@ -31,15 +31,15 @@ function NavItem({ label, icon: Icon, href = "#", isActive, badge }: NavItemProp
       className={cn(
         "group relative flex items-center justify-between rounded-xl px-3 py-2 text-[13px] font-medium transition-all",
         isActive
-          ? "bg-[#F0EEFF] text-[#5B5AF7] font-semibold"
-          : "text-slate-600 hover:bg-slate-100/70 hover:text-slate-900"
+          ? "bg-[#F5F3FF] text-[#7C3AED] font-semibold"
+          : "text-[#6B7280] hover:bg-[#F5F5F7] hover:text-[#111827]"
       )}
     >
       <div className="flex items-center gap-3">
         <Icon
           className={cn(
             "h-4 w-4 shrink-0 transition-colors",
-            isActive ? "text-[#5B5AF7]" : "text-slate-500 group-hover:text-slate-800"
+            isActive ? "text-[#7C3AED]" : "text-[#6B7280] group-hover:text-[#111827]"
           )}
         />
         <span>{label}</span>
@@ -49,7 +49,7 @@ function NavItem({ label, icon: Icon, href = "#", isActive, badge }: NavItemProp
           className={cn(
             "flex h-5 min-w-[20px] items-center justify-center rounded-full px-1.5 text-[11px] font-semibold",
             isActive
-              ? "bg-[#5B5AF7] text-white"
+              ? "bg-[#7C3AED] text-white"
               : "bg-slate-100 text-slate-600 group-hover:bg-slate-200"
           )}
         >

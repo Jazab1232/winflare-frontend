@@ -3,6 +3,7 @@
 import * as React from "react";
 import { X, Plus } from "lucide-react";
 import { ProposalCardItem, ProposalStageId } from "../types";
+import { DEFAULT_PROPOSAL_SECTIONS } from "../data/mock-proposals";
 import { Button } from "@/components/ui/button";
 
 interface NewProposalModalProps {
@@ -27,17 +28,26 @@ export function NewProposalModal({
     e.preventDefault();
     if (!company.trim() || !role.trim()) return;
 
+    const numericValue = parseInt(budget.replace(/[^0-9]/g, "")) || 5000;
     const newItem: ProposalCardItem = {
       id: `prop-${Date.now()}`,
+      title: `${role.trim()} Architecture & Execution`,
       stageId,
       company: company.trim(),
       role: role.trim(),
       budget: budget.trim() || "$5,000 Project",
+      value: numericValue,
       score: Math.floor(Math.random() * 20) + 75,
       badges: [{ label: "High Value", type: "value" }],
+      createdAt: new Date().toISOString().slice(0, 10),
       timeInfo: "Created just now",
       logoLetter: company.trim().charAt(0).toUpperCase(),
-      logoBg: "bg-[#4F46E5]",
+      logoBg: "bg-[#7C3AED]",
+      proposalType: "fixed_price",
+      sections: DEFAULT_PROPOSAL_SECTIONS.map((s) => ({
+        ...s,
+        content: s.content.replace(/Verve Labs/g, company.trim()),
+      })),
     };
 
     onSubmit(newItem);

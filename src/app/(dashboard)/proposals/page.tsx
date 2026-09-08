@@ -5,150 +5,167 @@ import { toast } from "sonner";
 import {
   MOCK_PROPOSAL_METRICS,
   MOCK_PROPOSAL_STAGES,
-  MOCK_PROPOSAL_ITEMS,
   MOCK_WINNING_ASSETS,
-  MOCK_AI_SUGGESTIONS,
 } from "@/features/proposals/data/mock-proposals";
-import {
-  ProposalCardItem,
-  ProposalStageConfig,
-  ProposalStageId,
-  AiSuggestionItem,
-} from "@/features/proposals/types";
+import { ProposalCardItem, ProposalStageId } from "@/features/proposals/types";
+import { useProposalsStore } from "@/features/proposals/store/proposals-store";
 import { ProposalsHeader } from "@/features/proposals/components/proposals-header";
 import { ProposalsTitleBar } from "@/features/proposals/components/proposals-title-bar";
 import { ProposalsMetricCards } from "@/features/proposals/components/proposals-metric-cards";
+import { ProposalsTable } from "@/features/proposals/components/proposals-table";
 import { ProposalPipelineBoard } from "@/features/proposals/components/proposal-pipeline-board";
+import { ProposalDrawer } from "@/features/proposals/components/proposal-drawer";
+import { ProposalGeneratorModal } from "@/features/proposals/components/proposal-generator-modal";
+import { ProposalReviewModal } from "@/features/proposals/components/proposal-review-modal";
 import { WinningAssetsLibrary } from "@/features/proposals/components/winning-assets-library";
-import { ProposalsAiCommandCenter } from "@/features/proposals/components/proposals-ai-command-center";
-import { ProposalDetailModal } from "@/features/proposals/components/proposal-detail-modal";
-import { NewProposalModal } from "@/features/proposals/components/new-proposal-modal";
+import { useRouter } from "next/navigation";
 
 export default function ProposalsPage() {
-  const [items, setItems] = React.useState<ProposalCardItem[]>(MOCK_PROPOSAL_ITEMS);
-  const [stages, setStages] =
-    React.useState<ProposalStageConfig[]>(MOCK_PROPOSAL_STAGES);
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [selectedItem, setSelectedItem] = React.useState<ProposalCardItem | null>(
-    null
-  );
-  const [isDetailOpen, setIsDetailOpen] = React.useState(false);
-  const [isNewModalOpen, setIsNewModalOpen] = React.useState(false);
+  const router = useRouter();
+  const {
+    proposals,
+    drawerProposal,
+    isDrawerOpen,
+    openDrawer,
+    closeDrawer,
+    isGeneratorOpen,
+    generatorInitialData,
+    openGenerator,
+    closeGenerator,
+    isReviewOpen,
+    reviewProposal,
+    openReview,
+    closeReview,
+    moveStage,
+    deleteProposal,
+    addComment,
+  } = useProposalsStore();
 
-  // Filter items by search query
-  const filteredItems = React.useMemo(() => {
-    if (!searchQuery.trim()) return items;
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const [viewMode, setViewMode] = React.useState<"table" | "kanban">("table");
+
+  // Search filter across proposals
+  const filteredProposals = React.useMemo(() => {
+    if (!searchQuery.trim()) return proposals;
     const q = searchQuery.toLowerCase();
-    return items.filter(
+    return proposals.filter(
       (item) =>
         item.company.toLowerCase().includes(q) ||
         item.role.toLowerCase().includes(q) ||
         item.budget.toLowerCase().includes(q)
     );
-  }, [items, searchQuery]);
-
-  const handleOpenProposal = (item: ProposalCardItem) => {
-    setSelectedItem(item);
-    setIsDetailOpen(true);
-  };
-
-  const handleMoveStage = (
-    item: ProposalCardItem,
-    newStage: ProposalStageId
-  ) => {
-    setItems((prev) =>
-      prev.map((i) => (i.id === item.id ? { ...i, stageId: newStage } : i))
-    );
-    if (selectedItem?.id === item.id) {
-      setSelectedItem({ ...selectedItem, stageId: newStage });
-    }
-    toast.success(`Moved proposal for ${item.company} to ${newStage.toUpperCase()}`);
-  };
+  }, [proposals, searchQuery]);
 
   const handleSendProposal = (item: ProposalCardItem) => {
-    handleMoveStage(item, "sent");
+    moveStage(item.id, "sent");
     toast.success(`Proposal sent to ${item.company}!`);
   };
 
-  const handleApplySuggestion = (sug: AiSuggestionItem) => {
-    toast.success(`Applied AI recommendation: SaaS case study added to ${sug.company} proposal!`);
+  const handleDeleteProposal = (id: string) => {
+    deleteProposal(id);
+    toast.info("Proposal deleted");
   };
 
-  const handleCreateFollowUp = () => {
-    toast.info("Generated 3 automated follow-up drafts for pending proposals.");
-  };
-
-  const handleAddProposal = (newItem: ProposalCardItem) => {
-    setItems((prev) => [newItem, ...prev]);
-    toast.success(`Created proposal for ${newItem.company}!`);
+  const handleExport = () => {
+    const csvHeader = "ID,Company,Role,Status,Budget,Value,Score,Created,Sent\n";
+    const csvRows = proposals
+      .map(
+        (p) =>
+          `"${p.id}","${p.company}","${p.role}","${p.stageId}","${p.budget}",${p.value},${p.score},"${p.createdAt || ""}","${p.sentAt || ""}"`
+      )
+      .join("\n");
+    const blob = new Blob([csvHeader + csvRows], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `winflare-proposals-${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success("Exported proposals to CSV!");
   };
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-[#FAFBFF]">
-      {/* 1. Top Header */}
+    <div className="flex flex-col h-screen overflow-hidden bg-[#FAFAFA]">
+      {/* 1. Global Header */}
       <ProposalsHeader
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
       />
 
-      {/* 2. Main Body Container */}
-      <div className="flex flex-1 min-h-0 overflow-hidden">
-        {/* Scrollable Left / Center Board Area */}
-        <div className="flex flex-1 flex-col min-w-0 overflow-y-auto custom-scrollbar">
-          {/* Title & Action Bar */}
-          <ProposalsTitleBar
-            onTemplatesClick={() => toast.info("Opening proposal templates library...")}
-            onExportClick={() => toast.success("Exporting proposals to CSV...")}
-            onNewProposalClick={() => setIsNewModalOpen(true)}
-          />
+      {/* 2. Main Scrollable Container */}
+      <div className="flex-1 overflow-y-auto custom-scrollbar">
+        {/* Title Bar with New Proposal, Templates, Export & View Switcher */}
+        <ProposalsTitleBar
+          viewMode={viewMode}
+          onViewModeChange={setViewMode}
+          onTemplatesClick={() => router.push("/proposals/templates")}
+          onExportClick={handleExport}
+          onNewProposalClick={() => openGenerator()}
+        />
 
-          {/* 4 Summary Metric Cards */}
+        {/* 4 KPI Metric Cards */}
+        <div className="pt-6">
           <ProposalsMetricCards metrics={MOCK_PROPOSAL_METRICS} />
-
-          {/* Proposal Pipeline Kanban Board */}
-          <ProposalPipelineBoard
-            stages={stages}
-            items={filteredItems}
-            onOpenProposal={handleOpenProposal}
-            onViewAll={() => toast.info("Viewing all proposals list")}
-          />
-
-          {/* Winning Assets Library Grid */}
-          <WinningAssetsLibrary
-            assets={MOCK_WINNING_ASSETS}
-            onAssetClick={(asset) => toast.info(`Viewing asset: ${asset.title}`)}
-            onViewAll={() => toast.info("Viewing all winning assets")}
-          />
         </div>
 
-        {/* Right Sidebar: AI Command Center */}
-        <ProposalsAiCommandCenter
-          suggestions={MOCK_AI_SUGGESTIONS}
-          onApplySuggestion={handleApplySuggestion}
-          onCreateFollowUp={handleCreateFollowUp}
-          onNeedsAttentionClick={() =>
-            toast.info("Viewing 3 proposals needing review.")
-          }
-          onAssetClick={(title) => toast.info(`Opening ${title} details`)}
-        />
+        {/* View Toggle: Main Table (Default) vs Kanban Board */}
+        <div className="px-6 pb-6">
+          {viewMode === "table" ? (
+            <ProposalsTable
+              items={filteredProposals}
+              onOpenDrawer={openDrawer}
+              onSendProposal={handleSendProposal}
+              onDeleteProposal={handleDeleteProposal}
+              onReviewProposal={openReview}
+            />
+          ) : (
+            <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs">
+              <ProposalPipelineBoard
+                stages={MOCK_PROPOSAL_STAGES}
+                items={filteredProposals}
+                onOpenProposal={(item) => router.push(`/proposals/${item.id}`)}
+                onViewAll={() => setViewMode("table")}
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Winning Assets Library Teaser Grid */}
+        <div className="px-6 pb-8">
+          <WinningAssetsLibrary
+            assets={MOCK_WINNING_ASSETS}
+            onAssetClick={(asset) => router.push("/proposals/library")}
+            onViewAll={() => router.push("/proposals/library")}
+          />
+        </div>
       </div>
 
-      {/* Detail Viewer Modal */}
-      <ProposalDetailModal
-        item={selectedItem}
-        isOpen={isDetailOpen}
-        onClose={() => setIsDetailOpen(false)}
-        onMoveStage={handleMoveStage}
+      {/* Slide-in Proposal Details Drawer */}
+      <ProposalDrawer
+        item={drawerProposal}
+        isOpen={isDrawerOpen}
+        onClose={closeDrawer}
+        onMoveStage={moveStage}
+        onAddComment={addComment}
         onSendProposal={handleSendProposal}
+        onOpenReview={openReview}
       />
 
-      {/* New Proposal Modal */}
-      <NewProposalModal
-        isOpen={isNewModalOpen}
-        onClose={() => setIsNewModalOpen(false)}
-        onSubmit={handleAddProposal}
+      {/* AI Proposal Generator Modal */}
+      <ProposalGeneratorModal
+        isOpen={isGeneratorOpen}
+        onClose={closeGenerator}
+        initialOpportunity={generatorInitialData}
+      />
+
+      {/* Proposal Review Score Modal */}
+      <ProposalReviewModal
+        isOpen={isReviewOpen}
+        onClose={closeReview}
+        proposal={reviewProposal}
+        onSendProposal={handleSendProposal}
       />
     </div>
   );
 }
-
