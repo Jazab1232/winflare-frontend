@@ -2,20 +2,16 @@
 
 import * as React from "react";
 import {
-  Briefcase,
+  Building2,
   User,
-  CheckSquare,
-  FileText,
-  Plus,
-  ChevronUp,
-  ChevronDown,
-  Layers,
-  Sparkles,
-  ExternalLink,
+  Compass,
+  Calendar,
+  Clock,
+  Check,
+  X,
+  ChevronRight,
 } from "lucide-react";
 import { ProposalCardItem } from "../../types";
-import { toast } from "sonner";
-import { cn } from "@/lib/utils";
 
 interface OpportunityContextPanelProps {
   proposal: ProposalCardItem;
@@ -28,236 +24,196 @@ export function OpportunityContextPanel({
   isCollapsed = false,
   onToggleCollapse,
 }: OpportunityContextPanelProps) {
-  const [isFullJobDescOpen, setIsFullJobDescOpen] = React.useState(false);
-  const [extraContext, setExtraContext] = React.useState<string[]>([]);
-  const [isAddingContext, setIsAddingContext] = React.useState(false);
-  const [contextInput, setContextInput] = React.useState("");
+  const companyName = proposal.company || "Acme Inc.";
+  const roleName = proposal.role || "Web Development";
+  const contactName = proposal.clientContact?.name || "Sarah Johnson";
+  const contactEmail = proposal.clientContact?.email || "sarah@acmeinc.com";
+  const budget = proposal.budget || "$10,000 – $15,000";
+  const timeline = proposal.opportunityDetails?.timelineExpectation || "3–4 weeks";
 
-  const handleAddContextSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!contextInput.trim()) return;
-    setExtraContext((prev) => [...prev, contextInput.trim()]);
-    setContextInput("");
-    setIsAddingContext(false);
-    toast.success("Additional context saved to proposal!");
-  };
-
-  const companyName = proposal.company || "Acme Corporation";
-  const roleName = proposal.role || "Website Redesign";
-  const contactName = proposal.clientContact?.name || "John Smith";
-  const contactRole = "Product Manager";
-  const contactEmail = proposal.clientContact?.email || "john@acme.com";
-  const budget = proposal.budget || "$15,000 – $20,000";
-  const timeline = proposal.opportunityDetails?.timelineExpectation || "6–8 weeks";
-
-  const requirements = proposal.opportunityDetails?.requirements?.length
-    ? proposal.opportunityDetails.requirements
-    : [
-        "Modern SaaS website",
-        "Next.js development",
-        "CMS integration",
-        "Responsive design",
-        "SEO optimization",
-      ];
+  const requirementsText =
+    proposal.opportunityDetails?.requirements?.join(" ") ||
+    "Modern, fast, and responsive website with CMS integration. Need SEO optimization and modern UI/UX design.";
 
   const jobDescription =
     proposal.opportunityDetails?.jobDescription ||
-    "We're looking for a modern, high-performance website to showcase our product and drive more trial signups. The site should be fast, responsive and optimized for search engines...";
+    "We're looking for a complete website redesign to improve our online presence, showcase our services, and generate more leads. The site should be fast, mobile-friendly, and easy to manage.";
 
+  // Collapsed state: full height sleek vertical bar
   if (isCollapsed) {
     return (
-      <div className="flex flex-col items-center py-4 px-2 border-r border-slate-200 bg-white select-none">
-        <button
-          type="button"
-          onClick={onToggleCollapse}
-          className="p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 transition-colors cursor-pointer"
-          title="Expand Opportunity"
-        >
-          <Layers className="h-4 w-4" />
-        </button>
-      </div>
+      <aside
+        onClick={onToggleCollapse}
+        className="w-12 shrink-0 h-full rounded-2xl border border-slate-200/80 bg-white shadow-2xs flex flex-col items-center justify-between py-5 cursor-pointer hover:border-[#5B5AF7]/50 hover:bg-[#FAFBFF] transition-all group select-none"
+        title="Expand Opportunity Context"
+      >
+        <div className="flex flex-col items-center gap-3">
+          <div className="p-2 rounded-xl bg-[#EEF2FF] text-[#5B5AF7] group-hover:scale-105 transition-transform">
+            <Building2 className="h-4 w-4" />
+          </div>
+        </div>
+
+        <div className="flex-1 flex items-center justify-center my-4">
+          <span className="text-[11px] font-semibold text-slate-500 group-hover:text-[#5B5AF7] tracking-wider uppercase [writing-mode:vertical-rl] rotate-180 transition-colors">
+            Opportunity Context
+          </span>
+        </div>
+
+        <div className="p-1 rounded-lg text-slate-400 group-hover:text-[#5B5AF7] group-hover:translate-x-0.5 transition-all">
+          <ChevronRight className="h-4 w-4" />
+        </div>
+      </aside>
     );
   }
 
   return (
-    <aside className="w-72 lg:w-80 shrink-0 border-r border-slate-200 bg-white flex flex-col h-full overflow-y-auto custom-scrollbar select-none text-xs">
-      {/* Top Header */}
-      <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
-        <div className="flex items-center gap-2">
-          <Layers className="h-4 w-4 text-slate-600" />
-          <h2 className="text-xs font-bold text-slate-900 tracking-tight">
-            Opportunity
-          </h2>
-        </div>
-        {onToggleCollapse && (
-          <button
-            type="button"
-            onClick={onToggleCollapse}
-            className="rounded p-1 text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
-            title="Collapse panel"
-          >
-            <ChevronUp className="h-4 w-4" />
-          </button>
-        )}
-      </div>
-
-      <div className="p-5 space-y-6 flex-1">
-        {/* Company Card */}
-        <div className="rounded-xl border border-slate-200/80 bg-white p-3.5 shadow-2xs space-y-2">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#EDE9FE] text-[#6D28D9] font-bold text-sm shadow-2xs">
-              {companyName.slice(0, 2).toUpperCase()}
-            </div>
-            <div className="flex flex-col min-w-0">
-              <h3 className="font-bold text-slate-900 truncate text-xs">
-                {companyName}
-              </h3>
-              <span className="text-[11px] text-slate-500 truncate">
-                {roleName}
-              </span>
-              <div className="pt-0.5">
-                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                  <span>Qualified</span>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* CLIENT Section */}
-        <div className="space-y-2">
-          <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-            <User className="h-3.5 w-3.5 text-slate-400" />
-            <span>CLIENT</span>
-          </div>
-          <div className="pl-5 space-y-0.5 text-xs text-slate-700">
-            <p className="font-semibold text-slate-900">{companyName}</p>
-            <p className="text-slate-600">{contactName}</p>
-            <p className="text-slate-400 text-[11px]">{contactRole}</p>
-            <a
-              href={`mailto:${contactEmail}`}
-              className="text-[#7C3AED] hover:underline text-[11px] font-medium block pt-0.5"
-            >
-              {contactEmail}
-            </a>
-          </div>
-        </div>
-
-        {/* OPPORTUNITY Section */}
-        <div className="space-y-2">
-          <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-            <Briefcase className="h-3.5 w-3.5 text-slate-400" />
-            <span>OPPORTUNITY</span>
-          </div>
-          <div className="pl-5 space-y-1.5 text-xs">
-            <p className="font-semibold text-slate-900">{roleName}</p>
-            <div>
-              <span className="text-slate-400 text-[11px] block">Budget</span>
-              <span className="font-medium text-slate-800">{budget}</span>
-            </div>
-            <div>
-              <span className="text-slate-400 text-[11px] block">Timeline</span>
-              <span className="font-medium text-slate-800">{timeline}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* REQUIREMENTS Section */}
-        <div className="space-y-2">
-          <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-            <CheckSquare className="h-3.5 w-3.5 text-slate-400" />
-            <span>REQUIREMENTS</span>
-          </div>
-          <ul className="pl-5 space-y-1 text-xs text-slate-700">
-            {requirements.map((req, i) => (
-              <li key={i} className="flex items-start gap-1.5">
-                <span className="text-slate-400 leading-none">•</span>
-                <span>{req}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* JOB DESCRIPTION Section */}
-        <div className="space-y-2">
-          <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-            <FileText className="h-3.5 w-3.5 text-slate-400" />
-            <span>JOB DESCRIPTION</span>
-          </div>
-          <div className="pl-5 space-y-1 text-xs text-slate-600">
-            <p className={cn("leading-relaxed", !isFullJobDescOpen && "line-clamp-3")}>
-              {jobDescription}
-            </p>
+    <aside className="w-64 sm:w-72 lg:w-80 shrink-0 flex flex-col gap-4 h-full overflow-y-auto custom-scrollbar select-none pr-1">
+      {/* Card 1: Opportunity Context */}
+      <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-2xs space-y-4">
+        {/* Header with Title and Close 'X' Button */}
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-bold text-slate-900">
+            Opportunity Context
+          </h3>
+          {onToggleCollapse && (
             <button
               type="button"
-              onClick={() => setIsFullJobDescOpen(!isFullJobDescOpen)}
-              className="text-[#7C3AED] hover:underline text-[11px] font-semibold inline-flex items-center gap-0.5 pt-0.5 cursor-pointer"
+              onClick={onToggleCollapse}
+              className="p-1 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+              title="Close Opportunity Context"
             >
-              <span>{isFullJobDescOpen ? "Show less ▴" : "View full description ▾"}</span>
+              <X className="h-3.5 w-3.5" />
             </button>
+          )}
+        </div>
+
+        {/* Company Avatar + Name + Qualified Badge */}
+        <div className="flex items-start gap-3">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#4F46E5] text-white font-bold text-sm shadow-2xs">
+            <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
+              <path d="M12 2L2 19.5h20L12 2zm0 4.5l6.5 11.5H5.5L12 6.5z"/>
+            </svg>
+          </div>
+          <div className="flex flex-col min-w-0 space-y-1">
+            <h4 className="font-bold text-slate-900 text-xs truncate">
+              {companyName}
+            </h4>
+            <span className="text-[11px] text-slate-400 truncate">
+              acmeinc.com
+            </span>
+            <div>
+              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
+                <Check className="h-3 w-3 stroke-[3]" />
+                <span>Qualified</span>
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* Extra Context items if added */}
-        {extraContext.length > 0 && (
-          <div className="space-y-1.5 pl-5">
-            <span className="text-[10px] font-bold text-slate-400 uppercase">
-              Added Notes
-            </span>
-            {extraContext.map((note, idx) => (
-              <div
-                key={idx}
-                className="rounded-lg bg-[#F8F8FA] border border-slate-200/60 p-2 text-[11px] text-slate-700"
-              >
-                {note}
-              </div>
-            ))}
-          </div>
-        )}
+        {/* Role */}
+        <div className="space-y-1">
+          <span className="text-[11px] font-medium text-slate-400 block">
+            Role
+          </span>
+          <p className="text-xs font-semibold text-slate-800">
+            {roleName}
+          </p>
+        </div>
 
-        {/* + Add Context Box */}
-        {isAddingContext ? (
-          <form onSubmit={handleAddContextSubmit} className="space-y-2 pt-2">
-            <textarea
-              autoFocus
-              rows={3}
-              value={contextInput}
-              onChange={(e) => setContextInput(e.target.value)}
-              placeholder="Type client note, requirement or constraint..."
-              className="w-full rounded-xl border border-[#7C3AED] p-2.5 text-xs text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
-            />
-            <div className="flex items-center justify-end gap-1.5">
-              <button
-                type="button"
-                onClick={() => setIsAddingContext(false)}
-                className="rounded-lg border border-slate-200 px-2.5 py-1 text-[11px] font-medium text-slate-600 hover:bg-slate-50"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="rounded-lg bg-[#7C3AED] px-3 py-1 text-[11px] font-bold text-white hover:bg-[#6D28D9]"
-              >
-                Save
-              </button>
+        {/* Budget */}
+        <div className="space-y-1">
+          <span className="text-[11px] font-medium text-slate-400 block">
+            Budget
+          </span>
+          <p className="text-xs font-semibold text-slate-800">
+            {budget}
+          </p>
+        </div>
+
+        {/* Requirements */}
+        <div className="space-y-1">
+          <span className="text-[11px] font-medium text-slate-400 block">
+            Requirements
+          </span>
+          <p className="text-xs text-slate-600 leading-relaxed">
+            {requirementsText}
+          </p>
+        </div>
+
+        {/* Job Description */}
+        <div className="space-y-1">
+          <span className="text-[11px] font-medium text-slate-400 block">
+            Job Description
+          </span>
+          <p className="text-xs text-slate-600 leading-relaxed">
+            {jobDescription}
+          </p>
+        </div>
+      </div>
+
+      {/* Card 2: Key Details */}
+      <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-2xs space-y-4">
+        <h3 className="text-sm font-bold text-slate-900">
+          Key Details
+        </h3>
+
+        <div className="space-y-3.5">
+          {/* Client */}
+          <div className="flex items-start gap-3">
+            <div className="p-1.5 rounded-lg bg-[#EEF2FF] text-[#5B5AF7] shrink-0 mt-0.5">
+              <Building2 className="h-3.5 w-3.5" />
             </div>
-          </form>
-        ) : (
-          <button
-            type="button"
-            onClick={() => setIsAddingContext(true)}
-            className="w-full rounded-xl border border-dashed border-slate-300 hover:border-[#7C3AED] hover:bg-[#F5F3FF]/40 p-3.5 text-left transition-all cursor-pointer group"
-          >
-            <div className="flex items-center gap-1.5 text-xs font-bold text-[#7C3AED]">
-              <Plus className="h-3.5 w-3.5" />
-              <span>Add Context</span>
+            <div className="flex flex-col">
+              <span className="text-[11px] text-slate-400 font-medium">Client</span>
+              <span className="text-xs font-semibold text-slate-800">{companyName}</span>
             </div>
-            <p className="text-[11px] text-slate-400 mt-1 leading-relaxed group-hover:text-slate-500">
-              Add client preferences, meeting notes, additional requirements, etc.
-            </p>
-          </button>
-        )}
+          </div>
+
+          {/* Contact */}
+          <div className="flex items-start gap-3">
+            <div className="p-1.5 rounded-lg bg-[#EEF2FF] text-[#5B5AF7] shrink-0 mt-0.5">
+              <User className="h-3.5 w-3.5" />
+            </div>
+            <div className="flex flex-col leading-tight">
+              <span className="text-[11px] text-slate-400 font-medium">Contact</span>
+              <span className="text-xs font-semibold text-slate-800">{contactName}</span>
+              <span className="text-[11px] text-slate-400 mt-0.5">{contactEmail}</span>
+            </div>
+          </div>
+
+          {/* Opportunity */}
+          <div className="flex items-start gap-3">
+            <div className="p-1.5 rounded-lg bg-[#EEF2FF] text-[#5B5AF7] shrink-0 mt-0.5">
+              <Compass className="h-3.5 w-3.5" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[11px] text-slate-400 font-medium">Opportunity</span>
+              <span className="text-xs font-semibold text-slate-800">{roleName}</span>
+            </div>
+          </div>
+
+          {/* Budget Range */}
+          <div className="flex items-start gap-3">
+            <div className="p-1.5 rounded-lg bg-[#EEF2FF] text-[#5B5AF7] shrink-0 mt-0.5">
+              <Calendar className="h-3.5 w-3.5" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[11px] text-slate-400 font-medium">Budget Range</span>
+              <span className="text-xs font-semibold text-slate-800">{budget}</span>
+            </div>
+          </div>
+
+          {/* Timeline */}
+          <div className="flex items-start gap-3">
+            <div className="p-1.5 rounded-lg bg-[#EEF2FF] text-[#5B5AF7] shrink-0 mt-0.5">
+              <Clock className="h-3.5 w-3.5" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[11px] text-slate-400 font-medium">Timeline</span>
+              <span className="text-xs font-semibold text-slate-800">{timeline}</span>
+            </div>
+          </div>
+        </div>
       </div>
     </aside>
   );

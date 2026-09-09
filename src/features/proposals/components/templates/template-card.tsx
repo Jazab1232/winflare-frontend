@@ -1,20 +1,8 @@
 "use client";
 
 import * as React from "react";
-import {
-  FileText,
-  Clock,
-  DollarSign,
-  Copy,
-  ArrowRight,
-  TrendingUp,
-  Layers,
-  Edit2,
-  Eye,
-  CheckCircle2,
-} from "lucide-react";
+import { Eye, Copy, Edit2, ArrowRight } from "lucide-react";
 import { ProposalTemplate } from "../../types";
-import { cn } from "@/lib/utils";
 
 interface TemplateCardProps {
   template: ProposalTemplate;
@@ -31,127 +19,86 @@ export function TemplateCard({
   onEdit,
   onPreview,
 }: TemplateCardProps) {
-  const categoryColors: Record<string, { bg: string; text: string }> = {
-    "Web Development": { bg: "bg-blue-50", text: "text-blue-700" },
-    "Mobile Apps": { bg: "bg-emerald-50", text: "text-emerald-700" },
-    SaaS: { bg: "bg-[#F5F3FF]", text: "text-[#7C3AED]" },
-    "UI/UX": { bg: "bg-purple-50", text: "text-purple-700" },
-    Marketing: { bg: "bg-amber-50", text: "text-amber-700" },
-    Consulting: { bg: "bg-indigo-50", text: "text-indigo-700" },
-  };
-
-  const catStyle = categoryColors[template.category] || {
-    bg: "bg-slate-100",
-    text: "text-slate-700",
-  };
-
   return (
-    <div className="flex flex-col justify-between rounded-2xl border border-slate-200/80 bg-white p-5 shadow-2xs hover:border-[#DDD6FE] hover:shadow-xs transition-all">
-      {/* Top Meta: Category & Win Rate */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <span
-            className={cn(
-              "rounded-full px-2.5 py-0.5 text-[11px] font-bold tracking-wide select-none",
-              catStyle.bg,
-              catStyle.text
-            )}
-          >
-            {template.category}
+    <div className="flex flex-col justify-between rounded-2xl border border-slate-200/80 bg-white p-4 shadow-2xs hover:border-[#5B5AF7]/40 hover:shadow-xs transition-all group">
+      {/* Top Document Preview Thumbnail matching screenshot */}
+      <div
+        onClick={() => onPreview(template)}
+        className="relative h-44 w-full rounded-xl bg-[#F8FAFC] border border-slate-200/60 p-3 overflow-hidden cursor-pointer flex flex-col justify-between select-none"
+      >
+        {/* Document Sheet Mockup */}
+        <div className="bg-white rounded-lg border border-slate-200/80 shadow-2xs p-3.5 h-full flex flex-col space-y-2">
+          {/* Mini Header */}
+          <div className="flex items-center justify-between border-b border-slate-100 pb-1.5">
+            <div className="flex items-center gap-1">
+              <div className="h-2.5 w-2.5 rounded bg-[#5B5AF7]" />
+              <div className="h-1.5 w-10 rounded-full bg-slate-300" />
+            </div>
+            <div className="h-1 w-14 rounded-full bg-slate-200" />
+          </div>
+
+          {/* Mini Title & Skeleton Lines */}
+          <div className="space-y-1.5 pt-1">
+            <div className="h-2.5 w-24 rounded bg-slate-800 font-bold" />
+            <div className="h-1.5 w-full rounded-full bg-slate-200" />
+            <div className="h-1.5 w-5/6 rounded-full bg-slate-200" />
+            <div className="h-1.5 w-4/6 rounded-full bg-slate-200" />
+          </div>
+
+          {/* Mini visual block */}
+          <div className="mt-auto h-8 rounded-md bg-[#181824] flex items-center px-2">
+            <div className="h-2 w-12 rounded bg-[#5B5AF7]" />
+          </div>
+        </div>
+
+        {/* Hover / Preview Badge */}
+        <div className="absolute top-4 right-4">
+          <span className="inline-flex items-center gap-1 rounded-full bg-[#5B5AF7] text-white px-2 py-0.5 text-[10px] font-semibold shadow-2xs opacity-90 group-hover:opacity-100 transition-opacity">
+            <Eye className="h-2.5 w-2.5" />
+            <span>Preview</span>
           </span>
-
-          <span className="flex items-center gap-1 rounded-full bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 text-[10px] font-bold text-emerald-700">
-            <TrendingUp className="h-3 w-3" />
-            <span>{template.winRate} Win Rate</span>
-          </span>
-        </div>
-
-        {/* Title & Description */}
-        <div>
-          <h3 className="text-base font-bold text-slate-900 leading-snug">
-            {template.title}
-          </h3>
-          <p className="text-xs text-slate-500 line-clamp-2 mt-1 leading-relaxed">
-            {template.description}
-          </p>
-        </div>
-
-        {/* Structural Blocks Info */}
-        <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100 text-[11px] text-slate-600">
-          <div className="flex items-center gap-1.5">
-            <Layers className="h-3.5 w-3.5 text-slate-400" />
-            <span>{template.sectionsCount} Sections Included</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <Clock className="h-3.5 w-3.5 text-slate-400" />
-            <span>{template.timelineDuration}</span>
-          </div>
-          <div className="flex items-center gap-1.5 col-span-2">
-            <DollarSign className="h-3.5 w-3.5 text-slate-400" />
-            <span className="font-semibold text-slate-800 truncate">
-              {template.pricingModel}
-            </span>
-          </div>
-        </div>
-
-        {/* Tech Tags */}
-        <div className="flex flex-wrap gap-1 pt-1">
-          {template.tags.slice(0, 4).map((tag, i) => (
-            <span
-              key={i}
-              className="rounded-md bg-[#F8F8FA] border border-slate-200/60 px-1.5 py-0.5 text-[10px] font-medium text-slate-500"
-            >
-              {tag}
-            </span>
-          ))}
-          {template.tags.length > 4 && (
-            <span className="text-[10px] text-slate-400 pt-0.5">
-              +{template.tags.length - 4}
-            </span>
-          )}
         </div>
       </div>
 
-      {/* Action Buttons */}
-      <div className="flex items-center justify-between pt-5 border-t border-slate-100 mt-4 gap-2">
-        <div className="flex items-center gap-1">
-          <button
-            type="button"
-            onClick={() => onPreview(template)}
-            className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 transition-colors shadow-2xs"
-            title="Preview Template"
-          >
-            <Eye className="h-3.5 w-3.5" />
-          </button>
-          <button
-            type="button"
-            onClick={() => onDuplicate(template)}
-            className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 transition-colors shadow-2xs"
-            title="Duplicate Template"
-          >
-            <Copy className="h-3.5 w-3.5" />
-          </button>
-          <button
-            type="button"
-            onClick={() => onEdit(template)}
-            className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 transition-colors shadow-2xs"
-            title="Edit Template"
-          >
-            <Edit2 className="h-3.5 w-3.5" />
-          </button>
-        </div>
+      {/* Title & Category Subtitle */}
+      <div className="pt-3 pb-2">
+        <h3 className="text-sm font-bold text-slate-900 tracking-tight leading-snug">
+          {template.title}
+        </h3>
+        <p className="text-xs text-slate-400 font-medium mt-0.5">
+          {template.category}
+        </p>
+      </div>
 
-        {/* Use Template Action */}
+      {/* Action Buttons Row: Use, Duplicate, Edit */}
+      <div className="flex items-center gap-2 pt-2 border-t border-slate-100">
+        {/* Primary 'Use' button */}
         <button
           type="button"
           onClick={() => onUse(template)}
-          className="flex items-center gap-1.5 rounded-xl bg-[#7C3AED] px-3.5 py-1.5 text-xs font-bold text-white hover:bg-[#6D28D9] transition-all shadow-2xs cursor-pointer"
+          className="flex-1 rounded-xl bg-[#5B5AF7] hover:bg-[#4847E5] text-white py-1.5 text-xs font-semibold shadow-2xs transition-all cursor-pointer text-center"
         >
-          <span>Use Template</span>
-          <ArrowRight className="h-3.5 w-3.5" />
+          Use
+        </button>
+
+        {/* Duplicate button */}
+        <button
+          type="button"
+          onClick={() => onDuplicate(template)}
+          className="flex-1 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 py-1.5 text-xs font-semibold shadow-2xs transition-all cursor-pointer text-center"
+        >
+          Duplicate
+        </button>
+
+        {/* Edit button */}
+        <button
+          type="button"
+          onClick={() => onEdit(template)}
+          className="flex-1 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 py-1.5 text-xs font-semibold shadow-2xs transition-all cursor-pointer text-center"
+        >
+          Edit
         </button>
       </div>
     </div>
   );
 }
-

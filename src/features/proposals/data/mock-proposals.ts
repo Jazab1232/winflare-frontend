@@ -199,6 +199,111 @@ export const DEFAULT_PROPOSAL_SECTIONS = [
 ];
 
 export const MOCK_PROPOSAL_ITEMS: ProposalCardItem[] = [
+  // Acme Inc. Proposal (Exact match to reference design)
+  {
+    id: "prop-acme",
+    title: "Website Redesign Proposal",
+    stageId: "draft",
+    company: "Acme Inc.",
+    role: "Web Development",
+    budget: "$10,000 – $15,000",
+    value: 12000,
+    score: 95,
+    priority: "high",
+    badges: [
+      { label: "High Value", type: "value" },
+      { label: "Qualified", type: "review" },
+    ],
+    createdAt: "2026-09-09",
+    timeInfo: "Saved 2 minutes ago",
+    logoLetter: "A",
+    logoBg: "bg-[#4F46E5]",
+    proposalType: "fixed_price",
+    clientContact: {
+      name: "Sarah Johnson",
+      email: "sarah@acmeinc.com",
+      companySize: "50-200 employees",
+      location: "San Francisco, CA",
+      timezone: "PST (UTC-8)",
+    },
+    opportunityDetails: {
+      jobDescription:
+        "We're looking for a complete website redesign to improve our online presence, showcase our services, and generate more leads. The site should be fast, mobile-friendly, and easy to manage.",
+      requirements: [
+        "Modern, fast, and responsive website with CMS integration.",
+        "Need SEO optimization and modern UI/UX design.",
+      ],
+      matchScore: 98,
+      timelineExpectation: "3–4 weeks",
+    },
+    sections: [
+      {
+        id: "sec-1",
+        title: "1. Introduction",
+        content:
+          "Hello Sarah,\n\nThank you for considering us for your website redesign project. We're excited about the opportunity to work with Acme Inc. and help you build a modern, high-performing website that drives real business results.\n\nAt Winflare, we specialize in creating beautiful, functional websites that not only look great but also generate leads and grow your business. Our team has helped multiple companies like yours transform their online presence and achieve measurable results.\n\nWe've carefully reviewed your requirements and put together a tailored proposal that addresses your goals, timeline, and budget. We're confident that our solution will exceed your expectations and deliver long-term value.\n\nWe look forward to the opportunity to discuss this further.\n\nBest regards,\nThe Winflare Team",
+        isAiGenerated: true,
+        lastEdited: "Just now",
+      },
+      {
+        id: "sec-2",
+        title: "2. Problem",
+        content:
+          "Acme Inc.'s current website is experiencing outdated navigation flows, slow page loads on mobile devices, and a lack of clear conversion funnels for inbound leads. These friction points prevent visitors from understanding your core offerings and booking demos.",
+        isAiGenerated: true,
+        lastEdited: "10 mins ago",
+      },
+      {
+        id: "sec-3",
+        title: "3. Solution",
+        content:
+          "We will engineer a high-performance Next.js web platform tailored specifically to Acme Inc.'s brand guidelines:\n• Sleek, modern UI/UX designed in Figma with high conversion patterns\n• Modular headless CMS integration allowing your marketing team to publish landing pages in minutes\n• Sub-second Core Web Vitals optimization ensuring 95+ PageSpeed scores\n• Built-in analytics and lead-capture pipelines",
+        isAiGenerated: true,
+        lastEdited: "15 mins ago",
+      },
+      {
+        id: "sec-4",
+        title: "4. Timeline",
+        content:
+          "Week 1: UX Wireframing, Brand Design Tokens & Client Alignment\nWeek 2: High-Fidelity UI Prototyping & CMS Architecture\nWeek 3: Next.js Frontend Development & Content Migration\nWeek 4: Performance Audits, Cross-Browser QA & Production Launch",
+        isAiGenerated: false,
+        lastEdited: "1 hour ago",
+      },
+      {
+        id: "sec-5",
+        title: "5. Deliverables",
+        content:
+          "1. Production-ready Next.js web application deployed on Vercel\n2. Complete Figma design system and component library\n3. Headless CMS dashboard with video training documentation\n4. 30-day post-launch warranty with dedicated priority support",
+        isAiGenerated: true,
+        lastEdited: "2 hours ago",
+      },
+      {
+        id: "sec-6",
+        title: "6. Pricing",
+        content:
+          "Total Investment: $12,000 USD\n\nMilestone Breakdown:\n• Milestone 1 (30% - $3,600): Design Sign-off & Architecture Scaffold\n• Milestone 2 (40% - $4,800): Complete Frontend Build & CMS Integration\n• Milestone 3 (30% - $3,600): QA Testing, SEO Verification & Domain Cutover",
+        isAiGenerated: true,
+        lastEdited: "3 hours ago",
+      },
+      {
+        id: "sec-7",
+        title: "7. Why Me",
+        content:
+          "• 8+ years delivering enterprise-grade web applications with measurable ROI\n• Proven track record of boosting conversion rates by an average of 34%\n• Transparent, proactive communication with daily async updates and dedicated staging links",
+        isAiGenerated: true,
+        lastEdited: "3 hours ago",
+      },
+    ],
+    pricingItems: [
+      { id: "p1", description: "Design Sign-off & Architecture Scaffold", quantity: 1, rate: 3600 },
+      { id: "p2", description: "Complete Frontend Build & CMS Integration", quantity: 1, rate: 4800 },
+      { id: "p3", description: "QA Testing, SEO Verification & Domain Cutover", quantity: 1, rate: 3600 },
+    ],
+    versions: [
+      { version: "v1.0", label: "Initial tailored draft for Acme Inc.", timestamp: "Today at 02:00 PM", author: "Winflare AI" },
+    ],
+    comments: [],
+  },
   // 1. prop-1 (Review)
   {
     id: "prop-1",

@@ -90,6 +90,17 @@ export function ProposalsTitleBar({
           </Button>
         </Link>
 
+        {/* Workflow / System Flow Link */}
+        <Link href="/proposals/workflow">
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-9 rounded-xl border-slate-200 bg-white text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 gap-1.5 px-3 cursor-pointer"
+          >
+            <span>Flows</span>
+          </Button>
+        </Link>
+
         {/* Export */}
         <Button
           variant="outline"
@@ -106,7 +117,7 @@ export function ProposalsTitleBar({
           variant="default"
           size="sm"
           onClick={onNewProposalClick}
-          className="h-9 rounded-xl bg-[#7C3AED] hover:bg-[#6D28D9] text-xs font-bold text-white shadow-xs gap-1.5 px-3.5 cursor-pointer"
+          className="h-9 rounded-xl bg-[#5B5AF7] hover:bg-[#4847E5] text-xs font-semibold text-white shadow-xs gap-1.5 px-3.5 cursor-pointer"
         >
           <Plus className="h-4 w-4 stroke-[2.5]" />
           <span>New Proposal</span>

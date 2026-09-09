@@ -1,25 +1,12 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 import {
   X,
-  Edit3,
+  Check,
   Send,
-  Sparkles,
-  ExternalLink,
-  Clock,
-  MessageSquare,
-  History,
-  FileText,
-  DollarSign,
-  User,
-  Calendar,
-  CheckCircle2,
-  ChevronRight,
 } from "lucide-react";
 import { ProposalCardItem, ProposalStageId } from "../types";
-import { ProposalStatusBadge } from "./proposal-status-badge";
 import { cn } from "@/lib/utils";
 
 interface ProposalDrawerProps {
@@ -36,13 +23,10 @@ export function ProposalDrawer({
   item,
   isOpen,
   onClose,
-  onMoveStage,
   onAddComment,
-  onSendProposal,
-  onOpenReview,
 }: ProposalDrawerProps) {
   const [commentText, setCommentText] = React.useState("");
-  const [activeTab, setActiveTab] = React.useState<"timeline" | "versions" | "comments">("timeline");
+  const [activeTab, setActiveTab] = React.useState<"details" | "versions" | "comments" | "activity">("details");
 
   if (!isOpen || !item) return null;
 
@@ -53,7 +37,33 @@ export function ProposalDrawer({
     setCommentText("");
   };
 
-  const stages: ProposalStageId[] = ["draft", "review", "ready", "sent", "won", "lost"];
+  const timelineSteps = [
+    { label: "Draft", date: "Aug 20, 2026", isCompleted: true, isActive: true },
+    { label: "Review", date: "Aug 21, 2026", isCompleted: false, isActive: false },
+    { label: "Ready", date: "Aug 21, 2026", isCompleted: false, isActive: false },
+    { label: "Sent", date: "Aug 22, 2026", isCompleted: false, isActive: false },
+    { label: "Client Replied", date: "-", isCompleted: false, isActive: false },
+    { label: "Won", date: "-", isCompleted: false, isActive: false },
+  ];
+
+  const comments = item.comments?.length
+    ? item.comments
+    : [
+        {
+          id: "c1",
+          author: "John Doe",
+          avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120",
+          timestamp: "Aug 21, 2026 10:24 AM",
+          content: "Added new pricing section.",
+        },
+        {
+          id: "c2",
+          author: "Sarah Lee",
+          avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=120",
+          timestamp: "Aug 22, 2026 11:02 AM",
+          content: "Looks great! Sending to client now.",
+        },
+      ];
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
@@ -64,314 +74,243 @@ export function ProposalDrawer({
       />
 
       {/* Drawer Panel */}
-      <div className="fixed inset-y-0 right-0 flex max-w-full pl-10">
-        <aside className="w-screen max-w-md bg-white border-l border-slate-200 shadow-2xl flex flex-col justify-between overflow-hidden animate-in slide-in-from-right duration-250">
+      <div className="fixed inset-y-0 right-0 flex max-w-full pl-6 sm:pl-10">
+        <aside className="w-screen max-w-2xl bg-white border-l border-slate-200 shadow-2xl flex flex-col justify-between overflow-hidden animate-in slide-in-from-right duration-250 select-none">
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-slate-200/80 px-6 py-4 bg-[#F8F8FA]">
-            <div className="flex items-center gap-3">
-              <div
-                className={cn(
-                  "flex h-9 w-9 items-center justify-center rounded-xl text-white font-bold text-sm shadow-2xs",
-                  item.logoBg || "bg-[#7C3AED]"
-                )}
-              >
-                {item.logoLetter || item.company.slice(0, 1)}
-              </div>
-              <div className="flex flex-col min-w-0">
-                <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider truncate">
-                  {item.company}
-                </span>
-                <h2 className="text-sm font-bold text-slate-900 truncate">
-                  {item.role}
+          <div className="flex items-start justify-between border-b border-slate-100 px-6 py-4 bg-white">
+            <div className="space-y-1">
+              <span className="text-[11px] font-medium text-slate-400 block">
+                Proposal Details
+              </span>
+              <div className="flex items-center gap-2.5">
+                <h2 className="text-lg font-bold text-slate-900">
+                  {item.title || "Website Redesign Proposal"}
                 </h2>
+                <span className="rounded-full bg-[#EEF2FF] text-[#5B5AF7] border border-[#DDD6FE] px-2.5 py-0.5 text-xs font-semibold">
+                  Draft
+                </span>
               </div>
             </div>
 
             <button
+              type="button"
               onClick={onClose}
-              className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-200/60 hover:text-slate-700 transition-colors"
+              className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 transition-colors cursor-pointer"
             >
               <X className="h-4 w-4" />
             </button>
           </div>
 
-          {/* Body Content */}
-          <div className="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6">
-            {/* Status Selector & Value Bar */}
-            <div className="rounded-xl border border-slate-200/80 bg-[#FAFAFA] p-4 space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-medium text-slate-500">
-                  Current Status
-                </span>
-                <ProposalStatusBadge status={item.stageId} />
-              </div>
-
-              {/* Status Pill Buttons */}
-              <div className="flex flex-wrap gap-1.5 pt-1">
-                {stages.map((stage) => {
-                  const isCurrent = item.stageId === stage;
-                  return (
-                    <button
-                      key={stage}
-                      onClick={() => onMoveStage(item.id, stage)}
-                      className={cn(
-                        "rounded-md px-2 py-1 text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer",
-                        isCurrent
-                          ? "bg-[#7C3AED] text-white shadow-2xs"
-                          : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                      )}
-                    >
-                      {stage}
-                    </button>
-                  );
-                })}
-              </div>
-
-              <div className="grid grid-cols-2 gap-3 pt-2 border-t border-slate-200/60">
-                <div>
-                  <span className="text-[10px] text-slate-400 uppercase font-semibold">
-                    Proposal Value
-                  </span>
-                  <p className="text-base font-bold text-slate-900">
-                    ${item.value?.toLocaleString() || "5,000"}
-                  </p>
-                </div>
-                <div>
-                  <span className="text-[10px] text-slate-400 uppercase font-semibold">
-                    AI Quality Score
-                  </span>
-                  <button
-                    onClick={() => onOpenReview?.(item)}
-                    className="flex items-center gap-1.5 text-base font-bold text-[#7C3AED] hover:underline cursor-pointer"
-                  >
-                    <Sparkles className="h-3.5 w-3.5" />
-                    <span>{item.score}/100</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Client & Opportunity Info */}
-            <div className="space-y-3">
-              <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
-                Client Information
-              </h3>
-              <div className="rounded-xl border border-slate-200/80 p-3.5 bg-white space-y-2 text-xs">
-                <div className="flex items-center justify-between text-slate-600">
-                  <span className="text-slate-400">Contact</span>
-                  <span className="font-semibold text-slate-800">
-                    {item.clientContact?.name || "Hiring Lead"}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between text-slate-600">
-                  <span className="text-slate-400">Email</span>
-                  <span className="text-slate-800">
-                    {item.clientContact?.email || "team@client.com"}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between text-slate-600">
-                  <span className="text-slate-400">Location</span>
-                  <span className="text-slate-800">
-                    {item.clientContact?.location || "Remote / US"}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between text-slate-600">
-                  <span className="text-slate-400">Posted Budget</span>
-                  <span className="font-semibold text-emerald-700">
-                    {item.budget}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Opportunity Context Highlights */}
-            {item.opportunityDetails && (
-              <div className="space-y-2">
-                <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
-                  Target Requirements
-                </h3>
-                <div className="flex flex-wrap gap-1.5">
-                  {item.opportunityDetails.requirements.map((req, i) => (
-                    <span
-                      key={i}
-                      className="rounded-md border border-slate-200 bg-[#F8F8FA] px-2 py-0.5 text-[11px] font-medium text-slate-700"
-                    >
-                      {req}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Tabs: Timeline | Versions | Comments */}
-            <div className="space-y-3">
-              <div className="flex border-b border-slate-200">
+          {/* Sub-Navigation Tabs matching screenshot 7 */}
+          <div className="flex items-center gap-6 px-6 border-b border-slate-100 bg-white text-xs">
+            {(["details", "versions", "comments", "activity"] as const).map((tab) => {
+              const label =
+                tab === "details"
+                  ? "Details"
+                  : tab === "versions"
+                  ? "Version History"
+                  : tab === "comments"
+                  ? "Comments"
+                  : "Activity";
+              const isActive = activeTab === tab;
+              return (
                 <button
-                  onClick={() => setActiveTab("timeline")}
+                  key={tab}
+                  type="button"
+                  onClick={() => setActiveTab(tab)}
                   className={cn(
-                    "flex-1 pb-2 text-xs font-bold text-center border-b-2 transition-all cursor-pointer",
-                    activeTab === "timeline"
-                      ? "border-[#7C3AED] text-[#7C3AED]"
+                    "pb-2.5 pt-1.5 font-medium border-b-2 transition-all cursor-pointer",
+                    isActive
+                      ? "border-[#5B5AF7] text-[#5B5AF7] font-semibold"
                       : "border-transparent text-slate-500 hover:text-slate-800"
                   )}
                 >
-                  Activity Timeline
+                  {label}
                 </button>
-                <button
-                  onClick={() => setActiveTab("versions")}
-                  className={cn(
-                    "flex-1 pb-2 text-xs font-bold text-center border-b-2 transition-all cursor-pointer",
-                    activeTab === "versions"
-                      ? "border-[#7C3AED] text-[#7C3AED]"
-                      : "border-transparent text-slate-500 hover:text-slate-800"
-                  )}
-                >
-                  Version History
-                </button>
-                <button
-                  onClick={() => setActiveTab("comments")}
-                  className={cn(
-                    "flex-1 pb-2 text-xs font-bold text-center border-b-2 transition-all cursor-pointer",
-                    activeTab === "comments"
-                      ? "border-[#7C3AED] text-[#7C3AED]"
-                      : "border-transparent text-slate-500 hover:text-slate-800"
-                  )}
-                >
-                  Comments ({item.comments?.length || 0})
-                </button>
-              </div>
+              );
+            })}
+          </div>
 
-              {/* Tab Content: Timeline */}
-              {activeTab === "timeline" && (
-                <div className="space-y-3 pt-1">
-                  {(item.activities || [
-                    {
-                      id: "def-1",
-                      title: "Proposal Created",
-                      description: "Draft generated via Winflare engine",
-                      timestamp: item.timeInfo,
-                      iconType: "create",
-                    },
-                  ]).map((act) => (
-                    <div key={act.id} className="flex items-start gap-3 text-xs">
-                      <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#F5F3FF] text-[#7C3AED]">
-                        <Clock className="h-3 w-3" />
-                      </div>
-                      <div className="flex flex-col min-w-0 flex-1">
-                        <span className="font-semibold text-slate-900">
-                          {act.title}
-                        </span>
-                        <span className="text-[11px] text-slate-500">
-                          {act.description}
-                        </span>
-                        <span className="text-[10px] text-slate-400">
-                          {act.timestamp}
-                        </span>
-                      </div>
+          {/* Body Content (Two columns matching screenshot 7) */}
+          <div className="flex-1 overflow-y-auto custom-scrollbar p-6">
+            {activeTab === "details" && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 text-xs">
+                {/* Left Column: Key Details & Status Timeline */}
+                <div className="space-y-6">
+                  {/* Key Details Rows */}
+                  <div className="space-y-3">
+                    <div className="flex justify-between border-b border-slate-100 pb-2">
+                      <span className="text-slate-400 font-medium">Client</span>
+                      <span className="font-bold text-slate-900">{item.company || "Acme Inc."}</span>
                     </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Tab Content: Versions */}
-              {activeTab === "versions" && (
-                <div className="space-y-2 pt-1">
-                  {(item.versions || [
-                    {
-                      version: "v1.0",
-                      label: "Initial Version",
-                      timestamp: item.timeInfo,
-                      author: "System",
-                    },
-                  ]).map((v, i) => (
-                    <div
-                      key={i}
-                      className="flex items-center justify-between rounded-lg border border-slate-200/80 bg-white p-2.5 text-xs"
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="rounded bg-[#EDE9FE] px-1.5 py-0.5 text-[10px] font-bold text-[#6D28D9]">
-                          {v.version}
-                        </span>
-                        <div className="flex flex-col">
-                          <span className="font-semibold text-slate-800">
-                            {v.label}
-                          </span>
-                          <span className="text-[10px] text-slate-400">
-                            by {v.author} • {v.timestamp}
-                          </span>
-                        </div>
-                      </div>
-                      <Link
-                        href={`/proposals/${item.id}`}
-                        className="text-[11px] font-semibold text-[#7C3AED] hover:underline"
-                      >
-                        Restore
-                      </Link>
+                    <div className="flex justify-between border-b border-slate-100 pb-2">
+                      <span className="text-slate-400 font-medium">Opportunity</span>
+                      <span className="font-semibold text-slate-800">{item.role || "Website Redesign"}</span>
                     </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Tab Content: Comments */}
-              {activeTab === "comments" && (
-                <div className="space-y-3 pt-1">
-                  <div className="space-y-2">
-                    {(item.comments || []).map((comm) => (
-                      <div
-                        key={comm.id}
-                        className="rounded-xl border border-slate-200/80 bg-[#FAFAFA] p-3 text-xs space-y-1"
-                      >
-                        <div className="flex items-center justify-between">
-                          <span className="font-bold text-slate-900">
-                            {comm.author}
-                          </span>
-                          <span className="text-[10px] text-slate-400">
-                            {comm.timestamp}
-                          </span>
-                        </div>
-                        <p className="text-slate-600">{comm.content}</p>
-                      </div>
-                    ))}
+                    <div className="flex justify-between border-b border-slate-100 pb-2">
+                      <span className="text-slate-400 font-medium">Value</span>
+                      <span className="font-bold text-slate-900">${(item.value || 12000).toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between border-b border-slate-100 pb-2">
+                      <span className="text-slate-400 font-medium">Created</span>
+                      <span className="text-slate-700">Aug 20, 2026</span>
+                    </div>
+                    <div className="flex justify-between border-b border-slate-100 pb-2">
+                      <span className="text-slate-400 font-medium">Sent</span>
+                      <span className="text-slate-700">Aug 22, 2026</span>
+                    </div>
                   </div>
 
-                  <form onSubmit={handleCommentSubmit} className="flex gap-2">
+                  {/* Status Timeline */}
+                  <div className="space-y-3 pt-2">
+                    <h3 className="text-xs font-semibold text-slate-800">
+                      Status Timeline
+                    </h3>
+                    <div className="relative pl-5 space-y-4">
+                      {/* Vertical connecting line */}
+                      <div className="absolute left-[7px] top-2 bottom-2 w-0.5 bg-slate-200" />
+
+                      {timelineSteps.map((step, idx) => (
+                        <div key={idx} className="relative flex items-center justify-between">
+                          <div className="flex items-center gap-2.5">
+                            {/* Circle dot */}
+                            <div
+                              className={cn(
+                                "absolute -left-5 h-3.5 w-3.5 rounded-full border-2 bg-white flex items-center justify-center",
+                                step.isActive
+                                  ? "border-[#5B5AF7] bg-[#5B5AF7]"
+                                  : "border-slate-300"
+                              )}
+                            >
+                              {step.isActive && (
+                                <div className="h-1.5 w-1.5 rounded-full bg-white" />
+                              )}
+                            </div>
+                            <span
+                              className={cn(
+                                "font-medium",
+                                step.isActive ? "text-slate-900 font-semibold" : "text-slate-600"
+                              )}
+                            >
+                              {step.label}
+                            </span>
+                          </div>
+                          <span className="text-[11px] text-slate-400">
+                            {step.date}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Column: Comments feed matching screenshot 7 */}
+                <div className="flex flex-col justify-between space-y-4 border-l border-slate-100 sm:pl-6">
+                  <div className="space-y-4">
+                    <h3 className="text-xs font-semibold text-slate-800">
+                      Comments
+                    </h3>
+
+                    {/* Comments List */}
+                    <div className="space-y-4">
+                      {comments.map((c) => (
+                        <div key={c.id} className="flex items-start gap-2.5">
+                          <img
+                            src={
+                              typeof c.avatar === "string" && c.avatar.startsWith("http")
+                                ? c.avatar
+                                : "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120"
+                            }
+                            alt={c.author}
+                            className="h-7 w-7 rounded-full object-cover border border-slate-200 shrink-0"
+                          />
+                          <div className="flex flex-col space-y-0.5 min-w-0">
+                            <div className="flex items-center gap-1.5">
+                              <span className="font-bold text-slate-900 text-xs">
+                                {c.author}
+                              </span>
+                            </div>
+                            <span className="text-[10px] text-slate-400">
+                              {c.timestamp}
+                            </span>
+                            <p className="text-xs text-slate-700 pt-0.5 leading-relaxed">
+                              {c.content}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Add comment box */}
+                  <form onSubmit={handleCommentSubmit} className="relative pt-4">
                     <input
                       type="text"
                       value={commentText}
                       onChange={(e) => setCommentText(e.target.value)}
-                      placeholder="Add an internal note or comment..."
-                      className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-800 placeholder:text-slate-400 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
+                      placeholder="Add a comment..."
+                      className="h-9 w-full rounded-xl border border-slate-200 bg-white pl-3 pr-9 text-xs text-slate-800 placeholder:text-slate-400 focus:border-[#5B5AF7] focus:outline-none focus:ring-1 focus:ring-[#5B5AF7]"
                     />
                     <button
                       type="submit"
-                      className="rounded-lg bg-[#7C3AED] px-3 py-1.5 text-xs font-semibold text-white hover:bg-[#6D28D9] transition-colors"
+                      disabled={!commentText.trim()}
+                      className="absolute right-1.5 top-5 p-1 rounded-lg text-[#5B5AF7] hover:bg-[#EEF2FF] disabled:opacity-40 transition-all cursor-pointer"
                     >
-                      Post
+                      <Send className="h-3.5 w-3.5" />
                     </button>
                   </form>
                 </div>
-              )}
-            </div>
-          </div>
+              </div>
+            )}
 
-          {/* Footer Actions */}
-          <div className="border-t border-slate-200 px-6 py-4 bg-white flex items-center gap-3">
-            <Link
-              href={`/proposals/${item.id}`}
-              className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-[#7C3AED] px-4 py-2.5 text-xs font-bold text-white shadow-sm hover:bg-[#6D28D9] transition-all"
-            >
-              <Edit3 className="h-4 w-4" />
-              <span>Open in Proposal Editor</span>
-            </Link>
+            {activeTab === "versions" && (
+              <div className="space-y-3 text-xs">
+                <div className="rounded-xl border border-slate-200 p-3 flex justify-between items-center">
+                  <div>
+                    <span className="font-bold text-slate-900 block">v1.2 (Current)</span>
+                    <span className="text-slate-400 text-[11px]">Saved Today at 02:00 PM by Winflare AI</span>
+                  </div>
+                  <span className="text-xs font-semibold text-emerald-600">Active</span>
+                </div>
+                <div className="rounded-xl border border-slate-200 p-3 flex justify-between items-center">
+                  <div>
+                    <span className="font-bold text-slate-900 block">v1.0 (Initial Draft)</span>
+                    <span className="text-slate-400 text-[11px]">Saved Aug 20, 2026 by John Doe</span>
+                  </div>
+                  <button className="text-xs font-semibold text-[#5B5AF7] hover:underline">Restore</button>
+                </div>
+              </div>
+            )}
 
-            {item.stageId !== "sent" && item.stageId !== "won" && (
-              <button
-                onClick={() => onSendProposal(item)}
-                className="flex items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all shadow-2xs"
-              >
-                <Send className="h-4 w-4 text-slate-500" />
-                <span>Send</span>
-              </button>
+            {activeTab === "comments" && (
+              <div className="space-y-3 text-xs">
+                {comments.map((c) => (
+                  <div key={c.id} className="p-3 rounded-xl bg-[#F8FAFC] border border-slate-200/80 space-y-1">
+                    <div className="flex justify-between">
+                      <span className="font-bold text-slate-900">{c.author}</span>
+                      <span className="text-[10px] text-slate-400">{c.timestamp}</span>
+                    </div>
+                    <p className="text-slate-700">{c.content}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {activeTab === "activity" && (
+              <div className="space-y-3 text-xs">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                  <span>Proposal Created</span>
+                  <span className="text-slate-400 text-[11px]">Aug 20, 2026</span>
+                </div>
+                <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                  <span>AI Polish Completed</span>
+                  <span className="text-slate-400 text-[11px]">Aug 21, 2026</span>
+                </div>
+                <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                  <span>Milestone Pricing Updated</span>
+                  <span className="text-slate-400 text-[11px]">Aug 22, 2026</span>
+                </div>
+              </div>
             )}
           </div>
         </aside>
@@ -379,4 +318,3 @@ export function ProposalDrawer({
     </div>
   );
 }
-

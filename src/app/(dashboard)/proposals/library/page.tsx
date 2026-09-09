@@ -1,288 +1,390 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 import {
-  ArrowLeft,
   Search,
-  Plus,
-  Library,
-  X,
+  Bell,
   FileText,
-  Image,
+  Layers,
   MessageSquare,
   Tag,
   HelpCircle,
   Briefcase,
-  Sparkles,
+  ChevronRight,
+  Copy,
+  Check,
+  X,
+  Plus,
 } from "lucide-react";
-import { useProposalsStore } from "@/features/proposals/store/proposals-store";
-import { LibraryAssetCard } from "@/features/proposals/components/library/library-asset-card";
-import { ProposalLibraryItem } from "@/features/proposals/types";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
+interface LibraryCategoryCard {
+  id: string;
+  title: string;
+  countText: string;
+  icon: React.ComponentType<{ className?: string }>;
+  categoryKey: string;
+  snippets: Array<{ title: string; text: string }>;
+}
+
 export default function ProposalLibraryPage() {
-  const { libraryItems } = useProposalsStore();
-
-  const [activeCategory, setActiveCategory] = React.useState<string>("all");
+  const [activeFilter, setActiveFilter] = React.useState<string>("All");
   const [searchQuery, setSearchQuery] = React.useState("");
-  const [isAddModalOpen, setIsAddModalOpen] = React.useState(false);
+  const [selectedCategory, setSelectedCategory] = React.useState<LibraryCategoryCard | null>(null);
+  const [copiedId, setCopiedId] = React.useState<string | null>(null);
 
-  // New asset form state
-  const [newTitle, setNewTitle] = React.useState("");
-  const [newCategory, setNewCategory] = React.useState<ProposalLibraryItem["category"]>("introductions");
-  const [newContent, setNewContent] = React.useState("");
-  const [newTags, setNewTags] = React.useState("");
-
-  const categories = [
-    { id: "all", label: "All Content" },
-    { id: "introductions", label: "Winning Introductions" },
-    { id: "case_studies", label: "Case Studies" },
-    { id: "testimonials", label: "Testimonials" },
-    { id: "pricing", label: "Pricing Packages" },
-    { id: "faqs", label: "FAQs" },
-    { id: "services", label: "Service Descriptions" },
+  const filters = [
+    "All",
+    "Introductions",
+    "Case Studies",
+    "Testimonials",
+    "Pricing Packages",
+    "FAQs",
+    "Service Descriptions",
   ];
 
-  const filteredItems = React.useMemo(() => {
-    return libraryItems.filter((item) => {
-      const matchesCategory =
-        activeCategory === "all" || item.category === activeCategory;
+  const categories: LibraryCategoryCard[] = [
+    {
+      id: "cat-1",
+      title: "Winning Introductions",
+      countText: "12 items",
+      categoryKey: "Introductions",
+      icon: FileText,
+      snippets: [
+        {
+          title: "High-Growth B2B SaaS Hook",
+          text: "We specialize in engineering modern, high-performing web platforms that convert visitors into recurring pipeline and fuel sustainable revenue growth.",
+        },
+        {
+          title: "Direct & Concise Executive Opener",
+          text: "Thank you for considering our team. We've reviewed your technical requirements and assembled a lean, milestone-backed delivery schedule.",
+        },
+      ],
+    },
+    {
+      id: "cat-2",
+      title: "Case Studies",
+      countText: "8 items",
+      categoryKey: "Case Studies",
+      icon: Layers,
+      snippets: [
+        {
+          title: "FinTech Platform 34% Conversion Uplift",
+          text: "Re-architected core user onboarding on Next.js 16, decreasing page load by 68% and raising demo bookings by 34% in 90 days.",
+        },
+        {
+          title: "Healthcare SaaS HIPAA Portal",
+          text: "Delivered enterprise patient dashboard under 6 weeks with zero security findings and 99.99% uptime.",
+        },
+      ],
+    },
+    {
+      id: "cat-3",
+      title: "Testimonials",
+      countText: "10 items",
+      categoryKey: "Testimonials",
+      icon: MessageSquare,
+      snippets: [
+        {
+          title: "Acme Inc. VP of Product",
+          text: "“Winflare delivered our web app 10 days ahead of schedule with immaculate code quality and daily async visibility.”",
+        },
+        {
+          title: "Verve Labs Founder",
+          text: "“The best development experience we've had. Fast, responsive, and deeply invested in our commercial outcomes.”",
+        },
+      ],
+    },
+    {
+      id: "cat-4",
+      title: "Pricing Packages",
+      countText: "6 items",
+      categoryKey: "Pricing Packages",
+      icon: Tag,
+      snippets: [
+        {
+          title: "3-Stage Deliverable Milestone Schedule",
+          text: "30% Kickoff & UX Architecture • 40% Core Frontend & CMS • 30% QA & Production Cutover with 30-Day Warranty.",
+        },
+        {
+          title: "Dedicated Sprint Retainer",
+          text: "$6,000 / bi-weekly sprint including full stack engineering, PR reviews, and dedicated Slack channel.",
+        },
+      ],
+    },
+    {
+      id: "cat-5",
+      title: "FAQs",
+      countText: "14 items",
+      categoryKey: "FAQs",
+      icon: HelpCircle,
+      snippets: [
+        {
+          title: "How do you handle scope changes?",
+          text: "Any new requirement is scoped into an isolated add-on milestone with clear hours and cost before work begins.",
+        },
+        {
+          title: "What happens after project handoff?",
+          text: "All proposals include a complimentary 30-day warranty guaranteeing instant bug resolution and system stability.",
+        },
+      ],
+    },
+    {
+      id: "cat-6",
+      title: "Service Descriptions",
+      countText: "9 items",
+      categoryKey: "Service Descriptions",
+      icon: Briefcase,
+      snippets: [
+        {
+          title: "Headless CMS Architecture",
+          text: "Custom Sanity / Strapi CMS integration allowing non-technical marketing staff to create landing pages effortlessly.",
+        },
+        {
+          title: "Core Web Vitals Optimization",
+          text: "End-to-end audits ensuring 95+ Google PageSpeed scores, sub-second LCP, and flawless Core Web Vitals.",
+        },
+      ],
+    },
+  ];
+
+  const filteredCategories = React.useMemo(() => {
+    return categories.filter((cat) => {
+      const matchesFilter =
+        activeFilter === "All" ||
+        cat.categoryKey.toLowerCase() === activeFilter.toLowerCase();
       const q = searchQuery.toLowerCase().trim();
       const matchesSearch =
         !q ||
-        item.title.toLowerCase().includes(q) ||
-        item.content.toLowerCase().includes(q) ||
-        item.tags.some((t) => t.toLowerCase().includes(q));
-      return matchesCategory && matchesSearch;
+        cat.title.toLowerCase().includes(q) ||
+        cat.snippets.some(
+          (s) =>
+            s.title.toLowerCase().includes(q) ||
+            s.text.toLowerCase().includes(q)
+        );
+      return matchesFilter && matchesSearch;
     });
-  }, [libraryItems, activeCategory, searchQuery]);
+  }, [activeFilter, searchQuery]);
 
-  const handleAddSnippet = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newTitle.trim() || !newContent.trim()) {
-      toast.error("Please provide both title and snippet content.");
-      return;
-    }
-
-    const newItem: ProposalLibraryItem = {
-      id: "lib-" + Date.now(),
-      category: newCategory,
-      title: newTitle,
-      content: newContent,
-      tags: newTags
-        ? newTags.split(",").map((t) => t.trim())
-        : ["Custom", "Proven"],
-      timesUsed: 1,
-      winRateBoost: "+15% Win Rate",
-    };
-
-    useProposalsStore.setState((state) => ({
-      libraryItems: [newItem, ...state.libraryItems],
-    }));
-
-    toast.success(`Added "${newTitle}" to Winflare Knowledge Base!`);
-    setIsAddModalOpen(false);
-    setNewTitle("");
-    setNewContent("");
-    setNewTags("");
+  const handleCopySnippet = (id: string, text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedId(id);
+    toast.success("Copied snippet to clipboard!");
+    setTimeout(() => setCopiedId(null), 1500);
   };
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-[#FAFAFA]">
-      {/* Top Header */}
-      <header className="sticky top-0 z-20 flex h-14 w-full items-center justify-between border-b border-slate-200/80 bg-white px-6 select-none">
-        <div className="flex items-center gap-3">
-          <Link
-            href="/proposals"
-            className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-colors shadow-2xs"
-            title="Back to proposals"
-          >
-            <ArrowLeft className="h-4 w-4" />
-          </Link>
-          <div className="flex items-center gap-2">
-            <Library className="h-4 w-4 text-[#7C3AED]" />
-            <h1 className="text-sm font-bold text-slate-900">
-              Proposal Library & Knowledge Base
-            </h1>
-          </div>
+    <div className="flex flex-col h-screen overflow-hidden bg-[#FAFBFF]">
+      {/* Top Header with Search, Bell, Profile */}
+      <header className="sticky top-0 z-20 flex h-14 w-full items-center justify-between border-b border-slate-200/80 bg-white px-6 select-none shrink-0">
+        <div className="flex items-center gap-2">
+          <h1 className="text-sm font-bold text-slate-900 tracking-tight">
+            Proposal Library
+          </h1>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-4">
+          <div className="relative flex items-center">
+            <Search className="absolute left-3 h-3.5 w-3.5 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Search..."
+              className="h-8 w-52 rounded-xl border border-slate-200/90 bg-[#F8FAFC] pl-8 pr-9 text-xs text-slate-800 placeholder:text-slate-400 shadow-2xs focus:border-[#5B5AF7] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#5B5AF7]"
+            />
+            <div className="absolute right-2 flex items-center gap-0.5 rounded border border-slate-200 bg-white px-1 py-0.2 text-[9px] font-medium text-slate-400 select-none">
+              <span>⌘</span>
+              <span>K</span>
+            </div>
+          </div>
+
           <button
             type="button"
-            onClick={() => setIsAddModalOpen(true)}
-            className="flex items-center gap-1.5 rounded-xl bg-[#7C3AED] px-3.5 py-1.5 text-xs font-bold text-white hover:bg-[#6D28D9] transition-all shadow-xs cursor-pointer"
+            className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+            title="Notifications"
           >
-            <Plus className="h-3.5 w-3.5" />
-            <span>Add Snippet</span>
+            <Bell className="h-4 w-4" />
           </button>
+
+          <div className="flex items-center gap-2 pl-1 select-none">
+            <img
+              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120"
+              alt="John Doe"
+              className="h-8 w-8 rounded-full object-cover border border-slate-200"
+            />
+            <div className="flex flex-col leading-tight">
+              <span className="text-xs font-bold text-slate-900">John Doe</span>
+              <span className="text-[11px] text-slate-400">Admin</span>
+            </div>
+          </div>
         </div>
       </header>
 
       {/* Main Content Area */}
       <div className="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6">
-        {/* Title Bar Banner */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
-          <div>
-            <h2 className="text-xl font-bold text-slate-900">
-              Winning Content Knowledge Base
-            </h2>
-            <p className="text-xs text-slate-500 mt-0.5">
-              High-converting hooks, case studies, pricing structures, and testimonials to supercharge your proposals.
-            </p>
-          </div>
-
-          {/* Search Box */}
-          <div className="relative flex items-center min-w-[240px]">
-            <Search className="absolute left-3 h-3.5 w-3.5 text-slate-400" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search library snippets or tags..."
-              className="h-9 w-full rounded-xl border border-slate-200 bg-white pl-9 pr-3 text-xs text-slate-800 placeholder:text-slate-400 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
-            />
-          </div>
+        {/* Title Bar */}
+        <div>
+          <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
+            Proposal Library
+          </h2>
+          <p className="text-xs text-slate-400 mt-0.5">
+            Store successful content and reusable assets
+          </p>
         </div>
 
-        {/* Category Tabs */}
-        <div className="flex items-center gap-1.5 overflow-x-auto custom-scrollbar pb-1">
-          {categories.map((cat) => {
-            const isActive = activeCategory === cat.id;
+        {/* Search Input Box */}
+        <div className="relative flex items-center w-full">
+          <Search className="absolute left-3.5 h-4 w-4 text-slate-400" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search library..."
+            className="h-10 w-full rounded-xl border border-slate-200/90 bg-white pl-10 pr-4 text-xs text-slate-800 placeholder:text-slate-400 shadow-2xs focus:border-[#5B5AF7] focus:outline-none focus:ring-1 focus:ring-[#5B5AF7]"
+          />
+        </div>
+
+        {/* Filter Pills matching screenshot */}
+        <div className="flex items-center gap-2 overflow-x-auto custom-scrollbar pb-1">
+          {filters.map((f) => {
+            const isActive = activeFilter === f;
             return (
               <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
+                key={f}
+                onClick={() => setActiveFilter(f)}
                 className={cn(
-                  "rounded-xl px-3 py-1.5 text-xs font-semibold whitespace-nowrap transition-all cursor-pointer select-none",
+                  "rounded-full px-4 py-1.5 text-xs font-medium whitespace-nowrap transition-all cursor-pointer select-none",
                   isActive
-                    ? "bg-[#7C3AED] text-white shadow-2xs"
-                    : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                    ? "bg-[#5B5AF7] text-white shadow-2xs font-semibold"
+                    : "bg-white border border-slate-200/80 text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                 )}
               >
-                {cat.label}
+                {f}
               </button>
             );
           })}
         </div>
 
-        {/* Assets Grid */}
+        {/* 6 Grid Cards (3 columns x 2 rows matching screenshot 4) */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-          {filteredItems.map((item) => (
-            <LibraryAssetCard
-              key={item.id}
-              item={item}
-              onInsert={(it) => {
-                navigator.clipboard.writeText(it.content);
-                toast.success(`Copied "${it.title}"! Paste into your Proposal Editor.`);
-              }}
-            />
-          ))}
+          {filteredCategories.map((cat) => {
+            const Icon = cat.icon;
+            return (
+              <div
+                key={cat.id}
+                onClick={() => setSelectedCategory(cat)}
+                className="flex items-center justify-between rounded-2xl border border-slate-200/80 bg-white p-5 shadow-2xs hover:border-[#5B5AF7]/40 hover:shadow-xs transition-all cursor-pointer group"
+              >
+                <div className="flex items-center gap-4">
+                  {/* Purple squircle icon */}
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#EEF2FF] text-[#5B5AF7] group-hover:scale-105 transition-transform shadow-2xs">
+                    <Icon className="h-5 w-5" />
+                  </div>
+
+                  {/* Title & Count */}
+                  <div className="flex flex-col">
+                    <h3 className="text-sm font-bold text-slate-900 group-hover:text-[#5B5AF7] transition-colors">
+                      {cat.title}
+                    </h3>
+                    <span className="text-xs text-slate-400 mt-0.5">
+                      {cat.countText}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Right Arrow */}
+                <div className="p-1 rounded-lg text-slate-400 group-hover:text-[#5B5AF7] group-hover:translate-x-0.5 transition-all">
+                  <ChevronRight className="h-4 w-4" />
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      {/* Add Snippet Modal */}
-      {isAddModalOpen && (
+      {/* Snippet Details Modal */}
+      {selectedCategory && (
         <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4 sm:p-6">
           <div
             className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs"
-            onClick={() => setIsAddModalOpen(false)}
+            onClick={() => setSelectedCategory(null)}
           />
-          <div className="relative w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl space-y-4">
+          <div className="relative w-full max-w-2xl rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-2xl space-y-5">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h3 className="text-base font-bold text-slate-900">
-                Add Winning Asset to Library
-              </h3>
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-xl bg-[#EEF2FF] text-[#5B5AF7]">
+                  <selectedCategory.icon className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-slate-900">
+                    {selectedCategory.title}
+                  </h3>
+                  <span className="text-xs text-slate-400">
+                    {selectedCategory.countText} available to insert
+                  </span>
+                </div>
+              </div>
+
               <button
-                onClick={() => setIsAddModalOpen(false)}
-                className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 transition-colors"
+                type="button"
+                onClick={() => setSelectedCategory(null)}
+                className="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 cursor-pointer"
               >
                 <X className="h-4 w-4" />
               </button>
             </div>
 
-            <form onSubmit={handleAddSnippet} className="space-y-4 text-xs">
-              <div>
-                <label className="block font-semibold text-slate-700 mb-1">
-                  Asset Title
-                </label>
-                <input
-                  type="text"
-                  value={newTitle}
-                  onChange={(e) => setNewTitle(e.target.value)}
-                  placeholder="e.g. Enterprise Fintech Security Hook"
-                  className="w-full h-9 rounded-lg border border-slate-200 px-3 text-slate-900 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
-                  required
-                />
-              </div>
+            <div className="space-y-3 max-h-[60vh] overflow-y-auto custom-scrollbar pr-1">
+              {selectedCategory.snippets.map((snip, idx) => {
+                const sId = `${selectedCategory.id}-${idx}`;
+                const isCopied = copiedId === sId;
+                return (
+                  <div
+                    key={idx}
+                    className="rounded-xl border border-slate-200/80 bg-[#FAFBFF] p-4 space-y-2 hover:border-[#5B5AF7]/40 transition-colors"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-slate-900">
+                        {snip.title}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => handleCopySnippet(sId, snip.text)}
+                        className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#5B5AF7] hover:underline cursor-pointer"
+                      >
+                        {isCopied ? (
+                          <>
+                            <Check className="h-3 w-3" />
+                            <span>Copied!</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="h-3 w-3" />
+                            <span>Copy Snippet</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                    <p className="text-xs text-slate-600 leading-relaxed">
+                      {snip.text}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
 
-              <div>
-                <label className="block font-semibold text-slate-700 mb-1">
-                  Category
-                </label>
-                <select
-                  value={newCategory}
-                  onChange={(e) => setNewCategory(e.target.value as any)}
-                  className="w-full h-9 rounded-lg border border-slate-200 px-3 text-slate-900 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
-                >
-                  <option value="introductions">Winning Introductions</option>
-                  <option value="case_studies">Case Studies</option>
-                  <option value="testimonials">Testimonials</option>
-                  <option value="pricing">Pricing Packages</option>
-                  <option value="faqs">FAQs</option>
-                  <option value="services">Service Descriptions</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block font-semibold text-slate-700 mb-1">
-                  Snippet Content
-                </label>
-                <textarea
-                  rows={4}
-                  value={newContent}
-                  onChange={(e) => setNewContent(e.target.value)}
-                  placeholder="Paste your proven copy, case study or pricing schedule..."
-                  className="w-full rounded-lg border border-slate-200 p-2.5 text-slate-900 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block font-semibold text-slate-700 mb-1">
-                  Tags (comma separated)
-                </label>
-                <input
-                  type="text"
-                  value={newTags}
-                  onChange={(e) => setNewTags(e.target.value)}
-                  placeholder="Fintech, High Conversion, Next.js"
-                  className="w-full h-9 rounded-lg border border-slate-200 px-3 text-slate-900 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
-                />
-              </div>
-
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
-                <button
-                  type="button"
-                  onClick={() => setIsAddModalOpen(false)}
-                  className="rounded-xl border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="rounded-xl bg-[#7C3AED] px-5 py-2 text-xs font-bold text-white hover:bg-[#6D28D9] transition-all shadow-sm"
-                >
-                  Save to Knowledge Base
-                </button>
-              </div>
-            </form>
+            <div className="flex items-center justify-end pt-3 border-t border-slate-100">
+              <button
+                type="button"
+                onClick={() => setSelectedCategory(null)}
+                className="rounded-xl bg-[#5B5AF7] px-5 py-2 text-xs font-bold text-white hover:bg-[#4847E5] cursor-pointer"
+              >
+                Done
+              </button>
+            </div>
           </div>
         </div>
       )}
     </div>
   );
 }
-
