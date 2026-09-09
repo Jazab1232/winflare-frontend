@@ -120,6 +120,13 @@ export function Navbar() {
           </div>
 
           <Link
+            href="/portfolio"
+            className="text-sm font-medium text-text-primary hover:text-primary transition-colors"
+          >
+            Portfolio
+          </Link>
+
+          <Link
             href="/pricing"
             className="text-sm font-medium text-text-primary hover:text-primary transition-colors"
           >
@@ -174,6 +181,13 @@ export function Navbar() {
               className="rounded-md px-3 py-2 text-base font-medium text-text-primary hover:bg-section"
             >
               How It Works
+            </Link>
+            <Link
+              href="/portfolio"
+              onClick={() => setMobileMenuOpen(false)}
+              className="rounded-md px-3 py-2 text-base font-medium text-text-primary hover:bg-section"
+            >
+              Portfolio
             </Link>
             <Link
               href="/pricing"

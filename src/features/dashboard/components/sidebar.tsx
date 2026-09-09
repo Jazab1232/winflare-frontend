@@ -13,6 +13,7 @@ import {
   Users,
   Settings,
   LineChart,
+  Briefcase,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -114,6 +115,12 @@ export function DashboardSidebar({ className }: { className?: string }) {
             icon={FileText}
             href="/proposals"
             isActive={isActive("/proposals")}
+          />
+          <NavItem
+            label="Portfolio"
+            icon={Briefcase}
+            href="/portfolio"
+            isActive={isActive("/portfolio")}
           />
           <NavItem
             label="Clients"
