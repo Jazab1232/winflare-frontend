@@ -143,49 +143,63 @@ export function DashboardSidebar({ className }: { className?: string }) {
         </nav>
       </div>
 
-      {/* Bottom Area: Team Card matching reference screenshot */}
-      <div className="pt-4 space-y-3">
-        <div className="rounded-xl border border-slate-200/80 bg-white p-3 space-y-2.5 shadow-2xs">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-100 text-slate-700">
-                <Users className="h-3.5 w-3.5" />
+      {/* Bottom Area: Conditional Team card on /settings, Proof card elsewhere */}
+      {pathname === "/settings" ? (
+        <div className="pt-4 space-y-3 mt-auto">
+          <div className="rounded-xl border border-slate-200/80 bg-white p-3 space-y-2.5 shadow-2xs">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-100 text-slate-700">
+                  <Users className="h-3.5 w-3.5" />
+                </div>
+                <div>
+                  <span className="text-xs font-bold text-slate-900 block leading-tight">
+                    Team
+                  </span>
+                  <span className="text-[10px] text-slate-400 block mt-0.5">
+                    2 members
+                  </span>
+                </div>
               </div>
-              <div>
-                <span className="text-xs font-bold text-slate-900 block leading-tight">
-                  Team
-                </span>
-                <span className="text-[10px] text-slate-400 block mt-0.5">
-                  3 members
-                </span>
-              </div>
+              <button
+                type="button"
+                className="text-slate-400 hover:text-slate-600 p-0.5 rounded cursor-pointer"
+              >
+                <span className="text-sm tracking-widest font-bold">•••</span>
+              </button>
             </div>
-            <button
-              type="button"
-              className="text-slate-400 hover:text-slate-600 p-0.5 rounded cursor-pointer"
-            >
-              <span className="text-sm tracking-widest font-bold">•••</span>
-            </button>
-          </div>
 
-          <div className="flex items-center gap-1.5 pt-0.5">
-            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#0F172A] text-white text-[10px] font-bold shadow-2xs">
-              NT
+            <div className="flex items-center gap-1.5 pt-0.5">
+              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#0F172A] text-white text-[10px] font-bold shadow-2xs">
+                NT
+              </div>
+              <button
+                type="button"
+                className="flex h-6 w-6 items-center justify-center rounded-full border border-dashed border-slate-300 text-slate-500 hover:border-[#5B5AF7] hover:text-[#5B5AF7] text-xs font-bold transition-colors cursor-pointer"
+                title="Add member"
+              >
+                +
+              </button>
             </div>
-            <button
-              type="button"
-              className="flex h-6 w-6 items-center justify-center rounded-full border border-dashed border-slate-300 text-slate-500 hover:border-[#5B5AF7] hover:text-[#5B5AF7] text-xs font-bold transition-colors cursor-pointer"
-              title="Add member"
-            >
-              +
-            </button>
           </div>
         </div>
-
-        <div className="text-[10px] text-slate-400 text-center">
-          <span>Winflare OS v1.2</span>
+      ) : (
+        <div className="pt-4 mt-auto">
+          <div className="relative overflow-hidden rounded-2xl border border-indigo-100 bg-linear-to-b from-[#F7F6FF] via-[#F0EEFF] to-[#E9E6FF] p-4 text-slate-800 shadow-2xs">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white text-[#5B5AF7] shadow-2xs">
+              <FileText className="h-4 w-4" />
+            </div>
+            <h4 className="mt-2 text-xs font-bold text-slate-900 leading-snug">
+              Build stronger proposals with proof.
+            </h4>
+            <p className="mt-1 text-[11px] text-slate-500 leading-normal">
+              Your portfolio turns experience into wins.
+            </p>
+            {/* Subtle purple gradient wave accent */}
+            <div className="absolute -bottom-6 -right-6 h-20 w-20 rounded-full bg-[#5B5AF7]/15 blur-xl pointer-events-none" />
+          </div>
         </div>
-      </div>
+      )}
     </aside>
   );
 }

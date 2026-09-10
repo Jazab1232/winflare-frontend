@@ -21,6 +21,7 @@ import { PipelineHeader } from "@/features/pipeline/components/pipeline-header";
 import { PipelineTitleBar } from "@/features/pipeline/components/pipeline-title-bar";
 import { PipelineMetricCards } from "@/features/pipeline/components/pipeline-metric-cards";
 import { PipelineKanbanBoard } from "@/features/pipeline/components/pipeline-kanban-board";
+import { PipelineListView } from "@/features/pipeline/components/pipeline-list-view";
 import { PipelineAiCommandCenter } from "@/features/pipeline/components/pipeline-ai-command-center";
 import { PipelineDetailModal } from "@/features/pipeline/components/pipeline-detail-modal";
 import { NewOpportunityModal } from "@/features/pipeline/components/new-opportunity-modal";
@@ -30,6 +31,7 @@ export default function PipelinePage() {
   const [stages, setStages] =
     React.useState<PipelineStageConfig[]>(MOCK_PIPELINE_STAGES);
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [viewMode, setViewMode] = React.useState<"board" | "list">("board");
   const [selectedItem, setSelectedItem] = React.useState<PipelineItem | null>(
     null
   );
@@ -129,6 +131,8 @@ export default function PipelinePage() {
         <div className="flex flex-1 flex-col min-w-0 overflow-hidden">
           {/* Title and date/filter controls */}
           <PipelineTitleBar
+            viewMode={viewMode}
+            onViewModeChange={setViewMode}
             onFilterClick={() => toast.info("Filter clicked")}
             onSortClick={() => toast.info("Sort options clicked")}
           />
@@ -136,16 +140,27 @@ export default function PipelinePage() {
           {/* 5 Summary Metric Cards */}
           <PipelineMetricCards metrics={MOCK_SUMMARY_METRICS} />
 
-          {/* Kanban Board */}
-          <PipelineKanbanBoard
-            stages={stages}
-            items={filteredItems}
-            onOpenDetails={handleOpenDetails}
-            onGenerateProposal={handleGenerateProposal}
-            onViewProposal={handleViewProposal}
-            onMoveStage={(item) => handleMoveStage(item)}
-            onAddOpportunity={handleAddOpportunityClick}
-          />
+          {/* Kanban Board or List View */}
+          {viewMode === "board" ? (
+            <PipelineKanbanBoard
+              stages={stages}
+              items={filteredItems}
+              onOpenDetails={handleOpenDetails}
+              onGenerateProposal={handleGenerateProposal}
+              onViewProposal={handleViewProposal}
+              onMoveStage={(item) => handleMoveStage(item)}
+              onAddOpportunity={handleAddOpportunityClick}
+            />
+          ) : (
+            <PipelineListView
+              stages={stages}
+              items={filteredItems}
+              onOpenDetails={handleOpenDetails}
+              onGenerateProposal={handleGenerateProposal}
+              onViewProposal={handleViewProposal}
+              onMoveStage={(item) => handleMoveStage(item)}
+            />
+          )}
         </div>
 
         {/* Right Sidebar: AI Command Center */}

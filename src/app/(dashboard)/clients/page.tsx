@@ -34,6 +34,13 @@ export default function ClientsPage() {
   const [filterStatus, setFilterStatus] = React.useState<string>("all");
   const [filterIndustry, setFilterIndustry] = React.useState<string>("all");
   const [viewMode, setViewMode] = React.useState<"grid" | "list">("grid");
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const itemsPerPage = 8;
+
+  // Reset pagination on filter change
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, filterStatus, filterIndustry]);
 
   // Modal
   const [isNewClientModalOpen, setIsNewClientModalOpen] = React.useState(false);
@@ -79,6 +86,12 @@ export default function ClientsPage() {
     });
   }, [clients, searchQuery, filterStatus, filterIndustry]);
 
+  const totalPages = Math.ceil(filteredClients.length / itemsPerPage) || 1;
+  const paginatedClients = React.useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return filteredClients.slice(start, start + itemsPerPage);
+  }, [filteredClients, currentPage, itemsPerPage]);
+
   const handleAddClient = (newClient: ClientItem) => {
     setClients((prev) => [newClient, ...prev]);
     setSelectedClient(newClient);
@@ -107,13 +120,13 @@ export default function ClientsPage() {
               </p>
             </div>
 
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-3">
               <button
                 type="button"
                 className="inline-flex items-center gap-2 rounded-xl border border-slate-200/90 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 transition-colors cursor-pointer"
               >
                 <Download className="h-3.5 w-3.5 text-slate-500" />
-                <span>Import Client</span>
+                <span>Export</span>
               </button>
 
               <button
@@ -121,7 +134,7 @@ export default function ClientsPage() {
                 className="inline-flex items-center gap-2 rounded-xl border border-slate-200/90 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 transition-colors cursor-pointer"
               >
                 <Upload className="h-3.5 w-3.5 text-slate-500" />
-                <span>Export</span>
+                <span>Import</span>
               </button>
 
               <button
@@ -130,43 +143,41 @@ export default function ClientsPage() {
                 className="inline-flex items-center gap-1.5 rounded-xl bg-[#5B5AF7] hover:bg-[#4847E5] px-4 py-2 text-xs font-semibold text-white shadow-xs transition-colors cursor-pointer"
               >
                 <Plus className="h-3.5 w-3.5" />
-                <span>New Client</span>
+                <span>Add Client</span>
               </button>
             </div>
           </div>
 
-          {/* KPI Metrics Cards */}
+          {/* 4 KPI Metric Cards */}
           <ClientsMetricCards metrics={metrics} />
 
-          {/* Search, Filter Dropdowns & View Mode Bar */}
+          {/* Search, Filter Bar & View Toggle */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
-            {/* Search input */}
+            {/* Search Input */}
             <div className="relative flex-1 max-w-sm">
               <Search className="absolute left-3.5 top-2.5 h-4 w-4 text-slate-400" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search clients..."
-                className="h-9 w-full rounded-xl border border-slate-200 bg-white pl-9 pr-4 text-xs text-slate-800 placeholder:text-slate-400 shadow-2xs focus:border-[#5B5AF7] focus:outline-none focus:ring-1 focus:ring-[#5B5AF7]"
+                placeholder="Search clients by name, industry, or location..."
+                className="h-9 w-full rounded-xl border border-slate-200 bg-white pl-9 pr-4 text-xs text-slate-800 placeholder:text-slate-400 shadow-2xs focus:border-[#5B5AF7] focus:outline-none"
               />
             </div>
 
-            {/* Filter Dropdowns & Grid/List View Switch */}
+            {/* Filter Dropdowns & View Mode Toggle */}
             <div className="flex items-center gap-2.5">
-              {/* All Clients Dropdown */}
+              {/* All Industries Dropdown */}
               <div className="relative">
                 <select
                   value={filterIndustry}
                   onChange={(e) => setFilterIndustry(e.target.value)}
                   className="appearance-none rounded-xl border border-slate-200 bg-white pl-3.5 pr-8 py-2 text-xs font-medium text-slate-700 shadow-2xs hover:bg-slate-50 focus:border-[#5B5AF7] focus:outline-none cursor-pointer"
                 >
-                  <option value="all">All Clients</option>
-                  <option value="software development">Software Development</option>
-                  <option value="fintech">Fintech</option>
+                  <option value="all">All Industries</option>
                   <option value="saas">SaaS</option>
-                  <option value="marketing agency">Marketing Agency</option>
-                  <option value="e-commerce">E-commerce</option>
+                  <option value="fintech">Fintech</option>
+                  <option value="e-commerce">E-Commerce</option>
                   <option value="healthtech">HealthTech</option>
                   <option value="design & creative">Design & Creative</option>
                   <option value="it consulting">IT Consulting</option>
@@ -253,7 +264,7 @@ export default function ClientsPage() {
                   : "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
               )}
             >
-              {filteredClients.map((client) => (
+              {paginatedClients.map((client) => (
                 <ClientCard
                   key={client.id}
                   client={client}
@@ -279,7 +290,7 @@ export default function ClientsPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {filteredClients.map((client) => {
+                  {paginatedClients.map((client) => {
                     const isSelected = selectedClient?.id === client.id;
                     return (
                       <tr
@@ -352,6 +363,53 @@ export default function ClientsPage() {
                   })}
                 </tbody>
               </table>
+            </div>
+          )}
+
+          {/* Pagination Bar for Clients */}
+          {filteredClients.length > 0 && totalPages > 1 && (
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-slate-200/80 pt-4">
+              <span className="text-xs text-slate-400 font-medium">
+                Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
+                {Math.min(currentPage * itemsPerPage, filteredClients.length)} of{" "}
+                {filteredClients.length} clients
+              </span>
+
+              <div className="flex items-center gap-1.5 self-end sm:self-auto">
+                <button
+                  type="button"
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                  className="rounded-lg border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-2xs"
+                >
+                  Previous
+                </button>
+
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <button
+                    key={page}
+                    type="button"
+                    onClick={() => setCurrentPage(page)}
+                    className={cn(
+                      "h-7 w-7 rounded-lg text-xs font-semibold transition-colors cursor-pointer",
+                      currentPage === page
+                        ? "bg-[#5B5AF7] text-white shadow-2xs"
+                        : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 shadow-2xs"
+                    )}
+                  >
+                    {page}
+                  </button>
+                ))}
+
+                <button
+                  type="button"
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+                  className="rounded-lg border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-2xs"
+                >
+                  Next
+                </button>
+              </div>
             </div>
           )}
         </div>

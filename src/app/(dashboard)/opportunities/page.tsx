@@ -8,9 +8,11 @@ import { SourceFilterBar } from "@/features/opportunities/components/source-filt
 import { OpportunityCard } from "@/features/opportunities/components/opportunity-card";
 import { OpportunityDetailPanel } from "@/features/opportunities/components/opportunity-detail-panel";
 import { ImportOpportunityModal } from "@/features/opportunities/components/import-opportunity-modal";
+import { OpportunityShortListView } from "@/features/opportunities/components/opportunity-short-list-view";
 import { OpportunityItem } from "@/features/opportunities/types";
 import { Filter } from "lucide-react";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 export default function OpportunitiesPage() {
   const [opportunities, setOpportunities] =
@@ -23,6 +25,9 @@ export default function OpportunitiesPage() {
     MOCK_OPPORTUNITIES[0].id
   );
   const [activeSource, setActiveSource] = React.useState("all");
+  const [viewMode, setViewMode] = React.useState<"card" | "detailed" | "short">("detailed");
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const itemsPerPage = 8;
 
   // Filter state
   const [selectedJobTypes, setSelectedJobTypes] = React.useState<string[]>(["Full-time"]);
@@ -60,16 +65,37 @@ export default function OpportunitiesPage() {
     setSelectedLocations([]);
   };
 
-  const filteredOpportunities = opportunities.filter((opp) => {
-    if (activeSource !== "all" && opp.source !== activeSource) return false;
-    if (
-      searchQuery.trim() &&
-      !opp.role.toLowerCase().includes(searchQuery.toLowerCase()) &&
-      !opp.company.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-      return false;
-    return true;
-  });
+  // Reset pagination on filter change
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [
+    searchQuery,
+    activeSource,
+    selectedJobTypes,
+    selectedExperience,
+    selectedSkills,
+    selectedLocations,
+    viewMode,
+  ]);
+
+  const filteredOpportunities = React.useMemo(() => {
+    return opportunities.filter((opp) => {
+      if (activeSource !== "all" && opp.source !== activeSource) return false;
+      if (
+        searchQuery.trim() &&
+        !opp.role.toLowerCase().includes(searchQuery.toLowerCase()) &&
+        !opp.company.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+        return false;
+      return true;
+    });
+  }, [opportunities, activeSource, searchQuery]);
+
+  const totalPages = Math.ceil(filteredOpportunities.length / itemsPerPage) || 1;
+  const paginatedOpportunities = React.useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return filteredOpportunities.slice(start, start + itemsPerPage);
+  }, [filteredOpportunities, currentPage, itemsPerPage]);
 
   const activeFilterCount =
     selectedJobTypes.length +
@@ -147,25 +173,130 @@ export default function OpportunitiesPage() {
             activeSource={activeSource}
             onSelectSource={setActiveSource}
             totalCount={2847}
+            viewMode={viewMode}
+            onViewModeChange={setViewMode}
           />
 
-          {/* Cards List */}
-          <div className="flex flex-col gap-3.5 pb-6">
-            {filteredOpportunities.map((opp) => (
-              <OpportunityCard
-                key={opp.id}
-                item={opp}
-                isSelected={isDetailOpen && opp.id === selectedId}
-                onSelect={() => {
+          {/* View Mode Rendering: Card, Detailed, or Short List */}
+          {paginatedOpportunities.length === 0 ? (
+            <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-white p-12 text-center my-auto">
+              <p className="text-sm font-semibold text-slate-700">No opportunities found</p>
+              <p className="text-xs text-slate-400 mt-0.5">Try clearing filters or search query.</p>
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchQuery("");
+                  setActiveSource("all");
+                  handleClearAll();
+                }}
+                className="mt-4 text-xs font-semibold text-[#5B5AF7] hover:underline"
+              >
+                Clear all filters
+              </button>
+            </div>
+          ) : viewMode === "card" ? (
+            /* 1. Card Grid View */
+            <div
+              className={cn(
+                "grid gap-4 pb-6",
+                isDetailOpen
+                  ? "grid-cols-1 md:grid-cols-2"
+                  : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+              )}
+            >
+              {paginatedOpportunities.map((opp) => (
+                <OpportunityCard
+                  key={opp.id}
+                  item={opp}
+                  isSelected={isDetailOpen && opp.id === selectedId}
+                  onSelect={() => {
+                    setSelectedId(opp.id);
+                    setIsDetailOpen(true);
+                  }}
+                  onToggleSave={() => {}}
+                />
+              ))}
+            </div>
+          ) : viewMode === "short" ? (
+            /* 2. Short List (Compact Table) View */
+            <div className="pb-6">
+              <OpportunityShortListView
+                items={paginatedOpportunities}
+                selectedId={selectedId}
+                onSelect={(opp) => {
                   setSelectedId(opp.id);
                   setIsDetailOpen(true);
                 }}
-                onToggleSave={(e) => {
-                  // Toggle save state (mock)
+                onGenerateProposal={handleGenerateProposal}
+                onToggleSave={(opp) => {
+                  toast.success(`Updated saved state for ${opp.role}`);
                 }}
               />
-            ))}
-          </div>
+            </div>
+          ) : (
+            /* 3. Detailed List View (Vertical Stack Feed + Right Drawer) */
+            <div className="flex flex-col gap-3.5 pb-6">
+              {paginatedOpportunities.map((opp) => (
+                <OpportunityCard
+                  key={opp.id}
+                  item={opp}
+                  isSelected={isDetailOpen && opp.id === selectedId}
+                  onSelect={() => {
+                    setSelectedId(opp.id);
+                    setIsDetailOpen(true);
+                  }}
+                  onToggleSave={() => {}}
+                />
+              ))}
+            </div>
+          )}
+
+          {/* Pagination Controls */}
+          {filteredOpportunities.length > 0 && totalPages > 1 && (
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-slate-200/80 pt-4 pb-4 mt-auto">
+              <span className="text-xs text-slate-400 font-medium">
+                Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
+                {Math.min(currentPage * itemsPerPage, filteredOpportunities.length)} of{" "}
+                {filteredOpportunities.length} opportunities
+              </span>
+
+              <div className="flex items-center gap-1.5 self-end sm:self-auto">
+                <button
+                  type="button"
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                  className="rounded-lg border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-2xs"
+                >
+                  Previous
+                </button>
+
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <button
+                    key={page}
+                    type="button"
+                    onClick={() => setCurrentPage(page)}
+                    className={cn(
+                      "h-7 w-7 rounded-lg text-xs font-semibold transition-colors cursor-pointer",
+                      currentPage === page
+                        ? "bg-[#5B5AF7] text-white shadow-2xs"
+                        : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 shadow-2xs"
+                    )}
+                  >
+                    {page}
+                  </button>
+                ))}
+
+                <button
+                  type="button"
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+                  className="rounded-lg border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-2xs"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Pane 3: Right Detail Drawer (Clean, Uncluttered, Collapsible) */}

@@ -6,6 +6,8 @@ import {
   ChevronDown,
   LayoutGrid,
   Sparkles,
+  Layers,
+  List,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -13,12 +15,16 @@ interface SourceFilterBarProps {
   activeSource: string;
   onSelectSource: (source: string) => void;
   totalCount?: number;
+  viewMode?: "card" | "detailed" | "short";
+  onViewModeChange?: (mode: "card" | "detailed" | "short") => void;
 }
 
 export function SourceFilterBar({
   activeSource,
   onSelectSource,
   totalCount = 2847,
+  viewMode = "detailed",
+  onViewModeChange,
 }: SourceFilterBarProps) {
   const sources = [
     { id: "all", label: "All Sources", count: "12.4k" },
@@ -125,7 +131,7 @@ export function SourceFilterBar({
           </button>
         </div>
 
-        {/* Right Controls: Sort & Layout */}
+        {/* Right Controls: Sort & 3-Way View Switcher */}
         <div className="flex items-center gap-2">
           {/* Sort Dropdown */}
           <button
@@ -136,19 +142,59 @@ export function SourceFilterBar({
             <ChevronDown className="h-3.5 w-3.5 text-slate-400" />
           </button>
 
-          {/* Layout Toggle */}
-          <button
-            type="button"
-            className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-200/90 bg-white text-slate-600 hover:bg-slate-50 shadow-2xs cursor-pointer"
-          >
-            <LayoutGrid className="h-4 w-4" />
-          </button>
-        </div>
-      </div>
+          {/* 3-Option Layout Toggle: Card vs Detailed vs Short List */}
+          {onViewModeChange && (
+            <div className="flex items-center rounded-xl border border-slate-200/90 bg-white p-0.5 shadow-2xs">
+              {/* Option 1: Card View */}
+              <button
+                type="button"
+                onClick={() => onViewModeChange("card")}
+                title="Card View"
+                className={cn(
+                  "flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition-all cursor-pointer",
+                  viewMode === "card"
+                    ? "bg-[#EEF2FF] text-[#5B5AF7]"
+                    : "text-slate-500 hover:text-slate-800"
+                )}
+              >
+                <LayoutGrid className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">Card</span>
+              </button>
 
-      {/* Showing count indicator */}
-      <div className="text-xs font-medium text-slate-500 pt-1">
-        Showing 1–10 of {totalCount.toLocaleString()} opportunities
+              {/* Option 2: Detailed List View (Current Feed + Drawer) */}
+              <button
+                type="button"
+                onClick={() => onViewModeChange("detailed")}
+                title="Detailed List View"
+                className={cn(
+                  "flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition-all cursor-pointer",
+                  viewMode === "detailed"
+                    ? "bg-[#EEF2FF] text-[#5B5AF7]"
+                    : "text-slate-500 hover:text-slate-800"
+                )}
+              >
+                <Layers className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">Detailed</span>
+              </button>
+
+              {/* Option 3: Short List View */}
+              <button
+                type="button"
+                onClick={() => onViewModeChange("short")}
+                title="Short List View"
+                className={cn(
+                  "flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition-all cursor-pointer",
+                  viewMode === "short"
+                    ? "bg-[#EEF2FF] text-[#5B5AF7]"
+                    : "text-slate-500 hover:text-slate-800"
+                )}
+              >
+                <List className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">Short List</span>
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

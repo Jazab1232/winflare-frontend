@@ -1,17 +1,20 @@
-"use client";
-
 import * as React from "react";
-import { Calendar, ChevronDown, Filter, SlidersHorizontal } from "lucide-react";
+import { Calendar, ChevronDown, Filter, SlidersHorizontal, Kanban, List } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface PipelineTitleBarProps {
   onFilterClick?: () => void;
   onSortClick?: () => void;
+  viewMode?: "board" | "list";
+  onViewModeChange?: (mode: "board" | "list") => void;
 }
 
 export function PipelineTitleBar({
   onFilterClick,
   onSortClick,
+  viewMode = "board",
+  onViewModeChange,
 }: PipelineTitleBarProps) {
   const [selectedRange, setSelectedRange] = React.useState("Last 30 days");
   const [isRangeOpen, setIsRangeOpen] = React.useState(false);
@@ -32,6 +35,38 @@ export function PipelineTitleBar({
 
       {/* Action Controls on Right */}
       <div className="flex items-center gap-2.5">
+        {/* View Mode Toggle: Board vs List */}
+        {onViewModeChange && (
+          <div className="flex items-center rounded-xl border border-slate-200 bg-white p-0.5 shadow-2xs">
+            <button
+              type="button"
+              onClick={() => onViewModeChange("board")}
+              className={cn(
+                "inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition-colors cursor-pointer",
+                viewMode === "board"
+                  ? "bg-[#EEF2FF] text-[#5B5AF7]"
+                  : "text-slate-500 hover:text-slate-900"
+              )}
+            >
+              <Kanban className="h-3.5 w-3.5" />
+              <span>Board</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => onViewModeChange("list")}
+              className={cn(
+                "inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition-colors cursor-pointer",
+                viewMode === "list"
+                  ? "bg-[#EEF2FF] text-[#5B5AF7]"
+                  : "text-slate-500 hover:text-slate-900"
+              )}
+            >
+              <List className="h-3.5 w-3.5" />
+              <span>List</span>
+            </button>
+          </div>
+        )}
+
         {/* Date Filter Dropdown */}
         <div className="relative">
           <Button
