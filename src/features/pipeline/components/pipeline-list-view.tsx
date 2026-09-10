@@ -2,8 +2,6 @@
 
 import * as React from "react";
 import {
-  FileText,
-  MoreHorizontal,
   ChevronRight,
   Bookmark,
   Award,
@@ -62,26 +60,21 @@ const STAGE_CONFIG: Record<
 };
 
 export function PipelineListView({
-  stages,
   items,
   onOpenDetails,
   onGenerateProposal,
-  onViewProposal,
   onMoveStage,
 }: PipelineListViewProps) {
   const [currentPage, setCurrentPage] = React.useState(1);
   const itemsPerPage = 8;
 
-  // Reset page if items count changes drastically
-  React.useEffect(() => {
-    setCurrentPage(1);
-  }, [items.length]);
-
   const totalPages = Math.ceil(items.length / itemsPerPage) || 1;
+  const safePage = Math.min(Math.max(1, currentPage), totalPages);
+
   const paginatedItems = React.useMemo(() => {
-    const start = (currentPage - 1) * itemsPerPage;
+    const start = (safePage - 1) * itemsPerPage;
     return items.slice(start, start + itemsPerPage);
-  }, [items, currentPage, itemsPerPage]);
+  }, [items, safePage, itemsPerPage]);
 
   return (
     <div className="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-4">
@@ -198,16 +191,16 @@ export function PipelineListView({
 
         {/* Pagination Bar */}
         {totalPages > 1 && (
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-slate-100 p-4 bg-white">
-            <span className="text-[11px] text-slate-400 font-medium">
-              Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
-              {Math.min(currentPage * itemsPerPage, items.length)} of {items.length} opportunities
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-slate-200/80 pt-4">
+            <span className="text-xs text-slate-400 font-medium">
+              Showing {(safePage - 1) * itemsPerPage + 1} to{" "}
+              {Math.min(safePage * itemsPerPage, items.length)} of {items.length} opportunities
             </span>
 
             <div className="flex items-center gap-1.5 self-end sm:self-auto">
               <button
                 type="button"
-                disabled={currentPage === 1}
+                disabled={safePage === 1}
                 onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
                 className="rounded-lg border border-slate-200 px-3 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
               >
@@ -221,7 +214,7 @@ export function PipelineListView({
                   onClick={() => setCurrentPage(page)}
                   className={cn(
                     "h-7 w-7 rounded-lg text-xs font-semibold transition-colors cursor-pointer",
-                    currentPage === page
+                    safePage === page
                       ? "bg-[#5B5AF7] text-white shadow-2xs"
                       : "text-slate-600 hover:bg-slate-100"
                   )}
@@ -232,7 +225,7 @@ export function PipelineListView({
 
               <button
                 type="button"
-                disabled={currentPage === totalPages}
+                disabled={safePage === totalPages}
                 onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
                 className="rounded-lg border border-slate-200 px-3 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
               >

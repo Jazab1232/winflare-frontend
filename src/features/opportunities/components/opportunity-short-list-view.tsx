@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Bookmark, Sparkles, MapPin, ExternalLink, ArrowRight } from "lucide-react";
+import { Bookmark, Sparkles, MapPin} from "lucide-react";
 import { OpportunityItem } from "../types";
 import { CompanyLogo } from "./company-logo";
 import { cn } from "@/lib/utils";

@@ -65,19 +65,6 @@ export default function OpportunitiesPage() {
     setSelectedLocations([]);
   };
 
-  // Reset pagination on filter change
-  React.useEffect(() => {
-    setCurrentPage(1);
-  }, [
-    searchQuery,
-    activeSource,
-    selectedJobTypes,
-    selectedExperience,
-    selectedSkills,
-    selectedLocations,
-    viewMode,
-  ]);
-
   const filteredOpportunities = React.useMemo(() => {
     return opportunities.filter((opp) => {
       if (activeSource !== "all" && opp.source !== activeSource) return false;
@@ -92,10 +79,11 @@ export default function OpportunitiesPage() {
   }, [opportunities, activeSource, searchQuery]);
 
   const totalPages = Math.ceil(filteredOpportunities.length / itemsPerPage) || 1;
+  const safePage = Math.min(Math.max(1, currentPage), totalPages);
   const paginatedOpportunities = React.useMemo(() => {
-    const start = (currentPage - 1) * itemsPerPage;
+    const start = (safePage - 1) * itemsPerPage;
     return filteredOpportunities.slice(start, start + itemsPerPage);
-  }, [filteredOpportunities, currentPage, itemsPerPage]);
+  }, [filteredOpportunities, safePage, itemsPerPage]);
 
   const activeFilterCount =
     selectedJobTypes.length +
@@ -255,15 +243,15 @@ export default function OpportunitiesPage() {
           {filteredOpportunities.length > 0 && totalPages > 1 && (
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-slate-200/80 pt-4 pb-4 mt-auto">
               <span className="text-xs text-slate-400 font-medium">
-                Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
-                {Math.min(currentPage * itemsPerPage, filteredOpportunities.length)} of{" "}
+                Showing {(safePage - 1) * itemsPerPage + 1} to{" "}
+                {Math.min(safePage * itemsPerPage, filteredOpportunities.length)} of{" "}
                 {filteredOpportunities.length} opportunities
               </span>
 
               <div className="flex items-center gap-1.5 self-end sm:self-auto">
                 <button
                   type="button"
-                  disabled={currentPage === 1}
+                  disabled={safePage === 1}
                   onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
                   className="rounded-lg border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-2xs"
                 >
@@ -277,7 +265,7 @@ export default function OpportunitiesPage() {
                     onClick={() => setCurrentPage(page)}
                     className={cn(
                       "h-7 w-7 rounded-lg text-xs font-semibold transition-colors cursor-pointer",
-                      currentPage === page
+                      safePage === page
                         ? "bg-[#5B5AF7] text-white shadow-2xs"
                         : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 shadow-2xs"
                     )}
@@ -288,7 +276,7 @@ export default function OpportunitiesPage() {
 
                 <button
                   type="button"
-                  disabled={currentPage === totalPages}
+                  disabled={safePage === totalPages}
                   onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
                   className="rounded-lg border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-2xs"
                 >
