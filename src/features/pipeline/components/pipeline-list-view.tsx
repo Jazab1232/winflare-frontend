@@ -127,7 +127,7 @@ export function PipelineListView({
                               {item.role}
                             </span>
                             <span className="text-[11px] text-slate-400 line-clamp-1">
-                              {item.company} &bull; {item.timeline || "Active RFP"}
+                              {item.company} &bull; {item.deadline || item.timeAgo || item.timeline || "Active RFP"}
                             </span>
                           </div>
                         </div>

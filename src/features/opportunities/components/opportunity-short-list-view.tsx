@@ -85,7 +85,7 @@ export function OpportunityShortListView({
 
                   {/* Type & Experience */}
                   <td className="py-3 px-3 text-slate-500">
-                    {item.jobType} &bull; {item.experienceLevel}
+                    {item.jobType} &bull; {item.experienceLevel || "Mid-Senior"}
                   </td>
 
                   {/* Location */}

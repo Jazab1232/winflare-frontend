@@ -18,6 +18,7 @@ export interface OpportunityItem {
   location: string;
   salary: string;
   jobType: "Full-time" | "Part-time" | "Contract" | "Freelance";
+  experienceLevel?: string;
   postedTime: string;
   matchScore: number;
   skills: string[];

@@ -23,6 +23,7 @@ export interface PipelineItem {
   timeAgo: string;
   extraTime?: string;
   deadline?: string;
+  timeline?: string;
 }
 
 export interface PipelineStageConfig {
