@@ -2,20 +2,21 @@
 
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   Home,
   Target,
   Columns3,
   FileText,
-  LayoutTemplate,
-  FolderArchive,
   Users,
   Settings,
   LineChart,
   Briefcase,
+  LogOut,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Avatar } from "@/components/ui/avatar";
 
 interface NavItemProps {
   label: string;
@@ -72,12 +73,12 @@ export function DashboardSidebar({ className }: { className?: string }) {
   return (
     <aside
       className={cn(
-        "sticky top-0 flex h-screen max-h-screen w-56 lg:w-60 shrink-0 flex-col justify-between overflow-y-auto custom-scrollbar border-r border-slate-200/80 bg-white p-4 select-none",
+        "sticky top-0 flex h-screen max-h-screen w-56 lg:w-60 shrink-0 flex-col justify-between border-r border-slate-200/80 bg-white select-none",
         className
       )}
     >
-      {/* Top Part */}
-      <div className="flex flex-col gap-6">
+      {/* Top Part: Logo & Scrollable Main Navigation */}
+      <div className="flex flex-col flex-1 min-h-0 overflow-y-auto custom-scrollbar p-4 gap-6">
         {/* Brand Logo matching screenshot: purple W icon + Winflare text */}
         <Link href="/dashboard" className="flex items-center gap-2.5 px-2 pt-1">
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#5B5AF7] text-white shadow-xs font-black text-sm">
@@ -90,7 +91,7 @@ export function DashboardSidebar({ className }: { className?: string }) {
           </span>
         </Link>
 
-        {/* Main Navigation matching screenshot */}
+        {/* Main Navigation */}
         <nav className="flex flex-col gap-1">
           <NavItem
             label="Home"
@@ -134,72 +135,64 @@ export function DashboardSidebar({ className }: { className?: string }) {
             href="/analytics"
             isActive={isActive("/analytics")}
           />
-          <NavItem
-            label="Settings"
-            icon={Settings}
-            href="/settings"
-            isActive={isActive("/settings")}
-          />
         </nav>
       </div>
 
-      {/* Bottom Area: Conditional Team card on /settings, Proof card elsewhere */}
-      {pathname === "/settings" ? (
-        <div className="pt-4 space-y-3 mt-auto">
-          <div className="rounded-xl border border-slate-200/80 bg-white p-3 space-y-2.5 shadow-2xs">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-100 text-slate-700">
-                  <Users className="h-3.5 w-3.5" />
-                </div>
-                <div>
-                  <span className="text-xs font-bold text-slate-900 block leading-tight">
-                    Team
-                  </span>
-                  <span className="text-[10px] text-slate-400 block mt-0.5">
-                    2 members
-                  </span>
-                </div>
-              </div>
-              <button
-                type="button"
-                className="text-slate-400 hover:text-slate-600 p-0.5 rounded cursor-pointer"
-              >
-                <span className="text-sm tracking-widest font-bold">•••</span>
-              </button>
+      {/* Bottom Area: STUCK AT BOTTOM */}
+      <div className="shrink-0 p-3 mx-2 mb-2 border-t border-slate-100 flex flex-col gap-1.5 bg-white">
+        {/* 1. Logged-in User's Badge & Name Card */}
+        <Link
+          href="/settings"
+          className="flex items-center justify-between p-2 rounded-xl bg-slate-50/70 border border-slate-100 hover:bg-slate-100/70 transition-all cursor-pointer group"
+          title="Account Settings"
+        >
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="relative shrink-0">
+              <Avatar className="h-8 w-8 rounded-full border border-slate-200">
+                <Image
+                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120"
+                  alt="Jazab Ahmed"
+                  width={32}
+                  height={32}
+                  unoptimized
+                  className="h-full w-full object-cover rounded-full"
+                />
+              </Avatar>
+              <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-white" />
             </div>
+            <div className="flex flex-col min-w-0 leading-tight">
+              <span className="text-xs font-bold text-slate-800 truncate group-hover:text-[#5B5AF7] transition-colors">
+                Jazab Ahmed
+              </span>
+              <span className="text-[10px] text-slate-400 truncate">
+                Freelancer
+              </span>
+            </div>
+          </div>
+          <span className="text-[9px] font-semibold text-[#5B5AF7] bg-white border border-indigo-100/80 px-1.5 py-0.5 rounded-md shrink-0 shadow-2xs">
+            PRO
+          </span>
+        </Link>
 
-            <div className="flex items-center gap-1.5 pt-0.5">
-              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#0F172A] text-white text-[10px] font-bold shadow-2xs">
-                NT
-              </div>
-              <button
-                type="button"
-                className="flex h-6 w-6 items-center justify-center rounded-full border border-dashed border-slate-300 text-slate-500 hover:border-[#5B5AF7] hover:text-[#5B5AF7] text-xs font-bold transition-colors cursor-pointer"
-                title="Add member"
-              >
-                +
-              </button>
-            </div>
+        {/* 2. Settings Link (below badge and name card) */}
+        <NavItem
+          label="Settings"
+          icon={Settings}
+          href="/settings"
+          isActive={isActive("/settings")}
+        />
+
+        {/* 3. Logout Link (below settings) */}
+        <Link
+          href="/login"
+          className="group relative flex items-center justify-between rounded-xl px-3 py-2 text-[13px] font-medium transition-all text-slate-600 hover:bg-rose-50/70 hover:text-rose-600 cursor-pointer"
+        >
+          <div className="flex items-center gap-3">
+            <LogOut className="h-4 w-4 shrink-0 text-slate-500 group-hover:text-rose-600 transition-colors" />
+            <span>Log out</span>
           </div>
-        </div>
-      ) : (
-        <div className="pt-4 mt-auto">
-          <div className="relative overflow-hidden rounded-2xl border border-indigo-100 bg-linear-to-b from-[#F7F6FF] via-[#F0EEFF] to-[#E9E6FF] p-4 text-slate-800 shadow-2xs">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white text-[#5B5AF7] shadow-2xs">
-              <FileText className="h-4 w-4" />
-            </div>
-            <h4 className="mt-2 text-xs font-bold text-slate-900 leading-snug">
-              Build stronger proposals with proof.
-            </h4>
-            <p className="mt-1 text-[11px] text-slate-500 leading-normal">
-              Your portfolio turns experience into wins.
-            </p>
-            {/* Subtle purple gradient wave accent */}
-            <div className="absolute -bottom-6 -right-6 h-20 w-20 rounded-full bg-[#5B5AF7]/15 blur-xl pointer-events-none" />
-          </div>
-        </div>
-      )}
+        </Link>
+      </div>
     </aside>
   );
 }
