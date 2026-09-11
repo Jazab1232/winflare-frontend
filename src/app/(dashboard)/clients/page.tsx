@@ -13,7 +13,7 @@ import {
   Clock,
   ArrowRight,
 } from "lucide-react";
-import { ClientsHeader } from "@/features/clients/components/clients-header";
+import { PageHeader, Pagination, EmptyState } from "@/components/dashboard";
 import { ClientsMetricCards } from "@/features/clients/components/clients-metric-cards";
 import { ClientCard } from "@/features/clients/components/client-card";
 import { ClientDetailsPanel } from "@/features/clients/components/client-details-panel";
@@ -94,55 +94,44 @@ export default function ClientsPage() {
   };
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-[#FAFBFF] text-slate-900">
-      {/* 1. Sticky Top Navigation Header */}
-      <ClientsHeader
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-      />
-
-      {/* 2. Main Page Body (Flex Layout with Left Scrollable Area + Right Detail Panel) */}
+    <div className="flex h-full flex-col overflow-hidden bg-[#FAFBFF] text-slate-900">
+      {/* Main Page Body (Flex Layout with Left Scrollable Area + Right Detail Panel) */}
       <div className="flex flex-1 min-h-0 overflow-hidden">
         {/* Main Content (Left / Middle) */}
         <div className="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6">
-          {/* Header Row: Title & Action Buttons */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-                Clients
-              </h1>
-              <p className="text-xs text-slate-500 mt-1">
-                Manage relationships after winning opportunities.
-              </p>
-            </div>
+          {/* Universal Header Row: Title & Action Buttons */}
+          <PageHeader
+            title="Clients"
+            description="Manage relationships after winning opportunities."
+            actions={
+              <>
+                <button
+                  type="button"
+                  className="inline-flex items-center gap-2 rounded-xl border border-slate-200/90 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 transition-colors cursor-pointer"
+                >
+                  <Download className="h-3.5 w-3.5 text-slate-500" />
+                  <span>Export</span>
+                </button>
 
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                className="inline-flex items-center gap-2 rounded-xl border border-slate-200/90 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 transition-colors cursor-pointer"
-              >
-                <Download className="h-3.5 w-3.5 text-slate-500" />
-                <span>Export</span>
-              </button>
+                <button
+                  type="button"
+                  className="inline-flex items-center gap-2 rounded-xl border border-slate-200/90 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 transition-colors cursor-pointer"
+                >
+                  <Upload className="h-3.5 w-3.5 text-slate-500" />
+                  <span>Import</span>
+                </button>
 
-              <button
-                type="button"
-                className="inline-flex items-center gap-2 rounded-xl border border-slate-200/90 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 transition-colors cursor-pointer"
-              >
-                <Upload className="h-3.5 w-3.5 text-slate-500" />
-                <span>Import</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setIsNewClientModalOpen(true)}
-                className="inline-flex items-center gap-1.5 rounded-xl bg-[#5B5AF7] hover:bg-[#4847E5] px-4 py-2 text-xs font-semibold text-white shadow-xs transition-colors cursor-pointer"
-              >
-                <Plus className="h-3.5 w-3.5" />
-                <span>Add Client</span>
-              </button>
-            </div>
-          </div>
+                <button
+                  type="button"
+                  onClick={() => setIsNewClientModalOpen(true)}
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-[#5B5AF7] hover:bg-[#4847E5] px-4 py-2 text-xs font-semibold text-white shadow-xs transition-colors cursor-pointer"
+                >
+                  <Plus className="h-3.5 w-3.5" />
+                  <span>Add Client</span>
+                </button>
+              </>
+            }
+          />
 
           {/* 4 KPI Metric Cards */}
           <ClientsMetricCards metrics={metrics} />
@@ -231,26 +220,19 @@ export default function ClientsPage() {
 
           {/* 3. Clients Cards Grid or List */}
           {filteredClients.length === 0 ? (
-            <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-white p-12 text-center">
-              <User className="h-8 w-8 text-slate-300 mb-2" />
-              <p className="text-sm font-semibold text-slate-700">
-                No clients found
-              </p>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Try adjusting your search filters or add a new client.
-              </p>
-              <button
-                type="button"
-                onClick={() => {
+            <EmptyState
+              icon={User}
+              title="No clients found"
+              description="Try adjusting your search filters or add a new client."
+              action={{
+                label: "Clear all filters",
+                onClick: () => {
                   setSearchQuery("");
                   setFilterStatus("all");
                   setFilterIndustry("all");
-                }}
-                className="mt-4 text-xs font-semibold text-[#5B5AF7] hover:underline"
-              >
-                Clear all filters
-              </button>
-            </div>
+                },
+              }}
+            />
           ) : viewMode === "grid" ? (
             <div
               className={cn(
@@ -362,52 +344,15 @@ export default function ClientsPage() {
             </div>
           )}
 
-          {/* Pagination Bar for Clients */}
-          {filteredClients.length > 0 && totalPages > 1 && (
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-slate-200/80 pt-4">
-              <span className="text-xs text-slate-400 font-medium">
-                Showing {(safePage - 1) * itemsPerPage + 1} to{" "}
-                {Math.min(safePage * itemsPerPage, filteredClients.length)} of{" "}
-                {filteredClients.length} clients
-              </span>
-
-              <div className="flex items-center gap-1.5 self-end sm:self-auto">
-                <button
-                  type="button"
-                  disabled={safePage === 1}
-                  onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                  className="rounded-lg border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-2xs"
-                >
-                  Previous
-                </button>
-
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                  <button
-                    key={page}
-                    type="button"
-                    onClick={() => setCurrentPage(page)}
-                    className={cn(
-                      "h-7 w-7 rounded-lg text-xs font-semibold transition-colors cursor-pointer",
-                      safePage === page
-                        ? "bg-[#5B5AF7] text-white shadow-2xs"
-                        : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 shadow-2xs"
-                    )}
-                  >
-                    {page}
-                  </button>
-                ))}
-
-                <button
-                  type="button"
-                  disabled={safePage === totalPages}
-                  onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-                  className="rounded-lg border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-2xs"
-                >
-                  Next
-                </button>
-              </div>
-            </div>
-          )}
+          {/* Standardized Pagination Bar */}
+          <Pagination
+            currentPage={safePage}
+            totalPages={totalPages}
+            totalItems={filteredClients.length}
+            itemsPerPage={itemsPerPage}
+            itemName="clients"
+            onPageChange={setCurrentPage}
+          />
         </div>
 
         {/* 4. Right Side Client Details Panel (Matching Screenshot) */}

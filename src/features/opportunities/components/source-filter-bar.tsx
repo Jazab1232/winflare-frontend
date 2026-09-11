@@ -35,16 +35,6 @@ export function SourceFilterBar({
 
   return (
     <div className="flex flex-col gap-3.5 select-none">
-      {/* Title & Subtitle */}
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-          Opportunities
-        </h1>
-        <p className="text-xs text-slate-500 mt-0.5">
-          Discover and qualify the best opportunities from multiple sources.
-        </p>
-      </div>
-
       {/* Source Filter Chips & Controls */}
       <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
         {/* Source Pills */}

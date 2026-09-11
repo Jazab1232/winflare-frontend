@@ -9,7 +9,6 @@ import {
 } from "@/features/proposals/data/mock-proposals";
 import { ProposalCardItem, ProposalStageId } from "@/features/proposals/types";
 import { useProposalsStore } from "@/features/proposals/store/proposals-store";
-import { ProposalsHeader } from "@/features/proposals/components/proposals-header";
 import { ProposalsTitleBar } from "@/features/proposals/components/proposals-title-bar";
 import { ProposalsMetricCards } from "@/features/proposals/components/proposals-metric-cards";
 import { ProposalsTable } from "@/features/proposals/components/proposals-table";
@@ -86,14 +85,8 @@ export default function ProposalsPage() {
   };
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-[#FAFAFA]">
-      {/* 1. Global Header */}
-      <ProposalsHeader
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-      />
-
-      {/* 2. Main Scrollable Container */}
+    <div className="flex flex-col h-full overflow-hidden bg-[#FAFBFF]">
+      {/* Main Scrollable Container */}
       <div className="flex-1 overflow-y-auto custom-scrollbar">
         {/* Title Bar with New Proposal, Templates, Export & View Switcher */}
         <ProposalsTitleBar

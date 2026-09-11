@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { PageHeader } from "@/components/dashboard";
 
 interface LibraryCategoryCard {
   id: string;
@@ -175,62 +176,14 @@ export default function ProposalLibraryPage() {
   };
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-[#FAFBFF]">
-      {/* Top Header with Search, Bell, Profile */}
-      <header className="sticky top-0 z-20 flex h-14 w-full items-center justify-between border-b border-slate-200/80 bg-white px-6 select-none shrink-0">
-        <div className="flex items-center gap-2">
-          <h1 className="text-sm font-bold text-slate-900 tracking-tight">
-            Proposal Library
-          </h1>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <div className="relative flex items-center">
-            <Search className="absolute left-3 h-3.5 w-3.5 text-slate-400" />
-            <input
-              type="text"
-              placeholder="Search..."
-              className="h-8 w-52 rounded-xl border border-slate-200/90 bg-[#F8FAFC] pl-8 pr-9 text-xs text-slate-800 placeholder:text-slate-400 shadow-2xs focus:border-[#5B5AF7] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#5B5AF7]"
-            />
-            <div className="absolute right-2 flex items-center gap-0.5 rounded border border-slate-200 bg-white px-1 py-0.2 text-[9px] font-medium text-slate-400 select-none">
-              <span>⌘</span>
-              <span>K</span>
-            </div>
-          </div>
-
-          <button
-            type="button"
-            className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
-            title="Notifications"
-          >
-            <Bell className="h-4 w-4" />
-          </button>
-
-          <div className="flex items-center gap-2 pl-1 select-none">
-            <img
-              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120"
-              alt="John Doe"
-              className="h-8 w-8 rounded-full object-cover border border-slate-200"
-            />
-            <div className="flex flex-col leading-tight">
-              <span className="text-xs font-bold text-slate-900">John Doe</span>
-              <span className="text-[11px] text-slate-400">Admin</span>
-            </div>
-          </div>
-        </div>
-      </header>
-
+    <div className="flex flex-col h-full overflow-hidden bg-[#FAFBFF]">
       {/* Main Content Area */}
       <div className="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6">
-        {/* Title Bar */}
-        <div>
-          <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
-            Proposal Library
-          </h2>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Store successful content and reusable assets
-          </p>
-        </div>
+        {/* Universal Page Header */}
+        <PageHeader
+          title="Proposal Library"
+          description="Store successful content and reusable assets"
+        />
 
         {/* Search Input Box */}
         <div className="relative flex items-center w-full">

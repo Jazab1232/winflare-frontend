@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { MOCK_OPPORTUNITIES } from "@/features/opportunities/data/mock-opportunities";
-import { OpportunitiesHeader } from "@/features/opportunities/components/opportunities-header";
+import { PageHeader, Pagination } from "@/components/dashboard";
 import { FilterSidebar } from "@/features/opportunities/components/filter-sidebar";
 import { SourceFilterBar } from "@/features/opportunities/components/source-filter-bar";
 import { OpportunityCard } from "@/features/opportunities/components/opportunity-card";
@@ -10,7 +10,7 @@ import { OpportunityDetailPanel } from "@/features/opportunities/components/oppo
 import { ImportOpportunityModal } from "@/features/opportunities/components/import-opportunity-modal";
 import { OpportunityShortListView } from "@/features/opportunities/components/opportunity-short-list-view";
 import { OpportunityItem } from "@/features/opportunities/types";
-import { Filter } from "lucide-react";
+import { Filter, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
@@ -20,7 +20,7 @@ export default function OpportunitiesPage() {
   const [searchQuery, setSearchQuery] = React.useState("");
   const [isImportModalOpen, setIsImportModalOpen] = React.useState(false);
   const [isFilterOpen, setIsFilterOpen] = React.useState(false);
-  const [isDetailOpen, setIsDetailOpen] = React.useState(true);
+  const [isDetailOpen, setIsDetailOpen] = React.useState(false);
   const [selectedId, setSelectedId] = React.useState<string>(
     MOCK_OPPORTUNITIES[0].id
   );
@@ -92,13 +92,7 @@ export default function OpportunitiesPage() {
     selectedLocations.length;
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-[#FAFBFF]">
-      {/* Top Header */}
-      <OpportunitiesHeader
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-        onImportOpportunity={() => setIsImportModalOpen(true)}
-      />
+    <div className="flex flex-col h-full overflow-hidden bg-[#FAFBFF]">
 
       {/* Import Opportunity Modal */}
       <ImportOpportunityModal
@@ -156,7 +150,23 @@ export default function OpportunitiesPage() {
 
         {/* Pane 2: Middle Opportunity Feed (Expands smoothly) */}
         <div className="flex flex-1 min-w-0 flex-col overflow-y-auto custom-scrollbar p-6 gap-4 bg-[#FAFBFF]">
-          {/* Source Filter Bar + Title */}
+          {/* Universal Page Header */}
+          <PageHeader
+            title="Opportunities"
+            description="AI-curated high-ticket projects matching your skills across Upwork, LinkedIn, and remote boards."
+            actions={
+              <button
+                type="button"
+                onClick={() => setIsImportModalOpen(true)}
+                className="inline-flex items-center gap-1.5 rounded-xl bg-[#5B5AF7] hover:bg-[#4847E5] px-4 py-2 text-xs font-semibold text-white shadow-xs transition-all cursor-pointer active:scale-[0.98]"
+              >
+                <Plus className="h-4 w-4 stroke-[2.5]" />
+                <span>Import Opportunity</span>
+              </button>
+            }
+          />
+
+          {/* Source Filter Bar */}
           <SourceFilterBar
             activeSource={activeSource}
             onSelectSource={setActiveSource}
@@ -184,14 +194,7 @@ export default function OpportunitiesPage() {
             </div>
           ) : viewMode === "card" ? (
             /* 1. Card Grid View */
-            <div
-              className={cn(
-                "grid gap-4 pb-6",
-                isDetailOpen
-                  ? "grid-cols-1 md:grid-cols-2"
-                  : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-              )}
-            >
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-6">
               {paginatedOpportunities.map((opp) => (
                 <OpportunityCard
                   key={opp.id}
@@ -239,71 +242,46 @@ export default function OpportunitiesPage() {
             </div>
           )}
 
-          {/* Pagination Controls */}
-          {filteredOpportunities.length > 0 && totalPages > 1 && (
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-slate-200/80 pt-4 pb-4 mt-auto">
-              <span className="text-xs text-slate-400 font-medium">
-                Showing {(safePage - 1) * itemsPerPage + 1} to{" "}
-                {Math.min(safePage * itemsPerPage, filteredOpportunities.length)} of{" "}
-                {filteredOpportunities.length} opportunities
-              </span>
-
-              <div className="flex items-center gap-1.5 self-end sm:self-auto">
-                <button
-                  type="button"
-                  disabled={safePage === 1}
-                  onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                  className="rounded-lg border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-2xs"
-                >
-                  Previous
-                </button>
-
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                  <button
-                    key={page}
-                    type="button"
-                    onClick={() => setCurrentPage(page)}
-                    className={cn(
-                      "h-7 w-7 rounded-lg text-xs font-semibold transition-colors cursor-pointer",
-                      safePage === page
-                        ? "bg-[#5B5AF7] text-white shadow-2xs"
-                        : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 shadow-2xs"
-                    )}
-                  >
-                    {page}
-                  </button>
-                ))}
-
-                <button
-                  type="button"
-                  disabled={safePage === totalPages}
-                  onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-                  className="rounded-lg border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-2xs"
-                >
-                  Next
-                </button>
-              </div>
-            </div>
-          )}
+          {/* Standardized Pagination Controls */}
+          <Pagination
+            currentPage={safePage}
+            totalPages={totalPages}
+            totalItems={filteredOpportunities.length}
+            itemsPerPage={itemsPerPage}
+            itemName="opportunities"
+            onPageChange={setCurrentPage}
+          />
         </div>
-
-        {/* Pane 3: Right Detail Drawer (Clean, Uncluttered, Collapsible) */}
-        {isDetailOpen && selectedItem && (
-          <div className="hidden lg:flex h-full w-[440px] xl:w-[480px] shrink-0 overflow-hidden border-l border-slate-200/80 bg-white transition-all duration-200">
-            <OpportunityDetailPanel
-              item={selectedItem}
-              onClose={() => setIsDetailOpen(false)}
-              onGenerateProposal={() => handleGenerateProposal(selectedItem)}
-              onSave={() => {
-                toast.success(`Saved ${selectedItem.role} at ${selectedItem.company}`);
-              }}
-              onMoveToPipeline={() => {
-                toast.success(`Moved ${selectedItem.role} to pipeline`);
-              }}
-            />
-          </div>
-        )}
       </div>
+
+      {/* Slide-over Right Detail Drawer with Backdrop */}
+      {isDetailOpen && selectedItem && (
+        <div className="fixed inset-0 z-50 overflow-hidden">
+          {/* Backdrop: click outside to close */}
+          <div
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-2xs transition-opacity duration-300 animate-in fade-in"
+            onClick={() => setIsDetailOpen(false)}
+            aria-hidden="true"
+          />
+
+          {/* Drawer Container */}
+          <div className="fixed inset-y-0 right-0 flex max-w-full pl-6 sm:pl-10">
+            <aside className="w-screen max-w-lg md:max-w-xl bg-white border-l border-slate-200 shadow-2xl flex flex-col justify-between overflow-hidden animate-in slide-in-from-right duration-300 select-none">
+              <OpportunityDetailPanel
+                item={selectedItem}
+                onClose={() => setIsDetailOpen(false)}
+                onGenerateProposal={() => handleGenerateProposal(selectedItem)}
+                onSave={() => {
+                  toast.success(`Saved ${selectedItem.role} at ${selectedItem.company}`);
+                }}
+                onMoveToPipeline={() => {
+                  toast.success(`Moved ${selectedItem.role} to pipeline`);
+                }}
+              />
+            </aside>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

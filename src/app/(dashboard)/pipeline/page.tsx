@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import {
   MOCK_SUMMARY_METRICS,
@@ -17,7 +18,6 @@ import {
 } from "@/features/pipeline/types";
 import { useRouter } from "next/navigation";
 import { useProposalsStore } from "@/features/proposals/store/proposals-store";
-import { PipelineHeader } from "@/features/pipeline/components/pipeline-header";
 import { PipelineTitleBar } from "@/features/pipeline/components/pipeline-title-bar";
 import { PipelineMetricCards } from "@/features/pipeline/components/pipeline-metric-cards";
 import { PipelineKanbanBoard } from "@/features/pipeline/components/pipeline-kanban-board";
@@ -39,6 +39,7 @@ export default function PipelinePage() {
   const [isNewModalOpen, setIsNewModalOpen] = React.useState(false);
   const [newModalStage, setNewModalStage] =
     React.useState<PipelineStageId>("qualified");
+  const [isAiOpen, setIsAiOpen] = React.useState(true);
 
   // Filter items by search query
   const filteredItems = React.useMemo(() => {
@@ -116,70 +117,106 @@ export default function PipelinePage() {
   };
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-[#FAFBFF]">
-      {/* 1. Top Header */}
-      <PipelineHeader
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-        onNewOpportunity={() => handleAddOpportunityClick("qualified")}
-        onExport={handleExport}
-      />
-
-      {/* 2. Main Body Container: Kanban Board + AI Command Center */}
+    <div className="flex flex-col h-full overflow-hidden bg-[#FAFBFF]">
+      {/* Main Body Container: Kanban Board + AI Command Center */}
       <div className="flex flex-1 min-h-0 overflow-hidden">
         {/* Left / Center Board Area */}
-        <div className="flex flex-1 flex-col min-w-0 overflow-hidden">
-          {/* Title and date/filter controls */}
+        <div className="flex flex-1 flex-col min-w-0 overflow-y-auto custom-scrollbar">
+          {/* Universal Title & Action controls */}
           <PipelineTitleBar
             viewMode={viewMode}
             onViewModeChange={setViewMode}
             onFilterClick={() => toast.info("Filter clicked")}
             onSortClick={() => toast.info("Sort options clicked")}
+            onNewOpportunity={() => handleAddOpportunityClick("qualified")}
+            onExport={handleExport}
+            isAiOpen={isAiOpen}
+            onToggleAi={() => setIsAiOpen((prev) => !prev)}
           />
 
           {/* 5 Summary Metric Cards */}
-          <PipelineMetricCards metrics={MOCK_SUMMARY_METRICS} />
+          <div className="shrink-0">
+            <PipelineMetricCards metrics={MOCK_SUMMARY_METRICS} />
+          </div>
 
           {/* Kanban Board or List View */}
-          {viewMode === "board" ? (
-            <PipelineKanbanBoard
-              stages={stages}
-              items={filteredItems}
-              onOpenDetails={handleOpenDetails}
-              onGenerateProposal={handleGenerateProposal}
-              onViewProposal={handleViewProposal}
-              onMoveStage={(item) => handleMoveStage(item)}
-              onAddOpportunity={handleAddOpportunityClick}
-            />
-          ) : (
-            <PipelineListView
-              stages={stages}
-              items={filteredItems}
-              onOpenDetails={handleOpenDetails}
-              onGenerateProposal={handleGenerateProposal}
-              onViewProposal={handleViewProposal}
-              onMoveStage={(item) => handleMoveStage(item)}
-            />
-          )}
+          <div className="flex-1">
+            {viewMode === "board" ? (
+              <PipelineKanbanBoard
+                stages={stages}
+                items={filteredItems}
+                onOpenDetails={handleOpenDetails}
+                onGenerateProposal={handleGenerateProposal}
+                onViewProposal={handleViewProposal}
+                onMoveStage={(item) => handleMoveStage(item)}
+                onAddOpportunity={handleAddOpportunityClick}
+              />
+            ) : (
+              <PipelineListView
+                stages={stages}
+                items={filteredItems}
+                onOpenDetails={handleOpenDetails}
+                onGenerateProposal={handleGenerateProposal}
+                onViewProposal={handleViewProposal}
+                onMoveStage={(item) => handleMoveStage(item)}
+              />
+            )}
+          </div>
         </div>
 
-        {/* Right Sidebar: AI Command Center */}
-        <PipelineAiCommandCenter
-          recommendations={MOCK_AI_RECOMMENDATIONS}
-          healthStats={MOCK_PIPELINE_HEALTH}
-          tasks={MOCK_UPCOMING_TASKS}
-          onRecommendationClick={(rec) => {
-            const matchedItem = items.find((i) => i.company === rec.company);
-            if (matchedItem) handleOpenDetails(matchedItem);
-            else toast.info(`Viewing details for ${rec.company}`);
-          }}
-          onAttentionClick={() => {
-            toast.info("Viewing 3 opportunities needing attention.");
-          }}
-          onTaskToggle={(id) => {
-            toast.success("Task status updated!");
-          }}
-        />
+        {/* Right Sidebar: AI Command Center or Collapsed Long Side Pole */}
+        {isAiOpen ? (
+          <PipelineAiCommandCenter
+            recommendations={MOCK_AI_RECOMMENDATIONS}
+            healthStats={MOCK_PIPELINE_HEALTH}
+            tasks={MOCK_UPCOMING_TASKS}
+            onClose={() => setIsAiOpen(false)}
+            onRecommendationClick={(rec) => {
+              const matchedItem = items.find((i) => i.company === rec.company);
+              if (matchedItem) handleOpenDetails(matchedItem);
+              else toast.info(`Viewing details for ${rec.company}`);
+            }}
+            onAttentionClick={() => {
+              toast.info("Viewing 3 opportunities needing attention.");
+            }}
+            onTaskToggle={(id) => {
+              toast.success("Task status updated!");
+            }}
+          />
+        ) : (
+          <div
+            onClick={() => setIsAiOpen(true)}
+            className="group flex h-full w-14 shrink-0 flex-col items-center border-l border-slate-200/80 bg-white py-5 px-2 select-none transition-all duration-200 cursor-pointer hover:bg-[#F9FAFF]"
+            title="Open AI Command Center"
+          >
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsAiOpen(true);
+              }}
+              title="Open AI Command Center"
+              aria-label="Open AI Command Center"
+              className="group relative flex h-10 w-10 items-center justify-center rounded-xl bg-[#F4F3FF] border border-[#E0DEFF] text-[#5B5AF7] hover:bg-[#ECE9FE] transition-all cursor-pointer shadow-2xs"
+            >
+              <Sparkles className="h-4 w-4 transition-transform group-hover:scale-110" />
+              <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#5B5AF7] text-[10px] font-bold text-white shadow-xs">
+                3
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsAiOpen(true);
+              }}
+              className="text-xs font-semibold text-slate-400 group-hover:text-[#5B5AF7] cursor-pointer mt-8 rotate-90 whitespace-nowrap tracking-wider transition-colors"
+            >
+              AI Command Center
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Detail Modal */}

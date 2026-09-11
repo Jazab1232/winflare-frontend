@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { PipelineItem, PipelineStageConfig, PipelineStageId } from "../types";
 import { cn } from "@/lib/utils";
+import { Pagination } from "@/components/dashboard";
 
 interface PipelineListViewProps {
   stages: PipelineStageConfig[];
@@ -77,7 +78,7 @@ export function PipelineListView({
   }, [items, safePage, itemsPerPage]);
 
   return (
-    <div className="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-4">
+    <div className="px-6 pb-8 space-y-4">
       <div className="rounded-2xl border border-slate-200/80 bg-white overflow-hidden shadow-2xs">
         <div className="overflow-x-auto custom-scrollbar">
           <table className="w-full min-w-[760px] border-collapse text-left text-xs">
@@ -189,51 +190,17 @@ export function PipelineListView({
           </table>
         </div>
 
-        {/* Pagination Bar */}
-        {totalPages > 1 && (
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-slate-200/80 pt-4">
-            <span className="text-xs text-slate-400 font-medium">
-              Showing {(safePage - 1) * itemsPerPage + 1} to{" "}
-              {Math.min(safePage * itemsPerPage, items.length)} of {items.length} opportunities
-            </span>
-
-            <div className="flex items-center gap-1.5 self-end sm:self-auto">
-              <button
-                type="button"
-                disabled={safePage === 1}
-                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                className="rounded-lg border border-slate-200 px-3 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
-              >
-                Previous
-              </button>
-
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <button
-                  key={page}
-                  type="button"
-                  onClick={() => setCurrentPage(page)}
-                  className={cn(
-                    "h-7 w-7 rounded-lg text-xs font-semibold transition-colors cursor-pointer",
-                    safePage === page
-                      ? "bg-[#5B5AF7] text-white shadow-2xs"
-                      : "text-slate-600 hover:bg-slate-100"
-                  )}
-                >
-                  {page}
-                </button>
-              ))}
-
-              <button
-                type="button"
-                disabled={safePage === totalPages}
-                onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-                className="rounded-lg border border-slate-200 px-3 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
-              >
-                Next
-              </button>
-            </div>
-          </div>
-        )}
+        {/* Standardized Pagination Bar */}
+        <div className="px-5 pb-2">
+          <Pagination
+            currentPage={safePage}
+            totalPages={totalPages}
+            totalItems={items.length}
+            itemsPerPage={itemsPerPage}
+            itemName="opportunities"
+            onPageChange={setCurrentPage}
+          />
+        </div>
       </div>
     </div>
   );

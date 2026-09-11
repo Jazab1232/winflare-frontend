@@ -1,6 +1,8 @@
 'use client';
 
 import React from 'react';
+import { BrandIcon, SectionHeader, ValuePillarCard } from '@/components/shared';
+import { MockupSidebar } from './shared';
 import {
   ArrowRight,
   Sparkles,
@@ -102,146 +104,6 @@ function TapeStrip({ className = '' }: { className?: string }) {
 }
 
 // ==========================================
-// Platform SVG Icons for The Chaos
-// ==========================================
-
-function LinkedInIcon({ className = 'h-5 w-5' }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none">
-      <rect width="24" height="24" rx="5" fill="#0A66C2" />
-      <path
-        d="M7.4 9.6H5.2V17H7.4V9.6ZM6.3 8.6C7 8.6 7.5 8 7.5 7.4C7.5 6.7 7 6.2 6.3 6.2C5.6 6.2 5.1 6.7 5.1 7.4C5.1 8 5.6 8.6 6.3 8.6ZM18.8 17H16.6V13.5C16.6 12.6 16.6 11.5 15.4 11.5C14.1 11.5 13.9 12.5 13.9 13.4V17H11.7V9.6H13.8V10.6H13.8C14.1 10 14.9 9.4 16 9.4C18.3 9.4 18.8 10.9 18.8 12.9V17Z"
-        fill="white"
-      />
-    </svg>
-  );
-}
-
-function IndeedIcon({ className = 'h-5 w-5' }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none">
-      <rect width="24" height="24" rx="12" fill="#2164F4" />
-      <path
-        d="M13.2 8.7C13.2 9.5 12.6 10.1 11.8 10.1C11 10.1 10.4 9.5 10.4 8.7C10.4 7.9 11 7.3 11.8 7.3C12.6 7.3 13.2 7.9 13.2 8.7ZM10.5 11.5H13.1V17.2H10.5V11.5Z"
-        fill="white"
-      />
-      <path
-        d="M14.5 11.5C14.1 11.8 13.7 12 13.2 12V11.5H10.5V17.2H13.1V14.1C13.1 13.3 13.6 12.8 14.3 12.8C14.7 12.8 15 13 15.2 13.2L16 11.8C15.6 11.6 15 11.4 14.5 11.5Z"
-        fill="white"
-        opacity="0.85"
-      />
-    </svg>
-  );
-}
-
-function WellfoundIcon({ className = 'h-5 w-5' }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none">
-      <rect width="24" height="24" rx="5" fill="#000000" />
-      <path
-        d="M6 8L8.5 15.5L10.5 9.8L12 14.2L13.5 9.8L15.5 15.5L18 8H16.2L14.6 13L13.1 8.8H10.9L9.4 13L7.8 8H6Z"
-        fill="white"
-      />
-    </svg>
-  );
-}
-
-function OpenAIIcon({ className = 'h-5 w-5' }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none">
-      <rect width="24" height="24" rx="12" fill="#10A37F" />
-      <path
-        d="M16.5 11.3C16.3 9.9 15.2 8.8 13.7 8.6V7.4C13.7 6.6 13 6 12.2 6C11.6 6 11.1 6.3 10.8 6.8L8.3 10.9C8 11.4 8 12 8.3 12.5L9.3 14.1C9.1 14.4 9 14.7 9 15.1C9 15.9 9.7 16.6 10.5 16.6C10.7 16.6 10.9 16.5 11.1 16.4L13.6 17.8C13.8 17.9 14.1 18 14.4 18C15.2 18 15.9 17.3 15.9 16.5V15.2C16.9 14.7 17.6 13.6 17.6 12.3C17.6 11.9 17.5 11.5 17.3 11.1L16.5 11.3ZM12 14.4C10.7 14.4 9.6 13.3 9.6 12C9.6 10.7 10.7 9.6 12 9.6C13.3 9.6 14.4 10.7 14.4 12C14.4 13.3 13.3 14.4 12 14.4Z"
-        fill="white"
-      />
-    </svg>
-  );
-}
-
-function GoogleSheetsIcon({ className = 'h-5 w-5' }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none">
-      <rect width="24" height="24" rx="4" fill="#0F9D58" />
-      <rect
-        x="6.5"
-        y="7"
-        width="11"
-        height="10"
-        rx="1"
-        fill="white"
-        fillOpacity="0.2"
-      />
-      <path
-        d="M8 9H16M8 12H16M8 15H16M11.5 7V17"
-        stroke="white"
-        strokeWidth="1.2"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-function GmailIcon({ className = 'h-5 w-5' }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none">
-      <rect
-        width="24"
-        height="24"
-        rx="5"
-        fill="#FFFFFF"
-        stroke="#E2E8F0"
-        strokeWidth="0.8"
-      />
-      <path
-        d="M6 7.5V16.5H8.5V11.8L12 14.5L15.5 11.8V16.5H18V7.5L12 12.2L6 7.5Z"
-        fill="#EA4335"
-      />
-      <path d="M6 7.5L12 12.2L8.5 14.8V11.8L6 9.8V7.5Z" fill="#4285F4" />
-      <path d="M18 7.5L12 12.2L15.5 14.8V11.8L18 9.8V7.5Z" fill="#34A853" />
-      <path d="M6 7.5L8.5 9.5V7.5H6Z" fill="#FBBC05" />
-    </svg>
-  );
-}
-
-function NotionIcon({ className = 'h-5 w-5' }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none">
-      <rect
-        width="24"
-        height="24"
-        rx="5"
-        fill="#FFFFFF"
-        stroke="#000000"
-        strokeWidth="0.8"
-      />
-      <path
-        d="M7 6.8L15.5 6.2C16.3 6.1 17 6.7 17 7.5V17L15 16.5L10 9.8V16.8L7.8 16.5V7.8L7 6.8ZM10.5 8.5V14.8L14.8 8.8L10.5 8.5Z"
-        fill="#000000"
-      />
-    </svg>
-  );
-}
-
-function GoogleCalendarIcon({ className = 'h-5 w-5' }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none">
-      <rect width="24" height="24" rx="5" fill="#4285F4" />
-      <rect x="6" y="8" width="12" height="10" rx="1.5" fill="white" />
-      <rect x="6" y="8" width="12" height="3" fill="#1A73E8" />
-      <text
-        x="12"
-        y="15.5"
-        textAnchor="middle"
-        fontSize="6.5"
-        fontWeight="bold"
-        fill="#1A73E8"
-        fontFamily="sans-serif"
-      >
-        31
-      </text>
-    </svg>
-  );
-}
 
 export function ChaosToSystemSection() {
   return (
@@ -250,26 +112,25 @@ export function ChaosToSystemSection() {
         {/* ========================================== */}
         {/* Section Header */}
         {/* ========================================== */}
-        <div className="mx-auto max-w-3xl text-center">
-          {/* Pill Badge */}
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-[#EDE9FE] px-3.5 py-1 text-xs font-semibold tracking-wider text-[#5B5AF7] uppercase border border-[#DDD6FE]/60 shadow-[0_1px_2px_rgba(91,90,247,0.05)]">
-            <span>FROM CHAOS TO SYSTEM</span>
-          </div>
-
-          {/* Headline */}
-          <h2 className="mt-5 text-3xl sm:text-4xl lg:text-[46px] font-bold tracking-tight text-[#0F172A] leading-[1.18]">
-            Your client acquisition process <br />
-            is <span className="text-[#5B5AF7]">fragmented.</span>
-          </h2>
-
-          {/* Subtitle */}
-          <p className="mt-4 text-sm sm:text-base text-[#64748B] max-w-xl mx-auto leading-relaxed">
-            Jumping between multiple tools, tabs, and spreadsheets wastes your
-            time,
-            <br className="hidden sm:inline" /> leads to missed opportunities,
-            and makes it hard to stay organized.
-          </p>
-        </div>
+        <SectionHeader
+          badgeText="FROM CHAOS TO SYSTEM"
+          badgeVariant="violet"
+          badgeUppercase={true}
+          title={
+            <>
+              Your client acquisition process <br />
+              is <span className="text-[#5B5AF7]">fragmented.</span>
+            </>
+          }
+          subtitle={
+            <>
+              Jumping between multiple tools, tabs, and spreadsheets wastes your
+              time,
+              <br className="hidden sm:inline" /> leads to missed opportunities,
+              and makes it hard to stay organized.
+            </>
+          }
+        />
 
         {/* ========================================== */}
         {/* Side-by-Side Comparison Container */}
@@ -398,7 +259,7 @@ export function ChaosToSystemSection() {
                   {/* LinkedIn - Floating Hanging Card */}
                   <div className="relative group">
                     <div className="bg-white rounded-xl px-2.5 py-1.5 shadow-[0_8px_18px_-4px_rgba(15,23,42,0.1),0_2px_4px_rgba(15,23,42,0.04)] border border-slate-200/90 flex items-center gap-2 rotate-[-2deg] transition-all duration-300 hover:rotate-0 hover:-translate-y-1.5 hover:shadow-[0_14px_24px_-4px_rgba(15,23,42,0.14)] cursor-pointer">
-                      <LinkedInIcon className="h-5 w-5 shrink-0" />
+                      <BrandIcon name="linkedin" className="h-5 w-5 shrink-0" />
                       <div>
                         <p className="text-[11px] font-semibold text-slate-800 leading-none">
                           LinkedIn
@@ -413,7 +274,7 @@ export function ChaosToSystemSection() {
                   {/* Indeed - Floating Hanging Card */}
                   <div className="relative group">
                     <div className="bg-white rounded-xl px-2.5 py-1.5 shadow-[0_8px_18px_-4px_rgba(15,23,42,0.1),0_2px_4px_rgba(15,23,42,0.04)] border border-slate-200/90 flex items-center gap-2 rotate-[1.5deg] transition-all duration-300 hover:rotate-0 hover:-translate-y-1.5 hover:shadow-[0_14px_24px_-4px_rgba(15,23,42,0.14)] cursor-pointer">
-                      <IndeedIcon className="h-5 w-5 shrink-0" />
+                      <BrandIcon name="indeed" className="h-5 w-5 shrink-0" />
                       <div>
                         <p className="text-[11px] font-semibold text-slate-800 leading-none">
                           Indeed
@@ -428,7 +289,7 @@ export function ChaosToSystemSection() {
                   {/* Wellfound - Floating Hanging Card */}
                   <div className="relative group">
                     <div className="bg-white rounded-xl px-2.5 py-1.5 shadow-[0_8px_18px_-4px_rgba(15,23,42,0.1),0_2px_4px_rgba(15,23,42,0.04)] border border-slate-200/90 flex items-center gap-2 rotate-[-1deg] transition-all duration-300 hover:rotate-0 hover:-translate-y-1.5 hover:shadow-[0_14px_24px_-4px_rgba(15,23,42,0.14)] cursor-pointer">
-                      <WellfoundIcon className="h-5 w-5 shrink-0" />
+                      <BrandIcon name="wellfound" className="h-5 w-5 shrink-0" />
                       <div>
                         <p className="text-[11px] font-semibold text-slate-800 leading-none">
                           Wellfound
@@ -443,7 +304,7 @@ export function ChaosToSystemSection() {
                   {/* ChatGPT - Floating Hanging Card */}
                   <div className="relative group">
                     <div className="bg-white rounded-xl px-2.5 py-1.5 shadow-[0_8px_18px_-4px_rgba(15,23,42,0.1),0_2px_4px_rgba(15,23,42,0.04)] border border-slate-200/90 flex items-center gap-2 rotate-[2.5deg] transition-all duration-300 hover:rotate-0 hover:-translate-y-1.5 hover:shadow-[0_14px_24px_-4px_rgba(15,23,42,0.14)] cursor-pointer">
-                      <OpenAIIcon className="h-5 w-5 shrink-0" />
+                      <BrandIcon name="openai" className="h-5 w-5 shrink-0" />
                       <div>
                         <p className="text-[11px] font-semibold text-slate-800 leading-none">
                           ChatGPT
@@ -518,7 +379,7 @@ export function ChaosToSystemSection() {
                   {/* Google Sheets */}
                   <div className="relative group">
                     <div className="bg-white rounded-xl px-2.5 py-1.5 shadow-[0_8px_18px_-4px_rgba(15,23,42,0.1),0_2px_4px_rgba(15,23,42,0.04)] border border-slate-200/90 flex items-center gap-2 rotate-[-2deg] transition-all duration-300 hover:rotate-0 hover:-translate-y-1.5 hover:shadow-[0_14px_24px_-4px_rgba(15,23,42,0.14)] cursor-pointer">
-                      <GoogleSheetsIcon className="h-5 w-5 shrink-0" />
+                      <BrandIcon name="sheets" className="h-5 w-5 shrink-0" />
                       <div>
                         <p className="text-[11px] font-semibold text-slate-800 leading-none">
                           Google Sheets
@@ -533,7 +394,7 @@ export function ChaosToSystemSection() {
                   {/* Gmail */}
                   <div className="relative group">
                     <div className="bg-white rounded-xl px-2.5 py-1.5 shadow-[0_8px_18px_-4px_rgba(15,23,42,0.1),0_2px_4px_rgba(15,23,42,0.04)] border border-slate-200/90 flex items-center gap-2 rotate-[1.5deg] transition-all duration-300 hover:rotate-0 hover:-translate-y-1.5 hover:shadow-[0_14px_24px_-4px_rgba(15,23,42,0.14)] cursor-pointer">
-                      <GmailIcon className="h-5 w-5 shrink-0" />
+                      <BrandIcon name="gmail" className="h-5 w-5 shrink-0" />
                       <div>
                         <p className="text-[11px] font-semibold text-slate-800 leading-none">
                           Gmail
@@ -548,7 +409,7 @@ export function ChaosToSystemSection() {
                   {/* Notion */}
                   <div className="relative group">
                     <div className="bg-white rounded-xl px-2.5 py-1.5 shadow-[0_8px_18px_-4px_rgba(15,23,42,0.1),0_2px_4px_rgba(15,23,42,0.04)] border border-slate-200/90 flex items-center gap-2 rotate-[-1.5deg] transition-all duration-300 hover:rotate-0 hover:-translate-y-1.5 hover:shadow-[0_14px_24px_-4px_rgba(15,23,42,0.14)] cursor-pointer">
-                      <NotionIcon className="h-5 w-5 shrink-0" />
+                      <BrandIcon name="notion" className="h-5 w-5 shrink-0" />
                       <div>
                         <p className="text-[11px] font-semibold text-slate-800 leading-none">
                           Notion
@@ -590,7 +451,7 @@ export function ChaosToSystemSection() {
                 {/* Google Calendar (bottom-left) */}
                 <div className="absolute top-[215px] left-[55px] z-10">
                   <div className="bg-white rounded-xl px-2.5 py-1.5 shadow-[0_8px_18px_-4px_rgba(15,23,42,0.1),0_2px_4px_rgba(15,23,42,0.04)] border border-slate-200/90 flex items-center gap-2 rotate-[-1.5deg] transition-all duration-300 hover:rotate-0 hover:-translate-y-1.5 hover:shadow-[0_14px_24px_-4px_rgba(15,23,42,0.14)] cursor-pointer">
-                    <GoogleCalendarIcon className="h-5 w-5 shrink-0" />
+                    <BrandIcon name="google-calendar" className="h-5 w-5 shrink-0" />
                     <div>
                       <p className="text-[11px] font-semibold text-slate-800 leading-none">
                         Google Calendar
@@ -700,58 +561,7 @@ export function ChaosToSystemSection() {
               {/* Realistic Floating Winflare Mini-Dashboard Canvas */}
               <div className="mt-6 rounded-2xl border border-slate-200/90 bg-white shadow-[0_16px_36px_-6px_rgba(15,23,42,0.1),0_4px_10px_rgba(0,0,0,0.04)] overflow-hidden flex flex-col md:flex-row text-left transition-all duration-300 hover:shadow-[0_22px_44px_-6px_rgba(15,23,42,0.14)]">
                 {/* Mini Sidebar */}
-                <div className="hidden sm:flex flex-col justify-between w-[135px] border-r border-slate-100 bg-[#FAFBFD] p-3 shrink-0">
-                  <div>
-                    {/* Winflare Logo */}
-                    <div className="flex items-center gap-1.5 pb-3.5 border-b border-slate-100">
-                      <div className="flex h-5 w-5 items-center justify-center rounded bg-[#5B5AF7] text-white font-black text-[10px]">
-                        W
-                      </div>
-                      <span className="text-xs font-bold tracking-tight text-[#0F172A]">
-                        winflare
-                      </span>
-                    </div>
-
-                    {/* Nav Items */}
-                    <nav className="mt-3 space-y-1">
-                      <div className="flex items-center gap-2 rounded-lg bg-[#EEF2FF] px-2 py-1.5 text-[11px] font-semibold text-[#5B5AF7]">
-                        <LayoutDashboard className="h-3.5 w-3.5 shrink-0" />
-                        <span>Dashboard</span>
-                      </div>
-                      <div className="flex items-center gap-2 rounded-lg px-2 py-1 text-[11px] font-medium text-slate-500 hover:text-slate-900">
-                        <Compass className="h-3.5 w-3.5 shrink-0" />
-                        <span>Discovery</span>
-                      </div>
-                      <div className="flex items-center gap-2 rounded-lg px-2 py-1 text-[11px] font-medium text-slate-500 hover:text-slate-900">
-                        <ShieldCheck className="h-3.5 w-3.5 shrink-0" />
-                        <span>Qualification</span>
-                      </div>
-                      <div className="flex items-center gap-2 rounded-lg px-2 py-1 text-[11px] font-medium text-slate-500 hover:text-slate-900">
-                        <FileText className="h-3.5 w-3.5 shrink-0" />
-                        <span>Proposals</span>
-                      </div>
-                      <div className="flex items-center gap-2 rounded-lg px-2 py-1 text-[11px] font-medium text-slate-500 hover:text-slate-900">
-                        <Columns3 className="h-3.5 w-3.5 shrink-0" />
-                        <span>Pipeline</span>
-                      </div>
-                      <div className="flex items-center gap-2 rounded-lg px-2 py-1 text-[11px] font-medium text-slate-500 hover:text-slate-900">
-                        <MessageSquare className="h-3.5 w-3.5 shrink-0" />
-                        <span>Messages</span>
-                      </div>
-                      <div className="flex items-center gap-2 rounded-lg px-2 py-1 text-[11px] font-medium text-slate-500 hover:text-slate-900">
-                        <Calendar className="h-3.5 w-3.5 shrink-0" />
-                        <span>Calendar</span>
-                      </div>
-                    </nav>
-                  </div>
-
-                  <div className="pt-2 border-t border-slate-100">
-                    <div className="flex items-center gap-2 rounded-lg px-2 py-1 text-[11px] font-medium text-slate-500">
-                      <Settings className="h-3.5 w-3.5 shrink-0" />
-                      <span>Settings</span>
-                    </div>
-                  </div>
-                </div>
+                <MockupSidebar variant="mini" />
 
                 {/* Main Dashboard Area */}
                 <div className="flex-1 p-3.5 sm:p-4 bg-white min-w-0 flex flex-col gap-3">
@@ -1041,65 +851,34 @@ export function ChaosToSystemSection() {
         {/* ========================================== */}
         <div className="mt-14 pt-10 border-t border-slate-200/80">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-            {/* Pillar 1 */}
-            <div className="flex items-center gap-3.5">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#EDE9FE] text-[#5B5AF7] shadow-[0_2px_8px_rgba(91,90,247,0.12)]">
-                <Shuffle className="h-5 w-5 stroke-[2]" />
-              </div>
-              <div>
-                <h4 className="text-sm font-bold text-[#0F172A] leading-snug">
-                  No more jumping between tabs
-                </h4>
-                <p className="text-xs text-[#64748B] mt-0.5">
-                  Everything in one place.
-                </p>
-              </div>
-            </div>
-
-            {/* Pillar 2 */}
-            <div className="flex items-center gap-3.5">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#E0E7FF] text-[#4F46E5] shadow-[0_2px_8px_rgba(79,70,229,0.12)]">
-                <Clock className="h-5 w-5 stroke-[2]" />
-              </div>
-              <div>
-                <h4 className="text-sm font-bold text-[#0F172A] leading-snug">
-                  Save hours of manual work
-                </h4>
-                <p className="text-xs text-[#64748B] mt-0.5">
-                  Automate the repetitive.
-                </p>
-              </div>
-            </div>
-
-            {/* Pillar 3 */}
-            <div className="flex items-center gap-3.5">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#F3E8FF] text-[#7C3AED] shadow-[0_2px_8px_rgba(124,58,237,0.12)]">
-                <Target className="h-5 w-5 stroke-[2]" />
-              </div>
-              <div>
-                <h4 className="text-sm font-bold text-[#0F172A] leading-snug">
-                  Never miss a follow-up
-                </h4>
-                <p className="text-xs text-[#64748B] mt-0.5">
-                  Stay on top of every opportunity.
-                </p>
-              </div>
-            </div>
-
-            {/* Pillar 4 */}
-            <div className="flex items-center gap-3.5">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#EDE9FE] text-[#5B5AF7] shadow-[0_2px_8px_rgba(91,90,247,0.12)]">
-                <BarChart3 className="h-5 w-5 stroke-[2]" />
-              </div>
-              <div>
-                <h4 className="text-sm font-bold text-[#0F172A] leading-snug">
-                  Turn efforts into real clients
-                </h4>
-                <p className="text-xs text-[#64748B] mt-0.5">
-                  Track. Convert. Grow.
-                </p>
-              </div>
-            </div>
+            <ValuePillarCard
+              icon={Shuffle}
+              title="No more jumping between tabs"
+              description="Everything in one place."
+              iconBg="bg-[#EDE9FE]"
+              iconColor="text-[#5B5AF7]"
+            />
+            <ValuePillarCard
+              icon={Clock}
+              title="Save hours of manual work"
+              description="Automate the repetitive."
+              iconBg="bg-[#E0E7FF]"
+              iconColor="text-[#4F46E5]"
+            />
+            <ValuePillarCard
+              icon={Target}
+              title="Never miss a follow-up"
+              description="Stay on top of every opportunity."
+              iconBg="bg-[#F3E8FF]"
+              iconColor="text-[#7C3AED]"
+            />
+            <ValuePillarCard
+              icon={BarChart3}
+              title="Turn efforts into real clients"
+              description="Track. Convert. Grow."
+              iconBg="bg-[#EDE9FE]"
+              iconColor="text-[#5B5AF7]"
+            />
           </div>
         </div>
       </div>

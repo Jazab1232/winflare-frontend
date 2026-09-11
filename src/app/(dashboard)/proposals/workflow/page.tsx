@@ -21,38 +21,26 @@ import {
   ArrowRight,
   Sparkles,
 } from "lucide-react";
+import { PageHeader } from "@/components/dashboard";
 
 export default function ProposalWorkflowPage() {
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-[#FAFBFF]">
-      {/* Top Header */}
-      <header className="sticky top-0 z-20 flex h-14 w-full items-center justify-between border-b border-slate-200/80 bg-white px-6 select-none shrink-0">
-        <div className="flex items-center gap-3">
-          <Link
-            href="/proposals"
-            className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-colors shadow-2xs"
-            title="Back to proposals"
-          >
-            <ArrowLeft className="h-4 w-4" />
-          </Link>
-          <div className="flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-[#5B5AF7]" />
-            <h1 className="text-sm font-bold text-slate-900">
-              Proposal System Architecture & User Flow
-            </h1>
-          </div>
-        </div>
-
-        <Link
-          href="/proposals"
-          className="rounded-xl bg-[#5B5AF7] hover:bg-[#4847E5] px-4 py-1.5 text-xs font-semibold text-white shadow-xs transition-all"
-        >
-          View Proposals
-        </Link>
-      </header>
-
+    <div className="flex flex-col h-full overflow-hidden bg-[#FAFBFF]">
       {/* Main Content Area */}
       <div className="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-8 max-w-6xl mx-auto w-full">
+        <PageHeader
+          title="Proposal Architecture & Workflow"
+          description="System lifecycle from AI generation through client signing."
+          actions={
+            <Link
+              href="/proposals"
+              className="rounded-xl bg-[#5B5AF7] hover:bg-[#4847E5] px-4 py-2 text-xs font-semibold text-white shadow-xs transition-all inline-flex items-center gap-1.5"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" />
+              <span>Back to Proposals</span>
+            </Link>
+          }
+        />
         {/* ========================================================= */}
         {/* SCREEN 8: Proposal Status Flow */}
         {/* ========================================================= */}

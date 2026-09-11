@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { PageHeader, MetricCard, MetricCardGroup, EmptyState } from "@/components/dashboard";
 import {
   Folder,
   FileText,
@@ -230,49 +231,8 @@ export default function PortfolioPage() {
   };
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-[#FAFBFF] text-slate-900">
-      {/* 1. Integrated Dashboard Top Navigation Bar */}
-      <header className="sticky top-0 z-20 flex h-16 w-full shrink-0 items-center justify-between border-b border-slate-200/80 bg-white px-6 sm:px-8">
-        {/* Search Bar matching screenshot */}
-        <div className="relative flex w-full max-w-lg items-center">
-          <Search className="absolute left-3.5 h-4 w-4 text-slate-400" />
-          <input
-            type="text"
-            placeholder="Search projects, case studies, or technologies..."
-            className="h-10 w-full rounded-xl border border-slate-200/90 bg-slate-50/50 pl-10 pr-14 text-xs text-slate-800 placeholder:text-slate-400 shadow-2xs focus:border-[#5B5AF7] focus:bg-white focus:outline-none focus:ring-1.5 focus:ring-[#5B5AF7]"
-          />
-          <kbd className="absolute right-3 rounded-md border border-slate-200 bg-white px-1.5 py-0.5 text-[10px] font-semibold text-slate-400 select-none">
-            ⌘K
-          </kbd>
-        </div>
-
-        {/* Right Controls: Notification & User Profile */}
-        <div className="flex items-center gap-5">
-          {/* Bell with red indicator */}
-          <button
-            type="button"
-            className="relative flex h-9 w-9 items-center justify-center rounded-xl text-slate-500 hover:bg-slate-100 hover:text-slate-700 transition-colors cursor-pointer"
-            aria-label="Notifications"
-          >
-            <Bell className="h-4 w-4" />
-            <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-rose-500 ring-2 ring-white" />
-          </button>
-
-          {/* User Mini Profile matching screenshot: JD avatar + John Doe / Acme Corp */}
-          <div className="flex items-center gap-3 select-none cursor-pointer pl-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#475569] text-white text-xs font-bold shadow-2xs">
-              JD
-            </div>
-            <div className="hidden sm:flex flex-col leading-tight">
-              <span className="text-xs font-bold text-slate-900">John Doe</span>
-              <span className="text-[11px] text-slate-400">Acme Corp</span>
-            </div>
-            <ChevronDown className="h-3.5 w-3.5 text-slate-400 hidden sm:block" />
-          </div>
-        </div>
-      </header>
-
-      {/* 2. Main Page Scrollable Body */}
+    <div className="flex h-full flex-col overflow-hidden bg-[#FAFBFF] text-slate-900">
+      {/* Main Page Scrollable Body */}
       <div className="flex-1 overflow-y-auto custom-scrollbar p-6 sm:p-8 space-y-6">
         {/* Toast Alert */}
         {copiedNotification && (
@@ -281,109 +241,69 @@ export default function PortfolioPage() {
           </div>
         )}
 
-        {/* Page Title & Main Actions */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-              Portfolio
-            </h1>
-            <p className="text-xs text-slate-400 mt-1">
-              Manage projects, case studies and proof of work.
-            </p>
-          </div>
+        {/* Universal Page Header & Main Actions */}
+        <PageHeader
+          title="Portfolio"
+          description="Manage projects, case studies and proof of work."
+          actions={
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => handleActionToast("Import Project dialog ready")}
+                className="inline-flex items-center gap-2 rounded-xl border border-slate-200/90 bg-white px-4 py-2 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 transition-all cursor-pointer active:scale-[0.98]"
+              >
+                <Upload className="h-3.5 w-3.5 text-slate-500" />
+                <span>Import Project</span>
+              </button>
 
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => handleActionToast("Import Project dialog ready")}
-              className="inline-flex items-center gap-2 rounded-xl border border-slate-200/90 bg-white px-4 py-2 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 transition-all cursor-pointer active:scale-[0.98]"
-            >
-              <Upload className="h-3.5 w-3.5 text-slate-500" />
-              <span>Import Project</span>
-            </button>
+              <button
+                type="button"
+                onClick={() => handleActionToast("Exporting portfolio data...")}
+                className="inline-flex items-center gap-2 rounded-xl border border-slate-200/90 bg-white px-4 py-2 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 transition-all cursor-pointer active:scale-[0.98]"
+              >
+                <Download className="h-3.5 w-3.5 text-slate-500" />
+                <span>Export</span>
+              </button>
 
-            <button
-              type="button"
-              onClick={() => handleActionToast("Exporting portfolio data...")}
-              className="inline-flex items-center gap-2 rounded-xl border border-slate-200/90 bg-white px-4 py-2 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 transition-all cursor-pointer active:scale-[0.98]"
-            >
-              <Download className="h-3.5 w-3.5 text-slate-500" />
-              <span>Export</span>
-            </button>
+              <button
+                type="button"
+                onClick={() => handleActionToast("Opening project creation wizard")}
+                className="inline-flex items-center gap-1.5 rounded-xl bg-[#5B5AF7] hover:bg-[#4847E5] px-4 py-2 text-xs font-semibold text-white shadow-xs transition-all cursor-pointer active:scale-[0.98]"
+              >
+                <Plus className="h-3.5 w-3.5 stroke-[2.5]" />
+                <span>Add Project</span>
+              </button>
+            </div>
+          }
+        />
 
-            <button
-              type="button"
-              onClick={() => handleActionToast("Opening project creation wizard")}
-              className="inline-flex items-center gap-1.5 rounded-xl bg-[#5B5AF7] hover:bg-[#4847E5] px-4 py-2 text-xs font-semibold text-white shadow-xs transition-all cursor-pointer active:scale-[0.98]"
-            >
-              <Plus className="h-3.5 w-3.5 stroke-[2.5]" />
-              <span>Add Project</span>
-            </button>
-          </div>
-        </div>
-
-        {/* 4 Summary Stat KPI Cards matching screenshot */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* Card 1: Projects */}
-          <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-2xs flex items-center gap-4">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#EEF0FF] text-[#5B5AF7]">
-              <Folder className="h-5 w-5" />
-            </div>
-            <div>
-              <span className="text-xs font-medium text-slate-400 block">
-                Projects
-              </span>
-              <span className="text-2xl font-bold text-slate-900 block mt-0.5">
-                24
-              </span>
-            </div>
-          </div>
-
-          {/* Card 2: Case Studies */}
-          <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-2xs flex items-center gap-4">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#EEF0FF] text-[#5B5AF7]">
-              <FileText className="h-5 w-5" />
-            </div>
-            <div>
-              <span className="text-xs font-medium text-slate-400 block">
-                Case Studies
-              </span>
-              <span className="text-2xl font-bold text-slate-900 block mt-0.5">
-                12
-              </span>
-            </div>
-          </div>
-
-          {/* Card 3: Technologies */}
-          <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-2xs flex items-center gap-4">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#EEF0FF] text-[#5B5AF7]">
-              <Layers className="h-5 w-5" />
-            </div>
-            <div>
-              <span className="text-xs font-medium text-slate-400 block">
-                Technologies
-              </span>
-              <span className="text-2xl font-bold text-slate-900 block mt-0.5">
-                18
-              </span>
-            </div>
-          </div>
-
-          {/* Card 4: Used In Proposals */}
-          <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-2xs flex items-center gap-4">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#EEF0FF] text-[#5B5AF7]">
-              <Zap className="h-5 w-5 fill-[#5B5AF7]" />
-            </div>
-            <div>
-              <span className="text-xs font-medium text-slate-400 block">
-                Used In Proposals
-              </span>
-              <span className="text-2xl font-bold text-slate-900 block mt-0.5">
-                146
-              </span>
-            </div>
-          </div>
-        </div>
+        {/* Standardized 4 Summary Stat KPI Cards */}
+        <MetricCardGroup columns={4}>
+          <MetricCard
+            title="Projects"
+            value={24}
+            icon={Folder}
+            theme="purple"
+          />
+          <MetricCard
+            title="Case Studies"
+            value={12}
+            icon={FileText}
+            theme="purple"
+          />
+          <MetricCard
+            title="Technologies"
+            value={18}
+            icon={Layers}
+            theme="purple"
+          />
+          <MetricCard
+            title="Used In Proposals"
+            value={146}
+            icon={Zap}
+            theme="purple"
+          />
+        </MetricCardGroup>
 
         {/* Main Content Layout: Main Section (Left) + Intelligence & Detail Drawers (Right) */}
         <div className="flex flex-col xl:flex-row gap-6 items-start">
@@ -959,25 +879,16 @@ export default function PortfolioPage() {
               </div>
             </div>
 
-            {/* Empty State Banner / Callout matching screenshot */}
-            <div className="rounded-2xl border border-dashed border-slate-200 bg-white/60 p-6 text-center flex flex-col items-center justify-center">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#EEF0FF] text-[#5B5AF7]">
-                <Folder className="h-5 w-5" />
-              </div>
-              <h4 className="mt-2 text-xs font-bold text-slate-800">
-                No projects yet.
-              </h4>
-              <p className="mt-0.5 text-[11px] text-slate-400">
-                Add your first project and start building proposal-ready case studies.
-              </p>
-              <button
-                type="button"
-                onClick={() => handleActionToast("Opening project creation dialog")}
-                className="mt-3 rounded-lg bg-[#5B5AF7] hover:bg-[#4847E5] px-3.5 py-1.5 text-[11px] font-semibold text-white shadow-2xs transition-colors cursor-pointer"
-              >
-                Add First Project
-              </button>
-            </div>
+            {/* Standardized Empty State Callout */}
+            <EmptyState
+              icon={Folder}
+              title="No projects yet."
+              description="Add your first project and start building proposal-ready case studies."
+              action={{
+                label: "Add First Project",
+                onClick: () => handleActionToast("Opening project creation dialog"),
+              }}
+            />
           </div>
 
           {/* Right Column: Portfolio Intelligence & Project Detail Drawer */}

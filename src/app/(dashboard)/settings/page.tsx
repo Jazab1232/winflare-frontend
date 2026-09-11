@@ -23,6 +23,7 @@ import {
   Target,
   Check,
 } from "lucide-react";
+import { PageHeader } from "@/components/dashboard";
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState("Profile");
@@ -90,44 +91,8 @@ export default function SettingsPage() {
   ];
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-[#FAFBFF] text-slate-900">
-      {/* 1. Header Bar matching screenshot */}
-      <header className="sticky top-0 z-20 flex h-16 w-full shrink-0 items-center justify-between border-b border-slate-200/80 bg-white px-6 sm:px-8">
-        {/* Search Bar matching screenshot */}
-        <div className="relative flex w-full max-w-lg items-center">
-          <Search className="absolute left-3.5 h-4 w-4 text-slate-400" />
-          <input
-            type="text"
-            placeholder="Search clients, companies, projects..."
-            className="h-10 w-full rounded-xl border border-slate-200/90 bg-slate-50/50 pl-10 pr-4 text-xs text-slate-800 placeholder:text-slate-400 shadow-2xs focus:border-[#5B5AF7] focus:bg-white focus:outline-none focus:ring-1.5 focus:ring-[#5B5AF7]"
-          />
-        </div>
-
-        {/* Right Controls: Notification Bell & Profile with NT */}
-        <div className="flex items-center gap-5">
-          <button
-            type="button"
-            className="relative flex h-9 w-9 items-center justify-center rounded-xl text-slate-500 hover:bg-slate-100 hover:text-slate-700 transition-colors cursor-pointer"
-            aria-label="Notifications"
-          >
-            <Bell className="h-4 w-4" />
-            <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-rose-500 ring-2 ring-white" />
-          </button>
-
-          {/* User Profile badge matching screenshot: NT circle + Naveed Tahir */}
-          <div className="flex items-center gap-2.5 select-none cursor-pointer pl-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#0F172A] text-white text-xs font-bold shadow-2xs">
-              NT
-            </div>
-            <span className="text-xs font-bold text-slate-900 hidden sm:inline">
-              Naveed Tahir
-            </span>
-            <ChevronDown className="h-3.5 w-3.5 text-slate-400 hidden sm:inline" />
-          </div>
-        </div>
-      </header>
-
-      {/* 2. Main Scrollable Container */}
+    <div className="flex h-full flex-col overflow-hidden bg-[#FAFBFF] text-slate-900">
+      {/* Main Scrollable Container */}
       <div className="flex-1 overflow-y-auto custom-scrollbar p-6 sm:p-8 space-y-6">
         {/* Toast Notification */}
         {toastMessage && (
@@ -137,15 +102,11 @@ export default function SettingsPage() {
           </div>
         )}
 
-        {/* Page Title & Subtitle */}
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-            Settings
-          </h1>
-          <p className="text-xs text-slate-400 mt-1">
-            Manage your workspace and preferences.
-          </p>
-        </div>
+        {/* Standardized Page Title */}
+        <PageHeader
+          title="Settings"
+          description="Manage your workspace and preferences."
+        />
 
         {/* Horizontal Navigation Tabs */}
         <div className="flex items-center gap-6 border-b border-slate-200/80 overflow-x-auto custom-scrollbar pt-1">

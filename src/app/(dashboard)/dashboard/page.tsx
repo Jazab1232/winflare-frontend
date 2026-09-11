@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Metadata } from "next";
-import { DashboardHeader } from "@/features/dashboard/components/header";
 import { DashboardGreeting } from "@/features/dashboard/components/greeting-banner";
 import { MetricStatCard } from "@/features/dashboard/components/metric-stat-card";
 import { PipelineBoard } from "@/features/dashboard/components/pipeline-board";
@@ -20,9 +19,6 @@ export const metadata: Metadata = {
 export default function DashboardPage() {
   return (
     <div className="flex flex-col h-full overflow-hidden">
-      {/* Sticky header */}
-      <DashboardHeader />
-
       {/* Scrollable canvas */}
       <main className="flex-1 overflow-y-auto custom-scrollbar bg-[#FAFBFF] p-6 lg:p-7">
         <div className="mx-auto max-w-[1520px] flex flex-col gap-5">

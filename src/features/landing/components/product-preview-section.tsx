@@ -43,6 +43,7 @@ import {
   ChevronDown
 } from 'lucide-react';
 import { WinflareLogo } from './navbar';
+import { SectionHeader, CheckList, ValuePillarCard } from '@/components/shared';
 
 const tabsData = [
   {
@@ -197,16 +198,19 @@ export function ProductPreviewSection() {
   return (
     <section className="py-20 bg-[#FAFBFF] flex flex-col items-center overflow-hidden">
       {/* Header */}
-      <div className="flex flex-col items-center text-center max-w-3xl mb-10 px-4">
-        <div className="flex items-center gap-2 px-4 py-1.5 bg-[#EFEBFF] text-[#5B5AF7] rounded-full text-xs font-bold mb-5 tracking-wide uppercase">
-          <div className="bg-[#5B5AF7] rounded-full p-0.5"><Sparkles className="w-3 h-3 text-white fill-white" /></div> PRODUCT PREVIEW
-        </div>
-        <h2 className="text-3xl md:text-[42px] font-extrabold text-[#0F172A] mb-4 tracking-tight leading-[1.15]">
-          One workspace for <br /> every step of <span className="text-[#5B5AF7]">client acquisition.</span>
-        </h2>
-        <p className="text-[16px] text-[#64748B] max-w-[580px] font-medium leading-relaxed">
-          From discovering opportunities to managing client relationships, everything lives inside Winflare.
-        </p>
+      <div className="mb-10 px-4">
+        <SectionHeader
+          badgeIcon={Sparkles}
+          badgeText="PRODUCT PREVIEW"
+          badgeUppercase={true}
+          title={
+            <>
+              One workspace for <br /> every step of{' '}
+              <span className="text-[#5B5AF7]">client acquisition.</span>
+            </>
+          }
+          subtitle="From discovering opportunities to managing client relationships, everything lives inside Winflare."
+        />
       </div>
 
       {/* Tabs */}
@@ -261,16 +265,11 @@ export function ProductPreviewSection() {
             <p className="text-[#64748B] mb-6 text-[14.5px] leading-[1.6] font-medium">
               {activeData.content.leftSide.description}
             </p>
-            <ul className="space-y-3.5 w-full">
-              {activeData.content.leftSide.features.map((item, i) => (
-                <li key={i} className="flex items-center gap-3 text-[14px] font-semibold text-[#334155]">
-                  <div className="w-4.5 h-4.5 rounded-full border-[1.5px] border-[#5B5AF7] flex items-center justify-center shrink-0">
-                    <Check className="text-[#5B5AF7] w-2.5 h-2.5" strokeWidth={3} />
-                  </div>
-                  {item}
-                </li>
-              ))}
-            </ul>
+            <CheckList
+              items={activeData.content.leftSide.features}
+              layout="vertical"
+              variant="outline"
+            />
           </div>
 
           {/* Right UI Mockup Container (Responsive Scaled Canvas - Behaves exactly like an image) */}
@@ -1347,20 +1346,17 @@ export function ProductPreviewSection() {
       {/* Features Bottom Bar */}
       <div className="w-full max-w-[1240px] px-4 md:px-0">
         <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5 md:px-8 md:py-6 flex flex-wrap justify-between items-center gap-6 md:gap-3 shadow-xs">
-          {activeData.content.bottomFeatures.map((feat, i) => {
-            const Icon = feat.icon;
-            return (
-              <div key={i} className="flex items-center gap-3.5 flex-1 min-w-[200px]">
-                <div className="p-2.5 bg-[#F4F4FF] rounded-full text-[#5B5AF7] shrink-0 border border-[#EFEBFF] shadow-2xs">
-                  <Icon className="w-4.5 h-4.5" strokeWidth={2.5} />
-                </div>
-                <div>
-                  <h4 className="font-bold text-[#0F172A] text-[14px] mb-0.5">{feat.title}</h4>
-                  <p className="text-[#64748B] text-[12.5px] font-medium">{feat.desc}</p>
-                </div>
-              </div>
-            )
-          })}
+          {activeData.content.bottomFeatures.map((feat, i) => (
+            <ValuePillarCard
+              key={i}
+              icon={feat.icon}
+              title={feat.title}
+              description={feat.desc}
+              iconBg="bg-[#F4F4FF]"
+              strokeWidth={2.5}
+              className="flex-1 min-w-[200px]"
+            />
+          ))}
         </div>
       </div>
     </section>

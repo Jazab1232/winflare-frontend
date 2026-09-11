@@ -11,6 +11,7 @@ import {
   Circle,
   ExternalLink,
   ArrowUp,
+  X,
 } from "lucide-react";
 import {
   AiRecommendationItem,
@@ -23,6 +24,7 @@ interface PipelineAiCommandCenterProps {
   recommendations: AiRecommendationItem[];
   healthStats: PipelineHealthItem[];
   tasks: UpcomingTaskItem[];
+  onClose?: () => void;
   onTaskToggle?: (taskId: string) => void;
   onRecommendationClick?: (rec: AiRecommendationItem) => void;
   onAttentionClick?: () => void;
@@ -32,6 +34,7 @@ export function PipelineAiCommandCenter({
   recommendations,
   healthStats,
   tasks,
+  onClose,
   onTaskToggle,
   onRecommendationClick,
   onAttentionClick,
@@ -46,16 +49,30 @@ export function PipelineAiCommandCenter({
   };
 
   return (
-    <aside className="w-[330px] shrink-0 border-l border-slate-200/80 bg-white p-5 select-none overflow-y-auto custom-scrollbar flex flex-col gap-5">
+    <aside className="w-[330px] shrink-0 border-l border-slate-200/80 bg-white p-5 select-none overflow-y-auto custom-scrollbar flex flex-col gap-5 animate-in slide-in-from-right duration-200">
       {/* Header */}
       <div className="flex flex-col gap-0.5">
-        <div className="flex items-center gap-2">
-          <div className="flex h-6 w-6 items-center justify-center rounded-md bg-indigo-50 text-[#5B5AF7]">
-            <Sparkles className="h-3.5 w-3.5" />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-indigo-50 text-[#5B5AF7]">
+              <Sparkles className="h-3.5 w-3.5" />
+            </div>
+            <h2 className="text-sm font-bold tracking-tight text-slate-900">
+              AI Command Center
+            </h2>
           </div>
-          <h2 className="text-sm font-bold tracking-tight text-slate-900">
-            AI Command Center
-          </h2>
+
+          {onClose && (
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex h-7 w-7 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors cursor-pointer"
+              title="Close panel"
+              aria-label="Close AI Command Center"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
         </div>
         <p className="text-[11px] text-slate-500">
           Insights, recommendations and actions to help you win more.

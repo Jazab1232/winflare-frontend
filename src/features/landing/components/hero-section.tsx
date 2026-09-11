@@ -22,6 +22,8 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { WinflareLogo } from "./navbar";
+import { PillBadge, CheckList } from "@/components/shared";
+import { MockupSidebar } from "./shared";
 
 export function HeroSection() {
   return (
@@ -44,10 +46,9 @@ export function HeroSection() {
           {/* Left Column: Headline, CTAs, Trust Points */}
           <div className="space-y-6 lg:col-span-6 xl:col-span-5 text-left">
             {/* Pill Badge */}
-            <div className="inline-flex items-center gap-2 rounded-full bg-[#EFEBFF] px-4 py-1.5 text-xs font-semibold text-[#5B5AF7]">
-              <Sparkles className="h-3.5 w-3.5 fill-[#5B5AF7] text-[#5B5AF7]" />
-              <span>AI-Powered Client Acquisition OS</span>
-            </div>
+            <PillBadge icon={Sparkles}>
+              AI-Powered Client Acquisition OS
+            </PillBadge>
 
             {/* Main Headline */}
             <h1 className="text-3xl font-extrabold tracking-tight text-[#0F172A] sm:text-4xl lg:text-[38px] xl:text-[42px] lg:leading-[1.15]">
@@ -61,26 +62,16 @@ export function HeroSection() {
             </p>
 
             {/* 3 Checkmark Bullet Points */}
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2.5 pt-1">
-              <div className="flex items-center gap-2 text-sm font-medium text-[#0F172A]">
-                <div className="flex h-4 w-4 items-center justify-center rounded-full bg-[#5B5AF7] text-white">
-                  <Check className="h-2.5 w-2.5 stroke-[3]" />
-                </div>
-                <span>Find better opportunities</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm font-medium text-[#0F172A]">
-                <div className="flex h-4 w-4 items-center justify-center rounded-full bg-[#5B5AF7] text-white">
-                  <Check className="h-2.5 w-2.5 stroke-[3]" />
-                </div>
-                <span>Generate winning proposals</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm font-medium text-[#0F172A]">
-                <div className="flex h-4 w-4 items-center justify-center rounded-full bg-[#5B5AF7] text-white">
-                  <Check className="h-2.5 w-2.5 stroke-[3]" />
-                </div>
-                <span>Track every lead</span>
-              </div>
-            </div>
+            <CheckList
+              items={[
+                "Find better opportunities",
+                "Generate winning proposals",
+                "Track every lead",
+              ]}
+              layout="horizontal"
+              variant="solid"
+              className="pt-1"
+            />
 
             {/* Action Buttons */}
             <div className="flex flex-wrap items-center gap-4 pt-3">
@@ -124,74 +115,7 @@ export function HeroSection() {
             <div className="rounded-3xl border border-[#E2E8F0] bg-white p-3 sm:p-5 shadow-2xl shadow-[#5B5AF7]/10 transition-all">
               <div className="flex gap-4">
                 {/* Dashboard Sidebar */}
-                <div className="hidden sm:flex w-44 shrink-0 flex-col justify-between border-r border-[#F1F5F9] pr-3 text-left">
-                  <div className="space-y-4">
-                    {/* Brand header */}
-                    <div className="flex items-center gap-2 px-2 py-1">
-                      <WinflareLogo className="h-5 w-5" />
-                      <span className="text-base font-bold text-[#0F172A]">winflare</span>
-                    </div>
-
-                    {/* Navigation Links */}
-                    <div className="space-y-1 text-xs font-medium">
-                      <div className="relative flex items-center gap-2.5 rounded-xl bg-[#F0EFFF] px-3 py-2 text-[#5B5AF7] font-semibold">
-                        <div className="absolute left-0 h-4 w-1 rounded-r-full bg-[#5B5AF7]" />
-                        <LayoutDashboard className="h-4 w-4" />
-                        <span>Dashboard</span>
-                      </div>
-                      <div className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-[#64748B] hover:bg-[#F8FAFC]">
-                        <Compass className="h-4 w-4" />
-                        <span>Opportunities</span>
-                      </div>
-                      <div className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-[#64748B] hover:bg-[#F8FAFC]">
-                        <UserCheck className="h-4 w-4" />
-                        <span>Prospects</span>
-                      </div>
-                      <div className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-[#64748B] hover:bg-[#F8FAFC]">
-                        <GitPullRequest className="h-4 w-4" />
-                        <span>Pipeline</span>
-                      </div>
-                      <div className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-[#64748B] hover:bg-[#F8FAFC]">
-                        <FileText className="h-4 w-4" />
-                        <span>Proposals</span>
-                      </div>
-                      <div className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-[#64748B] hover:bg-[#F8FAFC]">
-                        <Users className="h-4 w-4" />
-                        <span>Clients</span>
-                      </div>
-                      <div className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-[#64748B] hover:bg-[#F8FAFC]">
-                        <CalendarDays className="h-4 w-4" />
-                        <span>Calendar</span>
-                      </div>
-                      <div className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-[#64748B] hover:bg-[#F8FAFC]">
-                        <BarChart2 className="h-4 w-4" />
-                        <span>Analytics</span>
-                      </div>
-                      <div className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-[#64748B] hover:bg-[#F8FAFC]">
-                        <Layers className="h-4 w-4" />
-                        <span>Templates</span>
-                      </div>
-                      <div className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-[#64748B] hover:bg-[#F8FAFC]">
-                        <Settings className="h-4 w-4" />
-                        <span>Settings</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* User Profile Info */}
-                  <div className="flex items-center justify-between rounded-xl border border-[#F1F5F9] bg-[#F8FAFC] p-2 mt-4">
-                    <div className="flex items-center gap-2">
-                      <div className="h-7 w-7 rounded-full bg-gradient-to-tr from-[#5B5AF7] to-[#8B7FFF] flex items-center justify-center text-[11px] font-bold text-white shadow-sm">
-                        JA
-                      </div>
-                      <div>
-                        <div className="text-[11px] font-bold text-[#0F172A] leading-tight">Jazab Ali</div>
-                        <div className="text-[9px] text-[#64748B]">Founder</div>
-                      </div>
-                    </div>
-                    <ChevronDown className="h-3.5 w-3.5 text-[#64748B]" />
-                  </div>
-                </div>
+                <MockupSidebar variant="full" />
 
                 {/* Dashboard Main Content */}
                 <div className="flex-1 space-y-3.5 text-left min-w-0">

@@ -50,8 +50,8 @@ export function PipelineKanbanBoard({
   onAddOpportunity,
 }: PipelineKanbanBoardProps) {
   return (
-    <div className="flex-1 overflow-x-auto overflow-y-auto px-6 pb-6 custom-scrollbar">
-      <div className="flex gap-4 min-w-[1400px] h-full items-start">
+    <div className="overflow-x-auto px-6 pb-8 custom-scrollbar">
+      <div className="flex gap-4 min-w-[1400px] items-start">
         {stages.map((stage) => {
           const StageIcon = STAGE_ICONS[stage.id] || Target;
           const stageItems = items.filter((item) => item.stageId === stage.id);
